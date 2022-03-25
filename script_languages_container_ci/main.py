@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
 #
-from slc_ci.cli.cli import cli
+from script_languages_container_ci.cli.cli import cli
 # noinspection PyUnresolvedReferences
 from slc_ci.cli.commands import (
     health,
