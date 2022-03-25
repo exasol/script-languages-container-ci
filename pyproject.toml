@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "slc-ci"
+name = "script-languages-container-ci"
 version = "0.1.0"
 description = "Implements CI builds for script-language-container."
 
