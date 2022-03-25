@@ -1,7 +1,7 @@
 from exasol_integration_test_docker_environment.cli.commands.build_test_container import build_test_container
 from exasol_script_languages_container_tool.cli.commands import build
 
-from slc_ci.lib import print_docker_images
+from script_languages_container_ci.lib import print_docker_images
 
 
 def run_build(flavor: str,

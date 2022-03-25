@@ -1,6 +1,6 @@
 from exasol_script_languages_container_tool.cli.commands import push
 
-from slc_ci.lib import print_docker_images
+from script_languages_container_ci.lib import print_docker_images
 
 
 def run_push(flavor: str,

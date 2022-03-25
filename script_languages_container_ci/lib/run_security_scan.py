@@ -2,7 +2,7 @@ from pathlib import Path
 
 from exasol_script_languages_container_tool.cli.commands import security_scan
 
-from slc_ci.lib import print_docker_images, print_file
+from script_languages_container_ci.lib import print_docker_images, print_file
 
 
 def run_security_scan(flavor: str):

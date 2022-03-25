@@ -1,6 +1,6 @@
 from exasol_script_languages_container_tool.cli.commands import run_db_test
 
-from slc_ci.lib import print_docker_images, get_last_commit_message
+from script_languages_container_ci.lib import print_docker_images, get_last_commit_message
 
 
 def run_test(flavor: str):

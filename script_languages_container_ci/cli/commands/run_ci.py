@@ -2,10 +2,10 @@ import re
 
 import click
 
-from slc_ci import cli
-from slc_ci.lib.run_build import run_build
-from slc_ci.lib.run_push import run_push
-from slc_ci.lib.run_test import run_test
+from script_languages_container_ci import cli
+from script_languages_container_ci.lib.run_build import run_build
+from script_languages_container_ci.lib.run_push import run_push
+from script_languages_container_ci.lib.run_test import run_test
 
 
 @cli.command()
