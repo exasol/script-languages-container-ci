@@ -1,20 +1,11 @@
 #!/bin/bash
+set -o errexit
+set -o nounset
+set -o pipefail
 
 SCRIPT_DIR="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
 
-#shellcheck source=././scripts/build/poetry_utils.sh
-source "$SCRIPT_DIR/poetry_utils.sh"
+#shellcheck source=./scripts/build/setup_poetry_env.sh
+source "$SCRIPT_DIR/setup_poetry_env.sh" "$@"
 
-check_requirements
-
-set -euo pipefail
-
-init_poetry
-
-if [ -n "$POETRY_BIN" ]
-then
-  PYTHONPATH="$SCRIPT_DIR/../.." "$POETRY_BIN" run python3 -u "$SCRIPT_DIR/check_release.py"
-else
-  echo "Could not find poetry!"
-  exit 1
-fi
+poetry run python3 -u "$SCRIPT_DIR/check_release.py"

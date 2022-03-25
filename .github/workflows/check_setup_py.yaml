@@ -15,6 +15,6 @@ jobs:
       with:
         poetry-version: 1.1.13
     - name: Run packaging update
-      run: bash githooks/update_packaging.sh
+      run: bash githooks/update_packaging.sh "python3.8"
     - name: Check git status
       run: bash scripts/build/check_git_status.sh

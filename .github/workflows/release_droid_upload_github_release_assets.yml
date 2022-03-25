@@ -23,7 +23,7 @@ jobs:
         with:
           poetry-version: 1.1.13
       - name: Build Release
-        run: ./scripts/build/check_release.sh
+        run: ./scripts/build/check_release.sh "python3.8"
 
   upload:
     needs: check-release
@@ -41,7 +41,7 @@ jobs:
           poetry-version: 1.1.13
 
       - name: Build Release
-        run: bash ./scripts/build/build_release.sh
+        run: bash ./scripts/build/build_release.sh "python3.8"
       - name: Generate sha512sum files
         run: find ./dist -maxdepth 1 -type f -exec bash -c 'sha512sum {} > {}.sha512' \;
         shell: bash
