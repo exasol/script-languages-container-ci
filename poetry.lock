@@ -45,7 +45,6 @@ optional = false
 python-versions = ">=3.6"
 
 [package.dependencies]
-pywin32 = {version = "227", markers = "sys_platform == \"win32\""}
 requests = ">=2.14.2,<2.18.0 || >2.18.0"
 websocket-client = ">=0.32.0"
 
@@ -63,7 +62,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
 [[package]]
 name = "exasol-integration-test-docker-environment"
-version = "0.8.0"
+version = "0.9.0"
 description = "Integration Test Docker Environment for Exasol"
 category = "main"
 optional = false
@@ -71,7 +70,7 @@ python-versions = ">=3.6,<4"
 
 [package.dependencies]
 click = ">=7.0"
-docker = ">=4.0.0"
+docker = {version = ">=4.0.0", markers = "sys_platform != \"win32\""}
 gitpython = ">=2.1.0"
 humanfriendly = ">=4.18"
 jinja2 = ">=2.10.1"
@@ -86,22 +85,25 @@ simplejson = ">=3.16.0"
 
 [package.source]
 type = "url"
-url = "https://github.com/exasol/integration-test-docker-environment/releases/download/0.8.0/exasol_integration_test_docker_environment-0.8.0-py3-none-any.whl"
-
+url = "https://github.com/exasol/integration-test-docker-environment/releases/download/0.9.0/exasol_integration_test_docker_environment-0.9.0-py3-none-any.whl"
 [[package]]
 name = "exasol-script-languages-container-tool"
-version = "0.9.0"
+version = "0.10.0"
 description = "Script Languages Container Tool"
 category = "main"
 optional = false
 python-versions = ">=3.6,<4"
+develop = false
 
 [package.dependencies]
-exasol-integration-test-docker-environment = {url = "https://github.com/exasol/integration-test-docker-environment/releases/download/0.8.0/exasol_integration_test_docker_environment-0.8.0-py3-none-any.whl"}
+exasol-integration-test-docker-environment = {url = "https://github.com/exasol/integration-test-docker-environment/releases/download/0.9.0/exasol_integration_test_docker_environment-0.9.0-py3-none-any.whl"}
 
 [package.source]
-type = "url"
-url = "https://github.com/exasol/script-languages-container-tool/releases/download/0.9.0/exasol_script_languages_container_tool-0.9.0-py3-none-any.whl"
+type = "git"
+url = "https://github.com/exasol/script-languages-container-tool.git"
+reference = "feature/121_install_starter_scripts_via_python"
+resolved_reference = "fea31f21ce334981dcb3987c8482f78cd307e5ae"
+
 [[package]]
 name = "gitdb"
 version = "4.0.9"
@@ -284,14 +286,6 @@ python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,>=2.7"
 six = ">=1.5"
 
 [[package]]
-name = "pywin32"
-version = "227"
-description = "Python for Window Extensions"
-category = "main"
-optional = false
-python-versions = "*"
-
-[[package]]
 name = "requests"
 version = "2.27.1"
 description = "Python HTTP for Humans."
@@ -400,7 +394,7 @@ optional = ["python-socks", "wsaccel"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8.0,<4.0"
-content-hash = "d415d385ee18d5a936556bfa13776385c0f8d908f4668a486e3e62223ee2730a"
+content-hash = "ee61a78484307ab4cb6fc6375487df89c487d737105782cbfe5943c1c9018028"
 
 [metadata.files]
 certifi = [
@@ -529,20 +523,6 @@ python-daemon = [
 python-dateutil = [
     {file = "python-dateutil-2.8.2.tar.gz", hash = "sha256:0123cacc1627ae19ddf3c27a5de5bd67ee4586fbdd6440d9748f8abb483d3e86"},
     {file = "python_dateutil-2.8.2-py2.py3-none-any.whl", hash = "sha256:961d03dc3453ebbc59dbdea9e4e11c5651520a876d0f4db161e8674aae935da9"},
-]
-pywin32 = [
-    {file = "pywin32-227-cp27-cp27m-win32.whl", hash = "sha256:371fcc39416d736401f0274dd64c2302728c9e034808e37381b5e1b22be4a6b0"},
-    {file = "pywin32-227-cp27-cp27m-win_amd64.whl", hash = "sha256:4cdad3e84191194ea6d0dd1b1b9bdda574ff563177d2adf2b4efec2a244fa116"},
-    {file = "pywin32-227-cp35-cp35m-win32.whl", hash = "sha256:f4c5be1a293bae0076d93c88f37ee8da68136744588bc5e2be2f299a34ceb7aa"},
-    {file = "pywin32-227-cp35-cp35m-win_amd64.whl", hash = "sha256:a929a4af626e530383a579431b70e512e736e9588106715215bf685a3ea508d4"},
-    {file = "pywin32-227-cp36-cp36m-win32.whl", hash = "sha256:300a2db938e98c3e7e2093e4491439e62287d0d493fe07cce110db070b54c0be"},
-    {file = "pywin32-227-cp36-cp36m-win_amd64.whl", hash = "sha256:9b31e009564fb95db160f154e2aa195ed66bcc4c058ed72850d047141b36f3a2"},
-    {file = "pywin32-227-cp37-cp37m-win32.whl", hash = "sha256:47a3c7551376a865dd8d095a98deba954a98f326c6fe3c72d8726ca6e6b15507"},
-    {file = "pywin32-227-cp37-cp37m-win_amd64.whl", hash = "sha256:31f88a89139cb2adc40f8f0e65ee56a8c585f629974f9e07622ba80199057511"},
-    {file = "pywin32-227-cp38-cp38-win32.whl", hash = "sha256:7f18199fbf29ca99dff10e1f09451582ae9e372a892ff03a28528a24d55875bc"},
-    {file = "pywin32-227-cp38-cp38-win_amd64.whl", hash = "sha256:7c1ae32c489dc012930787f06244426f8356e129184a02c25aef163917ce158e"},
-    {file = "pywin32-227-cp39-cp39-win32.whl", hash = "sha256:c054c52ba46e7eb6b7d7dfae4dbd987a1bb48ee86debe3f245a2884ece46e295"},
-    {file = "pywin32-227-cp39-cp39-win_amd64.whl", hash = "sha256:f27cec5e7f588c3d1051651830ecc00294f90728d19c3bf6916e6dba93ea357c"},
 ]
 requests = [
     {file = "requests-2.27.1-py2.py3-none-any.whl", hash = "sha256:f22fa1e554c9ddfd16e6e41ac79759e17be9e492b3587efa038054674760e72d"},
