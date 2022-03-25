@@ -2,7 +2,7 @@
 #
 from script_languages_container_ci.cli.cli import cli
 # noinspection PyUnresolvedReferences
-from slc_ci.cli.commands import (
+from script_languages_container_ci.cli.commands import (
     health,
     generate_buildspec,
     deploy_source_credentials,
