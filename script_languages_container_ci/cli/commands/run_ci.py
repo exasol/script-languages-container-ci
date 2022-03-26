@@ -42,18 +42,20 @@ def run_ci(ctx: click.Context,
     elif re.match(r"refs/heads/master/.*", branch_name):
         rebuild = True
         push_to_public_cache = True
-    run_build(ctx, flavor=flavor, rebuild=rebuild, build_docker_repository=docker_build_repository, commit_sha=commit_sha,
+    flavor_path = (f"flavors/{flavor}",)
+    run_build(ctx, flavor_path=flavor_path, rebuild=rebuild, build_docker_repository=docker_build_repository,
+              commit_sha=commit_sha,
               docker_user=docker_user, docker_password=docker_password)
 
-    run_test(ctx, flavor=flavor)
-    run_push(ctx, flavor=flavor,
+    run_test(ctx, flavor_path=flavor_path)
+    run_push(ctx, flavor_path=flavor_path,
              target_docker_repository=docker_build_repository, target_docker_tag_prefix=commit_sha,
              docker_user=docker_user, docker_password=docker_password)
-    run_push(ctx, flavor=flavor,
+    run_push(ctx, flavor_path=flavor_path,
              target_docker_repository=docker_build_repository, target_docker_tag_prefix="",
              docker_user=docker_user, docker_password=docker_password)
 
     if push_to_public_cache:
-        run_push(ctx, flavor=flavor,
+        run_push(ctx, flavor_path=flavor_path,
                  target_docker_repository=docker_release_repository, target_docker_tag_prefix="",
                  docker_user=docker_user, docker_password=docker_password)
