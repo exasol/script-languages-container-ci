@@ -1,7 +1,7 @@
 from pathlib import Path
 
 import docker
-from Git import Repo
+from git import Repo
 
 
 def print_docker_images():
