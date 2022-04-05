@@ -15,7 +15,7 @@ jobs:
       with:
         poetry-version: 1.1.13
     - name: Setup poetry env
-      run:  bash scripts/setup_poetry_env.sh "python3.8"
+      run:  bash scripts/build/setup_poetry_env.sh "python3.8"
 
     - name: Run pytest
       run: poetry run pytest
