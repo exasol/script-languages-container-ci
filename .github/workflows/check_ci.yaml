@@ -1,0 +1,21 @@
+name: Run Unit Tests
+
+on: [push, pull_request]
+
+jobs:
+  check_setup_py:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - uses: abatilo/actions-poetry@v2.0.0
+      with:
+        poetry-version: 1.1.13
+    - name: Setup poetry env
+      run:  bash scripts/setup_poetry_env.sh "python3.8"
+
+    - name: Run pytest
+      run: poetry run pytest

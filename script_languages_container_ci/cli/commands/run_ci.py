@@ -1,11 +1,10 @@
+import logging
 import re
 
 import click
 
 from script_languages_container_ci.cli.cli import cli
-from script_languages_container_ci.lib.run_build import run_build
-from script_languages_container_ci.lib.run_push import run_push
-from script_languages_container_ci.lib.run_test import run_test
+from script_languages_container_ci.lib.ci import ci
 
 
 @cli.command()
@@ -32,30 +31,6 @@ def run_ci(ctx: click.Context,
            docker_build_repository: str,
            docker_release_repository: str,
            commit_sha: str):
-    print(f"Running CI build for parameters: {locals()}")
-
-    rebuild = False
-    push_to_public_cache = False
-
-    if re.match(r"refs/heads/rebuild/.*", branch_name):
-        rebuild = True
-    elif re.match(r"refs/heads/master/.*", branch_name):
-        rebuild = True
-        push_to_public_cache = True
-    flavor_path = (f"flavors/{flavor}",)
-    run_build(ctx, flavor_path=flavor_path, rebuild=rebuild, build_docker_repository=docker_build_repository,
-              commit_sha=commit_sha,
-              docker_user=docker_user, docker_password=docker_password)
-
-    run_test(ctx, flavor_path=flavor_path)
-    run_push(ctx, flavor_path=flavor_path,
-             target_docker_repository=docker_build_repository, target_docker_tag_prefix=commit_sha,
-             docker_user=docker_user, docker_password=docker_password)
-    run_push(ctx, flavor_path=flavor_path,
-             target_docker_repository=docker_build_repository, target_docker_tag_prefix="",
-             docker_user=docker_user, docker_password=docker_password)
-
-    if push_to_public_cache:
-        run_push(ctx, flavor_path=flavor_path,
-                 target_docker_repository=docker_release_repository, target_docker_tag_prefix="",
-                 docker_user=docker_user, docker_password=docker_password)
+    logging.basicConfig(level=logging.INFO)
+    ci(ctx, flavor, branch_name, docker_user, docker_password,
+       docker_build_repository, docker_release_repository, commit_sha)

@@ -13,7 +13,8 @@ n/a
 
 ## Features / Enhancements
 
-
+ - #1: Add initial implementation of run-ci
+ - 
 ## Documentation
 
 n/a

@@ -13,8 +13,8 @@ package_data = \
 install_requires = \
 ['GitPython>=3.1.0',
  'click>=8.0.3,<9.0.0',
- 'exasol-script-languages-container-tool @ '
- 'git+https://github.com/exasol/script-languages-container-tool.git@feature/121_install_starter_scripts_via_python']
+ 'exasol_script_languages_container_tool @ '
+ 'https://github.com/exasol/script-languages-container-tool/releases/download/0.10.0/exasol_script_languages_container_tool-0.10.0-py3-none-any.whl']
 
 setup_kwargs = {
     'name': 'script-languages-container-ci',

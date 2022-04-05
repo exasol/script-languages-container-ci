@@ -1,3 +1,4 @@
+import logging
 from pathlib import Path
 
 import docker
@@ -9,17 +10,18 @@ def print_docker_images():
     Prints all docker images whith "exa" in it's name to stdout.
     :return: None
     """
-    with docker.DockerClient.from_env() as docker_client:
-        exa_images = [img for img in docker_client.images.list() if "exa" in img]
-        print(
+    docker_client = docker.from_env()
+    exa_images = [img for img in docker_client.images.list() if "exa" in str(img)]
+    logging.info(
             """
 ==========================================================
 Printing docker images
 ==========================================================
 """
-        )
-        for exa_img in exa_images:
-            print(exa_img)
+    )
+    for exa_img in exa_images:
+        logging.info(exa_img)
+    docker_client.close()
 
 
 def get_last_commit_message():
@@ -39,5 +41,5 @@ def print_file(filename: Path):
     """
     with open(filename, "r") as f:
         content = f.read()
-        print(content)
+        logging.info(content)
 
