@@ -25,6 +25,13 @@ def last_commit():
 class TestCI:
 
     def test_feature_branch_build(self, click_stub, build_output_dir, test_env):
+        """
+        Test that on feature branches we run normal build:
+         1. Build Image (no force_rebuild)
+         2. Run db tests
+         3. Security scan
+         4. Push to docker build repo (with and withou sha)
+        """
         os.chdir(build_output_dir)
         TEST_BRANCH = "refs/heads/test_feature_branch"
 
@@ -59,6 +66,13 @@ class TestCI:
                                                  push_call_1, push_call_2])
 
     def test_feature_rebuild_build(self, click_stub, build_output_dir, test_env):
+        """
+        Test that on branches with prefix "rebuild/" normal build, but with force_rebuild=true
+         1. Build Image (with force_rebuild)
+         2. Run db tests
+         3. Security scan
+         4. Push to docker build repo (with and withou sha)
+        """
         os.chdir(build_output_dir)
         TEST_BRANCH = "refs/heads/rebuild/test_feature_branch"
 
@@ -93,6 +107,14 @@ class TestCI:
                                                  push_call_1, push_call_2])
 
     def test_master_build(self, click_stub, build_output_dir, test_env):
+        """
+        Test that on branch master, we force rebuild and push also to release docker repository
+         1. Build Image (with force_rebuild)
+         2. Run db tests
+         3. Security scan
+         4. Push to docker build repo (with and withou sha)
+         5. Push to docker release repo
+        """
         os.chdir(build_output_dir)
         TEST_BRANCH = "refs/heads/master"
 

@@ -11,6 +11,10 @@ def ci_push(ctx: click.Context,
          flavor_path: Tuple[str, ...],
          target_docker_repository: str, target_docker_tag_prefix: str,
          docker_user: str, docker_password: str):
+    """
+    Push the docker image to Dockerhub
+    """
+
     logging.info(f"Running command 'push' with parameters: {locals()}")
     ctx.invoke(push, flavor_path=flavor_path, push_all=True, force_push=True, workers=7,
                target_docker_repository_name=target_docker_repository,

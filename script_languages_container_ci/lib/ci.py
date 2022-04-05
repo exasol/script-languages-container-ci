@@ -1,3 +1,4 @@
+import logging
 import re
 
 import click
@@ -16,7 +17,14 @@ def ci(ctx: click.Context,
        docker_build_repository: str,
        docker_release_repository: str,
        commit_sha: str):
-    print(f"Running CI build for parameters: {locals()}")
+    """
+    Run CI build:
+    1. Build image
+    2. Run db tests
+    3. Run security scan
+    4. Push to docker repositories
+    """
+    logging.info(f"Running CI build for parameters: {locals()}")
 
     rebuild = False
     push_to_public_cache = False

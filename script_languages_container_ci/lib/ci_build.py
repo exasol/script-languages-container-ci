@@ -15,6 +15,10 @@ def ci_build(ctx: click.Context,
           commit_sha: str,
           docker_user: str,
           docker_password: str):
+    """
+    Build the script-language container for given flavor. And also build the test container
+    """
+
     logging.info(f"Running command 'build' with parameters: {locals()}")
     ctx.invoke(build, flavor_path=flavor_path, force_rebuild=rebuild,
                source_docker_repository_name=build_docker_repository,
