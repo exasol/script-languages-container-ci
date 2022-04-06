@@ -20,4 +20,4 @@ def ci_push(ctx: click.Context,
                target_docker_repository_name=target_docker_repository,
                target_docker_tag_prefix=target_docker_tag_prefix,
                target_docker_username=docker_user, target_docker_password=docker_password)
-    print_docker_images()
+    print_docker_images(logging.info)

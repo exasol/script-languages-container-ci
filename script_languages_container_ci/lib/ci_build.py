@@ -26,4 +26,4 @@ def ci_build(ctx: click.Context,
                source_docker_password=docker_password, shortcut_build=False, workers=7)
     logging.info(f"Running command 'build_test_container' with parameters: {locals()}")
     ctx.invoke(build_test_container, force_rebuild=rebuild, workers=7)
-    print_docker_images()
+    print_docker_images(logging.info)

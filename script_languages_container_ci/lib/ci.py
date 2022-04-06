@@ -29,11 +29,12 @@ def ci(ctx: click.Context,
     rebuild = False
     push_to_public_cache = False
 
-    if re.match(r"refs/heads/rebuild/.*", branch_name):
-        rebuild = True
-    elif re.match(r"refs/heads/master", branch_name):
-        rebuild = True
-        push_to_public_cache = True
+    IS_REBUILD = re.compile(r"refs/heads/rebuild/.*")
+    IS_MASTER = re.compile(r"refs/heads/master")
+
+    rebuild = bool(IS_REBUILD.match(branch_name) or IS_MASTER.match(branch_name))
+    push_to_public_cache = bool(IS_MASTER.match(branch_name))
+
     flavor_path = (f"flavors/{flavor}",)
     ci_build(ctx, flavor_path=flavor_path, rebuild=rebuild, build_docker_repository=docker_build_repository,
           commit_sha=commit_sha,

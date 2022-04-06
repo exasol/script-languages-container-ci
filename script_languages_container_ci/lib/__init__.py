@@ -1,27 +1,34 @@
 import logging
 from pathlib import Path
+from typing import Callable
 
 import docker
 from git import Repo
 
 
-def print_docker_images():
+def _get_docker_images():
+    docker_client = docker.from_env()
+    exa_images = [img for img in docker_client.images.list() if "exa" in str(img)]
+    result = []
+    for exa_img in exa_images:
+        result.append(exa_img)
+    docker_client.close()
+    return result
+
+
+def print_docker_images(writer: Callable[[str], None]):
     """
     Prints all docker images whith "exa" in it's name to stdout.
     :return: None
     """
-    docker_client = docker.from_env()
-    exa_images = [img for img in docker_client.images.list() if "exa" in str(img)]
-    logging.info(
+    writer(
             """
 ==========================================================
 Printing docker images
 ==========================================================
 """
     )
-    for exa_img in exa_images:
-        logging.info(exa_img)
-    docker_client.close()
+    writer(f"{_get_docker_images()}")
 
 
 def get_last_commit_message():
@@ -33,13 +40,11 @@ def get_last_commit_message():
     return repo.head.commit.message
 
 
-def print_file(filename: Path):
+def print_file(filename: Path, writer: Callable[[str], None]):
     """
-    Opens file readonly, reads it content and prints to stdout
-    :param filename: Path of file to print content
-    :return: None
+    Opens file readonly, reads it content and prints to writer.
     """
     with open(filename, "r") as f:
         content = f.read()
-        logging.info(content)
+        writer(content)
 

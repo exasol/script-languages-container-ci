@@ -15,6 +15,6 @@ def ci_security_scan(ctx: click.Context, flavor_path: Tuple[str, ...]):
 
     logging.info(f"Running command 'security_scan' with parameters {locals()}")
     ctx.invoke(security_scan, flavor_path=flavor_path, workers=7)
-    print_docker_images()
+    print_docker_images(logging.info)
     logging.info("============= SECURITY REPORT ===========")
-    print_file(Path() / ".build_output" / "security_scan" / "security_report")
+    print_file(Path() / ".build_output" / "security_scan" / "security_report", logging.info)
