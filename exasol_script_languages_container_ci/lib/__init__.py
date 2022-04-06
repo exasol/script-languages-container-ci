@@ -20,14 +20,15 @@ def print_docker_images(writer: Callable[[str], None]):
     Prints all docker images whith "exa" in it's name to stdout.
     :return: None
     """
-    writer(
-            """
-==========================================================
-Printing docker images
-==========================================================
-"""
-    )
-    writer(f"{_get_docker_images()}")
+
+    from inspect import cleandoc
+    writer(cleandoc("""
+        {seperator}
+        Printing docker images
+        {seperator}
+        {images}""").format(
+        seperator=20 * "=", images="\n".join(_get_docker_images())
+    ))
 
 
 def get_last_commit_message():
@@ -46,4 +47,3 @@ def print_file(filename: Path, writer: Callable[[str], None]):
     with open(filename, "r") as f:
         content = f.read()
         writer(content)
-

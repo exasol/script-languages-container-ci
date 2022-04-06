@@ -27,20 +27,6 @@ def click_stub():
     return Mock(click_ctx)
 
 
-class TestEnv:
-    def __init__(self, docker_user, docker_pwd, docker_build_repo, docker_release_repo, commit_sha):
-        self.docker_user = docker_user
-        self.docker_pwd = docker_pwd
-        self.docker_release_repo = docker_build_repo
-        self.docker_build_repo = docker_build_repo
-        self.commit_sha = commit_sha
-
-
-@pytest.fixture
-def test_env():
-    return TestEnv(docker_user="test_docker_user", docker_pwd="test_docker_pwd",
-                   docker_build_repo="test_docker_build_repo", docker_release_repo="test_docker_release_repo",
-                   commit_sha="test_commit_sha")
 
 
 @pytest.fixture(autouse=True)
