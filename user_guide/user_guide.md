@@ -14,5 +14,5 @@ pip install https://github.com/exasol/script-languages-container-ci/releases/dow
 ## Usage
 
 There is currently only one command: `run-ci`.
-You can get a list of available options by running: `python3 -m script_languages_container_ci.main run-ci --help`.
+You can get a list of available options by running: `python3 -m exasol_script_languages_container_ci.main run-ci --help`.
 
