@@ -6,16 +6,15 @@ from exasol_script_languages_container_tool.cli.commands import build, run_db_te
 
 from exasol_script_languages_container_ci.lib.ci import ci
 
-from test.fixtures import build_output_dir, click_stub, test_env
+from test.fixtures import tmp_test_dir, click_stub, test_env, patch_printfile
 
 
 class TestTests:
     @patch('exasol_script_languages_container_ci.lib.get_last_commit_message', MagicMock(return_value="Please be so kind and skip tests!"))
-    def test_skip_tests(self, click_stub, build_output_dir, test_env):
+    def test_skip_tests(self, click_stub, test_env):
         """
         Test that db_tests are not executed if the last commit message contains the words "skip tests"
         """
-        os.chdir(build_output_dir)
         TEST_BRANCH = "refs/heads/test_feature_branch"
 
         ci(click_stub, flavor="TEST_FLAVOR", branch_name=TEST_BRANCH,

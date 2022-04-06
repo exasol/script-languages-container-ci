@@ -9,13 +9,13 @@ from exasol_script_languages_container_ci.lib.ci import ci
 
 import exasol_script_languages_container_ci
 
-from test.fixtures import build_output_dir, click_stub, test_env
+from test.fixtures import tmp_test_dir, click_stub, test_env, patch_printfile
 
 
 @pytest.fixture(autouse=True)
 def last_commit():
     """
-    This overwrites automatically function "script_languages_container_ci.lib.get_last_commit_message" and always
+    This overwrites automatically function "exasol_script_languages_container_ci.lib.get_last_commit_message" and always
     returns "last commit". Hence we can execute the tests within a none-Git directory.
     """
     with patch('exasol_script_languages_container_ci.lib.get_last_commit_message', MagicMock(return_value="last commit")):
@@ -24,7 +24,7 @@ def last_commit():
 
 class TestCI:
 
-    def test_feature_branch_build(self, click_stub, build_output_dir, test_env):
+    def test_feature_branch_build(self, click_stub, test_env):
         """
         Test that on feature branches we run normal build:
          1. Build Image (no force_rebuild)
@@ -32,7 +32,6 @@ class TestCI:
          3. Security scan
          4. Push to docker build repo (with and withou sha)
         """
-        os.chdir(build_output_dir)
         TEST_BRANCH = "refs/heads/test_feature_branch"
 
         ci(click_stub, flavor="TEST_FLAVOR", branch_name=TEST_BRANCH,
@@ -65,7 +64,7 @@ class TestCI:
                                                  security_scan_call,
                                                  push_call_1, push_call_2])
 
-    def test_feature_rebuild_build(self, click_stub, build_output_dir, test_env):
+    def test_feature_rebuild_build(self, click_stub, test_env):
         """
         Test that on branches with prefix "rebuild/" normal build, but with force_rebuild=true
          1. Build Image (with force_rebuild)
@@ -73,7 +72,6 @@ class TestCI:
          3. Security scan
          4. Push to docker build repo (with and withou sha)
         """
-        os.chdir(build_output_dir)
         TEST_BRANCH = "refs/heads/rebuild/test_feature_branch"
 
         ci(click_stub, flavor="TEST_FLAVOR", branch_name=TEST_BRANCH,
@@ -106,7 +104,7 @@ class TestCI:
                                                  security_scan_call,
                                                  push_call_1, push_call_2])
 
-    def test_master_build(self, click_stub, build_output_dir, test_env):
+    def test_master_build(self, click_stub, test_env):
         """
         Test that on branch master, we force rebuild and push also to release docker repository
          1. Build Image (with force_rebuild)
@@ -115,7 +113,6 @@ class TestCI:
          4. Push to docker build repo (with and withou sha)
          5. Push to docker release repo
         """
-        os.chdir(build_output_dir)
         TEST_BRANCH = "refs/heads/master"
 
         ci(click_stub, flavor="TEST_FLAVOR", branch_name=TEST_BRANCH,
