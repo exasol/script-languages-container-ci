@@ -3,10 +3,10 @@ import re
 
 import click
 
-from script_languages_container_ci.lib.ci_build import ci_build
-from script_languages_container_ci.lib.ci_push import ci_push
-from script_languages_container_ci.lib.ci_security_scan import ci_security_scan
-from script_languages_container_ci.lib.ci_test import ci_test
+from exasol_script_languages_container_ci.lib.ci_build import ci_build
+from exasol_script_languages_container_ci.lib.ci_push import ci_push
+from exasol_script_languages_container_ci.lib.ci_security_scan import ci_security_scan
+from exasol_script_languages_container_ci.lib.ci_test import ci_test
 
 
 def ci(ctx: click.Context,

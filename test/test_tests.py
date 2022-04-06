@@ -4,13 +4,13 @@ from unittest.mock import call, MagicMock, patch
 from exasol_integration_test_docker_environment.cli.commands.build_test_container import build_test_container
 from exasol_script_languages_container_tool.cli.commands import build, run_db_test, push, security_scan
 
-from script_languages_container_ci.lib.ci import ci
+from exasol_script_languages_container_ci.lib.ci import ci
 
 from test.fixtures import build_output_dir, click_stub, test_env
 
 
 class TestTests:
-    @patch('script_languages_container_ci.lib.get_last_commit_message', MagicMock(return_value="Please be so kind and skip tests!"))
+    @patch('exasol_script_languages_container_ci.lib.get_last_commit_message', MagicMock(return_value="Please be so kind and skip tests!"))
     def test_skip_tests(self, click_stub, build_output_dir, test_env):
         """
         Test that db_tests are not executed if the last commit message contains the words "skip tests"

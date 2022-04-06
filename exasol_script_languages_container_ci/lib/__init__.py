@@ -1,4 +1,3 @@
-import logging
 from pathlib import Path
 from typing import Callable
 
@@ -8,12 +7,12 @@ from git import Repo
 
 def _get_docker_images():
     docker_client = docker.from_env()
-    exa_images = [img for img in docker_client.images.list() if "exa" in str(img)]
-    result = []
-    for exa_img in exa_images:
-        result.append(exa_img)
-    docker_client.close()
-    return result
+    exa_images = []
+    try:
+        exa_images = [str(img) for img in docker_client.images.list() if "exa" in str(img)]
+    finally:
+        docker_client.close()
+    return exa_images
 
 
 def print_docker_images(writer: Callable[[str], None]):

@@ -1,10 +1,9 @@
 import logging
-import re
 
 import click
 
-from script_languages_container_ci.cli.cli import cli
-from script_languages_container_ci.lib.ci import ci
+from exasol_script_languages_container_ci.cli.cli import cli
+from exasol_script_languages_container_ci.lib.ci import ci
 
 
 @cli.command()

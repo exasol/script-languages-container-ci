@@ -5,9 +5,9 @@ import pytest
 from exasol_integration_test_docker_environment.cli.commands.build_test_container import build_test_container
 from exasol_script_languages_container_tool.cli.commands import build, run_db_test, push, security_scan
 
-from script_languages_container_ci.lib.ci import ci
+from exasol_script_languages_container_ci.lib.ci import ci
 
-import script_languages_container_ci
+import exasol_script_languages_container_ci
 
 from test.fixtures import build_output_dir, click_stub, test_env
 
@@ -18,7 +18,7 @@ def last_commit():
     This overwrites automatically function "script_languages_container_ci.lib.get_last_commit_message" and always
     returns "last commit". Hence we can execute the tests within a none-Git directory.
     """
-    with patch('script_languages_container_ci.lib.get_last_commit_message', MagicMock(return_value="last commit")):
+    with patch('exasol_script_languages_container_ci.lib.get_last_commit_message', MagicMock(return_value="last commit")):
         yield
 
 

@@ -5,7 +5,7 @@ from typing import Tuple
 import click
 from exasol_script_languages_container_tool.cli.commands import security_scan
 
-from script_languages_container_ci.lib import print_docker_images, print_file
+from exasol_script_languages_container_ci.lib import print_docker_images, print_file
 
 
 def ci_security_scan(ctx: click.Context, flavor_path: Tuple[str, ...]):

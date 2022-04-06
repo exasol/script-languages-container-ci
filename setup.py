@@ -2,10 +2,10 @@
 from setuptools import setup
 
 packages = \
-['script_languages_container_ci',
- 'script_languages_container_ci.cli',
- 'script_languages_container_ci.cli.commands',
- 'script_languages_container_ci.lib']
+['exasol_script_languages_container_ci',
+ 'exasol_script_languages_container_ci.cli',
+ 'exasol_script_languages_container_ci.cli.commands',
+ 'exasol_script_languages_container_ci.lib']
 
 package_data = \
 {'': ['*']}
@@ -17,7 +17,7 @@ install_requires = \
  'https://github.com/exasol/script-languages-container-tool/releases/download/0.10.0/exasol_script_languages_container_tool-0.10.0-py3-none-any.whl']
 
 setup_kwargs = {
-    'name': 'script-languages-container-ci',
+    'name': 'exasol-script-languages-container-ci',
     'version': '0.1.0',
     'description': 'Implements CI builds for script-language-container.',
     'long_description': None,
