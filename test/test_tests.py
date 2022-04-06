@@ -8,6 +8,9 @@ from test import exaslct_calls
 from test.fixtures import tmp_test_dir, click_stub, patch_printfile
 from test.test_env import test_env
 
+
+#Testdata contain tuples of (commit_msg, list(calls to exaslct))
+#The goal is to test that for specific commit messages the correct list of calls (with expected arguments) is passed to exaslct
 testdata = [
     ("last commit", [exaslct_calls.build_call(force_rebuild=False),
                      exaslct_calls.build_test_container_call(force_rebuild=False),

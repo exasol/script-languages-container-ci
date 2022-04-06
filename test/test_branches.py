@@ -21,7 +21,8 @@ def last_commit():
                MagicMock(return_value="last commit")):
         yield
 
-
+#Testdata contain tuples of (branch, list(calls to exaslct))
+#The goal is to test that for specific branches the correct list of calls (with expected arguments) is passed to exaslct
 testdata = [
     ("refs/heads/feature/test_branch", [exaslct_calls.build_call(force_rebuild=False),
                                         exaslct_calls.build_test_container_call(force_rebuild=False),
