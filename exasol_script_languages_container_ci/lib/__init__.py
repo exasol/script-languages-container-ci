@@ -1,5 +1,6 @@
 from pathlib import Path
 from typing import Callable
+from inspect import cleandoc
 
 import docker
 from git import Repo
@@ -21,7 +22,6 @@ def print_docker_images(writer: Callable[[str], None]):
     :return: None
     """
 
-    from inspect import cleandoc
     writer(cleandoc("""
         {seperator}
         Printing docker images
