@@ -36,8 +36,7 @@ def get_last_commit_message():
     Assumes that PWD belongs to a GIT repository. Get's the last commit message of this repo and returns it as string
     :return: Last commit message of current working directory GIT repository.
     """
-    repo = Repo()
-    return repo.head.commit.message
+    return Repo().head.commit.message
 
 
 def print_file(filename: Path, writer: Callable[[str], None]):
@@ -45,5 +44,4 @@ def print_file(filename: Path, writer: Callable[[str], None]):
     Opens file readonly, reads it content and prints to writer.
     """
     with open(filename, "r") as f:
-        content = f.read()
-        writer(content)
+        writer(f.read())
