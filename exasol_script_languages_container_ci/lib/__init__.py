@@ -1,3 +1,5 @@
+import json
+from contextlib import contextmanager
 from pathlib import Path
 from typing import Callable
 from inspect import cleandoc
@@ -45,3 +47,12 @@ def print_file(filename: Path, writer: Callable[[str], None]):
     """
     with open(filename, "r") as f:
         writer(f.read())
+
+
+@contextmanager
+def get_config(config_file: str):
+    """
+    Opens config file and returns parsed JSON object.
+    """
+    with open(config_file, "r") as f:
+        yield json.load(f)
