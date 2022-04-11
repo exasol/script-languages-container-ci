@@ -22,7 +22,7 @@ from exasol_script_languages_container_ci.lib.ci import ci
 @click.option('--commit-sha', required=True, type=str,
               help="Commit SHA")
 @click.option('--config-file', required=True, type=click.Path(exists=True, file_okay=True, dir_okay=False),
-              help="Commit SHA")
+              help="The build config file (project specific)")
 @click.pass_context
 def run_ci(ctx: click.Context,
            flavor: str,
