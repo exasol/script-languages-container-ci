@@ -12,7 +12,7 @@ import git
 
 def commit_files(repo: git.Repo, repo_path: Path, files_to_commit: List[str]):
     for file in files_to_commit:
-        Path(repo_path / file).parent.mkdir(parents=True, exist_ok=True)
+        (repo_path / file).parent.mkdir(parents=True, exist_ok=True)
         open(repo_path / file, 'w').close()
         repo.index.add([str(repo_path / file)])
     repo.index.commit("Dummy commit")
