@@ -1,7 +1,7 @@
 import json
 from contextlib import contextmanager
 from pathlib import Path
-from typing import Callable, List
+from typing import Callable, Iterable
 from inspect import cleandoc
 
 import docker
@@ -49,13 +49,14 @@ def print_file(filename: Path, writer: Callable[[str], None]):
         writer(f.read())
 
 
-def get_files_of_last_commit() -> List[str]:
+def get_files_of_last_commit() -> Iterable[str]:
     """
     Returns the files of the last commit of the repo in the cwd.
     """
     repo = Repo()
     commit = repo.head.commit
-    return list(commit.stats.files.keys())
+    return commit.stats.files.keys()
+
 
 @contextmanager
 def get_config(config_file: str):
