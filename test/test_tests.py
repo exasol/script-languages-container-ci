@@ -5,7 +5,7 @@ import pytest
 from exasol_script_languages_container_ci.lib.ci import ci
 from test import exaslct_calls
 
-from test.fixtures import tmp_test_dir, click_stub, patch_printfile
+from test.fixtures import tmp_test_dir, click_stub, patch_printfile, config_file, patch_get_files_of_last_commit
 from test.test_env import test_env
 
 
@@ -30,7 +30,7 @@ testdata = [
 
 
 @pytest.mark.parametrize("commit_msg,expected_calls", testdata)
-def test_commit_messages(commit_msg, expected_calls, click_stub):
+def test_commit_messages(commit_msg, expected_calls, click_stub, config_file):
     """
     Test that on for specific commit messages the correct steps are executed:
      1. Build Image
@@ -43,5 +43,6 @@ def test_commit_messages(commit_msg, expected_calls, click_stub):
         ci(click_stub, flavor="TEST_FLAVOR", branch_name=TEST_BRANCH,
            docker_user=test_env.docker_user, docker_password=test_env.docker_pwd,
            docker_build_repository=test_env.docker_build_repo,
-           docker_release_repository=test_env.docker_release_repo, commit_sha=test_env.commit_sha)
+           docker_release_repository=test_env.docker_release_repo, commit_sha=test_env.commit_sha,
+           config_file=config_file)
         assert (click_stub.invoke.mock_calls == expected_calls)

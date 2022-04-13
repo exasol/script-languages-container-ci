@@ -2,8 +2,8 @@ import logging
 import re
 
 import click
-import git
 
+import exasol_script_languages_container_ci
 from exasol_script_languages_container_ci.lib import get_config
 from exasol_script_languages_container_ci.lib.ci_build import ci_build
 from exasol_script_languages_container_ci.lib.ci_push import ci_push
@@ -12,9 +12,7 @@ from exasol_script_languages_container_ci.lib.ci_test import ci_test
 
 
 def check_if_need_to_build(config_file: str, flavor: str):
-    repo = git.Repo()
-    commit = repo.head.commit
-    affected_files = list(commit.stats.files.keys())
+    affected_files = exasol_script_languages_container_ci.lib.get_files_of_last_commit()
     logging.debug(f"check_if_need_to_build: Found files of last commit: {affected_files}")
     with get_config(config_file) as config:
         for ignore_folder in config["build_ignore"]["ignored_folders"]:
@@ -58,8 +56,8 @@ def ci(ctx: click.Context,
 
     flavor_path = (f"flavors/{flavor}",)
     ci_build(ctx, flavor_path=flavor_path, rebuild=rebuild, build_docker_repository=docker_build_repository,
-          commit_sha=commit_sha,
-          docker_user=docker_user, docker_password=docker_password)
+             commit_sha=commit_sha,
+             docker_user=docker_user, docker_password=docker_password)
 
     need_to_run = rebuild or check_if_need_to_build(config_file, flavor)
 
@@ -67,15 +65,15 @@ def ci(ctx: click.Context,
         ci_test(ctx, flavor_path=flavor_path)
         ci_security_scan(ctx, flavor_path=flavor_path)
         ci_push(ctx, flavor_path=flavor_path,
-             target_docker_repository=docker_build_repository, target_docker_tag_prefix=commit_sha,
-             docker_user=docker_user, docker_password=docker_password)
+                target_docker_repository=docker_build_repository, target_docker_tag_prefix=commit_sha,
+                docker_user=docker_user, docker_password=docker_password)
         ci_push(ctx, flavor_path=flavor_path,
-             target_docker_repository=docker_build_repository, target_docker_tag_prefix="",
-             docker_user=docker_user, docker_password=docker_password)
+                target_docker_repository=docker_build_repository, target_docker_tag_prefix="",
+                docker_user=docker_user, docker_password=docker_password)
 
         if push_to_public_cache:
             ci_push(ctx, flavor_path=flavor_path,
-                 target_docker_repository=docker_release_repository, target_docker_tag_prefix="",
-                 docker_user=docker_user, docker_password=docker_password)
+                    target_docker_repository=docker_release_repository, target_docker_tag_prefix="",
+                    docker_user=docker_user, docker_password=docker_password)
     else:
         logging.warning(f"Skipping build...")
