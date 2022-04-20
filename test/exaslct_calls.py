@@ -26,7 +26,7 @@ def run_db_test_call():
 
 def run_db_test_call_for_linker_namespace():
     return call(run_db_test, flavor_path=("flavors/TEST_FLAVOR",), workers=7,
-                test_folder=("test/linker_namespace_sanity",), release_goal="base_test_build_run")
+                test_folder=("test/linker_namespace_sanity",), release_goal=("base_test_build_run",))
 
 
 def security_scan_call():
