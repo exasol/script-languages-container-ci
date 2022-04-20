@@ -55,13 +55,13 @@ def ci(ctx: click.Context,
     push_to_public_cache = bool(IS_MASTER.match(branch_name))
 
     flavor_path = (f"flavors/{flavor}",)
-    ci_build(ctx, flavor_path=flavor_path, rebuild=rebuild, build_docker_repository=docker_build_repository,
-             commit_sha=commit_sha,
-             docker_user=docker_user, docker_password=docker_password)
 
     need_to_run = rebuild or check_if_need_to_build(config_file, flavor)
 
     if need_to_run:
+        ci_build(ctx, flavor_path=flavor_path, rebuild=rebuild, build_docker_repository=docker_build_repository,
+                 commit_sha=commit_sha,
+                 docker_user=docker_user, docker_password=docker_password)
         ci_test(ctx, flavor_path=flavor_path)
         ci_security_scan(ctx, flavor_path=flavor_path)
         ci_push(ctx, flavor_path=flavor_path,
