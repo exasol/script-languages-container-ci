@@ -1,7 +1,11 @@
 import logging
+import os
 import re
+from pathlib import Path
 
 import click
+from exasol_integration_test_docker_environment.lib.base import luigi_log_config
+from exasol_integration_test_docker_environment.lib.config import build_config
 
 import exasol_script_languages_container_ci
 from exasol_script_languages_container_ci.lib import get_config
@@ -9,6 +13,7 @@ from exasol_script_languages_container_ci.lib.ci_build import ci_build
 from exasol_script_languages_container_ci.lib.ci_push import ci_push
 from exasol_script_languages_container_ci.lib.ci_security_scan import ci_security_scan
 from exasol_script_languages_container_ci.lib.ci_test import ci_test
+
 
 
 def check_if_need_to_build(config_file: str, flavor: str):
@@ -59,6 +64,9 @@ def ci(ctx: click.Context,
     need_to_run = rebuild or check_if_need_to_build(config_file, flavor)
 
     if need_to_run:
+        log_path = Path(build_config.DEFAULT_OUTPUT_DIRECTORY) / "jobs" / "logs" / "main.log"
+        os.environ[luigi_log_config.LOG_ENV_VARIABLE_NAME] = f"{log_path.absolute()}"
+
         ci_build(ctx, flavor_path=flavor_path, rebuild=rebuild, build_docker_repository=docker_build_repository,
                  commit_sha=commit_sha,
                  docker_user=docker_user, docker_password=docker_password)

@@ -108,7 +108,6 @@ simplejson = ">=3.16.0"
 [package.source]
 type = "url"
 url = "https://github.com/exasol/integration-test-docker-environment/releases/download/0.10.0/exasol_integration_test_docker_environment-0.10.0-py3-none-any.whl"
-
 [[package]]
 name = "exasol-script-languages-container-tool"
 version = "0.12.0"
@@ -524,7 +523,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8.0,<4.0"
-content-hash = "420b32cfb4e647eaf006c9e2696acf4e8d9ed507ffe6d6d52e693a7075bfe123"
+content-hash = "74d74598a71b51920c02ace1ae627e4a685de276b86d963862e2d33738ce0e9a"
 
 [metadata.files]
 atomicwrites = [
