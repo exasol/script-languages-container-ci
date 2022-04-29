@@ -11,6 +11,9 @@ import git
 
 
 def commit_files(repo: git.Repo, repo_path: Path, files_to_commit: List[str]):
+    """
+    Create empty given files (param files_to_commit) and commit them to a "Dummy commit"
+    """
     for file in files_to_commit:
         (repo_path / file).parent.mkdir(parents=True, exist_ok=True)
         open(repo_path / file, 'w').close()
