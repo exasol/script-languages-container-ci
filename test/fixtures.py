@@ -1,3 +1,4 @@
+import json
 import os
 
 from tempfile import TemporaryDirectory
@@ -27,6 +28,13 @@ def click_stub():
     return Mock(click_ctx)
 
 
+@pytest.fixture
+def config_file(tmp_path_factory):
+    config_file_path = tmp_path_factory.mktemp("config") / "build_config.json"
+    config = {"build_ignore": {"ignored_folders": ["doc"]}}
+    with open(config_file_path, "w") as f:
+        json.dump(config, f)
+    return config_file_path
 
 
 @pytest.fixture(autouse=True)
@@ -36,4 +44,16 @@ def patch_printfile():
     the output files are not being created. Also accelerate Unit-Tests by avoiding file-access.
     """
     with patch('exasol_script_languages_container_ci.lib.print_file', MagicMock()):
+        yield
+
+
+@pytest.fixture(autouse=True)
+def patch_get_files_of_last_commit():
+    """
+    This overwrites automatically function
+    "exasol_script_languages_container_ci.lib.get_files_of_last_commit" because within the UnitTests
+    we do not have a git repository. We can't return an empty list, because this would make the CI build skip.
+    """
+    with patch("exasol_script_languages_container_ci.lib.get_files_of_last_commit",
+               MagicMock(return_value=["src/udfclient.cpp"])):
         yield
