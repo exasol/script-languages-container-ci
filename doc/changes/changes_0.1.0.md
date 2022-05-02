@@ -15,6 +15,7 @@ n/a
 
  - #1: Add initial implementation of run-ci
  - #5: Added skipping builds for unaffected folders
+ - #7: Renamed CI GH Actions
 
 ## Documentation
 
