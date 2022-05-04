@@ -23,6 +23,9 @@ from exasol_script_languages_container_ci.lib.release import release
               help="The build config file (project specific)")
 @click.option('--upload-url', required=True, type=str,
               help="The url where the container tar archives will be uploaded")
+@click.option('--dry-run/--no-dry-run', default=False,
+              help="If true, runs release without pushing the container to the docker release repository."
+                   "If false, also pushes the container to the docker release repository.")
 @click.pass_context
 def run_release(ctx: click.Context,
                 flavor: str,
@@ -31,7 +34,8 @@ def run_release(ctx: click.Context,
                 docker_password: str,
                 docker_release_repository: str,
                 config_file: str,
-                upload_url: str):
+                upload_url: str,
+                dry_run: bool):
     logging.basicConfig(level=logging.INFO)
     release(ctx, flavor, branch_name, docker_user, docker_password,
-            docker_release_repository, config_file, upload_url, GithubReleaseAssetUploader())
+            docker_release_repository, config_file, upload_url, GithubReleaseAssetUploader(), dry_run)

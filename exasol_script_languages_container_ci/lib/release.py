@@ -21,7 +21,8 @@ def release(ctx: click.Context,
             docker_release_repository: str,
             config_file: str,
             upload_url: str,
-            release_uploader: GithubReleaseAssetUploader):
+            release_uploader: GithubReleaseAssetUploader,
+            is_dry_run: bool):
     """
     Run Release build:
     1. Build image
@@ -39,7 +40,8 @@ def release(ctx: click.Context,
     ci_build(ctx, flavor_path=flavor_path, rebuild=True, build_docker_repository="",
              commit_sha="", docker_user="", docker_password="")
     ci_test(ctx, flavor_path=flavor_path)
-    ci_push(ctx, flavor_path=flavor_path,
-            target_docker_repository=docker_release_repository, target_docker_tag_prefix="",
-            docker_user=docker_user, docker_password=docker_password)
+    if not is_dry_run:
+        ci_push(ctx, flavor_path=flavor_path,
+                target_docker_repository=docker_release_repository, target_docker_tag_prefix="",
+                docker_user=docker_user, docker_password=docker_password)
     release_upload(ctx, flavor_path=flavor_path, upload_url=upload_url, release_uploader=release_uploader)
