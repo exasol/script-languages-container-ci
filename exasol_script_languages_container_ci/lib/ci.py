@@ -15,7 +15,6 @@ from exasol_script_languages_container_ci.lib.ci_security_scan import ci_securit
 from exasol_script_languages_container_ci.lib.ci_test import ci_test
 
 
-
 def check_if_need_to_build(config_file: str, flavor: str):
     affected_files = list(exasol_script_languages_container_ci.lib.get_files_of_last_commit())
     logging.debug(f"check_if_need_to_build: Found files of last commit: {affected_files}")

@@ -12,6 +12,7 @@ package_data = \
 
 install_requires = \
 ['GitPython>=3.1.0',
+ 'PyGithub>=1.55.0,<2.0.0',
  'click>=8.0.3,<9.0.0',
  'exasol-integration-test-docker-environment @ '
  'https://github.com/exasol/integration-test-docker-environment/releases/download/0.10.0/exasol_integration_test_docker_environment-0.10.0-py3-none-any.whl',

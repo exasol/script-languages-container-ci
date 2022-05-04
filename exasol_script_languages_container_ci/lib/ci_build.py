@@ -9,12 +9,12 @@ import logging
 
 
 def ci_build(ctx: click.Context,
-          flavor_path: Tuple[str, ...],
-          rebuild: bool,
-          build_docker_repository: str,
-          commit_sha: str,
-          docker_user: str,
-          docker_password: str):
+             flavor_path: Tuple[str, ...],
+             rebuild: bool,
+             build_docker_repository: str,
+             commit_sha: str,
+             docker_user: str,
+             docker_password: str):
     """
     Build the script-language container for given flavor. And also build the test container
     """
