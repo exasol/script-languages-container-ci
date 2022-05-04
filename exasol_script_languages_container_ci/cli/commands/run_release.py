@@ -3,7 +3,6 @@ import logging
 import click
 
 from exasol_script_languages_container_ci.cli.cli import cli
-from exasol_script_languages_container_ci.lib.ci import ci
 from exasol_script_languages_container_ci.lib.github_release_asset_uploader import GithubReleaseAssetUploader
 from exasol_script_languages_container_ci.lib.release import release
 

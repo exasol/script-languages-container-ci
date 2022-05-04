@@ -39,7 +39,8 @@ def test_commit_messages(commit_msg, expected_calls, click_stub, config_file):
      4. Push to docker build repo (with and without sha)
     """
     TEST_BRANCH = "refs/heads/test_feature_branch"
-    with patch('exasol_script_languages_container_ci.lib.get_last_commit_message', MagicMock(return_value=commit_msg)):
+    with patch('exasol_script_languages_container_ci.lib.common.get_last_commit_message',
+               MagicMock(return_value=commit_msg)):
         ci(click_stub, flavor="TEST_FLAVOR", branch_name=TEST_BRANCH,
            docker_user=test_env.docker_user, docker_password=test_env.docker_pwd,
            docker_build_repository=test_env.docker_build_repo,

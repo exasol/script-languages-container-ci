@@ -4,7 +4,7 @@ from typing import Tuple
 import click
 from exasol_script_languages_container_tool.cli.commands import push
 
-from exasol_script_languages_container_ci.lib import print_docker_images
+from exasol_script_languages_container_ci.lib.common import print_docker_images
 
 
 def ci_push(ctx: click.Context,

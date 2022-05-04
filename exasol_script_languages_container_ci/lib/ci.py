@@ -8,7 +8,7 @@ from exasol_integration_test_docker_environment.lib.base import luigi_log_config
 from exasol_integration_test_docker_environment.lib.config import build_config
 
 import exasol_script_languages_container_ci
-from exasol_script_languages_container_ci.lib import get_config
+from exasol_script_languages_container_ci.lib.common import get_config
 from exasol_script_languages_container_ci.lib.ci_build import ci_build
 from exasol_script_languages_container_ci.lib.ci_push import ci_push
 from exasol_script_languages_container_ci.lib.ci_security_scan import ci_security_scan
@@ -16,7 +16,7 @@ from exasol_script_languages_container_ci.lib.ci_test import ci_test
 
 
 def check_if_need_to_build(config_file: str, flavor: str):
-    affected_files = list(exasol_script_languages_container_ci.lib.get_files_of_last_commit())
+    affected_files = list(exasol_script_languages_container_ci.lib.common.get_files_of_last_commit())
     logging.debug(f"check_if_need_to_build: Found files of last commit: {affected_files}")
     with get_config(config_file) as config:
         for ignore_folder in config["build_ignore"]["ignored_folders"]:

@@ -17,7 +17,7 @@ def last_commit():
     This overwrites automatically function "exasol_script_languages_container_ci.lib.get_last_commit_message" and always
     returns "last commit". Hence we can execute the tests within a none-Git directory.
     """
-    with patch('exasol_script_languages_container_ci.lib.get_last_commit_message',
+    with patch('exasol_script_languages_container_ci.lib.common.get_last_commit_message',
                MagicMock(return_value="last commit")):
         yield
 

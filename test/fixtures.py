@@ -43,7 +43,7 @@ def patch_printfile():
     This overwrites automatically function "exasol_script_languages_container_ci.lib.print_file" because within the UnitTests
     the output files are not being created. Also accelerate Unit-Tests by avoiding file-access.
     """
-    with patch('exasol_script_languages_container_ci.lib.print_file', MagicMock()):
+    with patch('exasol_script_languages_container_ci.lib.common.print_file', MagicMock()):
         yield
 
 
@@ -54,6 +54,6 @@ def patch_get_files_of_last_commit():
     "exasol_script_languages_container_ci.lib.get_files_of_last_commit" because within the UnitTests
     we do not have a git repository. We can't return an empty list, because this would make the CI build skip.
     """
-    with patch("exasol_script_languages_container_ci.lib.get_files_of_last_commit",
+    with patch("exasol_script_languages_container_ci.lib.common.get_files_of_last_commit",
                MagicMock(return_value=["src/udfclient.cpp"])):
         yield
