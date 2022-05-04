@@ -10,8 +10,6 @@ from exasol_script_languages_container_ci.lib.release import release
 @cli.command()
 @click.option('--flavor', required=True, type=str,
               help="Flavor name.")
-@click.option('--branch-name', required=True, type=str,
-              help="Branch name.")
 @click.option('--docker-user', required=True, type=str,
               help="Docker user name")
 @click.option('--docker-password', required=True, type=str,
@@ -28,7 +26,6 @@ from exasol_script_languages_container_ci.lib.release import release
 @click.pass_context
 def run_release(ctx: click.Context,
                 flavor: str,
-                branch_name: str,
                 docker_user: str,
                 docker_password: str,
                 docker_release_repository: str,
@@ -36,5 +33,5 @@ def run_release(ctx: click.Context,
                 upload_url: str,
                 dry_run: bool):
     logging.basicConfig(level=logging.INFO)
-    release(ctx, flavor, branch_name, docker_user, docker_password,
+    release(ctx, flavor, docker_user, docker_password,
             docker_release_repository, config_file, upload_url, GithubReleaseAssetUploader(), dry_run)

@@ -15,7 +15,6 @@ from exasol_script_languages_container_ci.lib.release_upload import release_uplo
 
 def release(ctx: click.Context,
             flavor: str,
-            branch_name: str,
             docker_user: str,
             docker_password: str,
             docker_release_repository: str,
