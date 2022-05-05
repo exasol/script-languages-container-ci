@@ -44,10 +44,10 @@ def test_upload():
     # Compare both dummy filenames here because we don't have guarantee regarding the order of the file-system will read them
     # Important to keep the expression with ComparePathAppendix on the left side!
     assert call(archive_path=ComparePathAppendix("abc.tar.gz"), label="Flavor abc",
-                repo_id=REPO_ID, release_id=RELEASE_ID) == upload_args[0] or \
+                repo_id=REPO_ID, release_id=RELEASE_ID, content_type="application/gzip") == upload_args[0] or \
            call(archive_path=ComparePathAppendix("def.tar.gz"), label="Flavor def",
-                repo_id=REPO_ID, release_id=RELEASE_ID) == upload_args[0]
+                repo_id=REPO_ID, release_id=RELEASE_ID, content_type="application/gzip") == upload_args[0]
     assert call(archive_path=ComparePathAppendix("abc.tar.gz"), label="Flavor abc",
-                repo_id=REPO_ID, release_id=RELEASE_ID) == upload_args[1] or \
+                repo_id=REPO_ID, release_id=RELEASE_ID, content_type="application/gzip") == upload_args[1] or \
            call(archive_path=ComparePathAppendix("def.tar.gz"), label="Flavor def",
-                repo_id=REPO_ID, release_id=RELEASE_ID) == upload_args[1]
+                repo_id=REPO_ID, release_id=RELEASE_ID, content_type="application/gzip") == upload_args[1]
