@@ -40,4 +40,6 @@ def release_upload(ctx: click.Context,
         ctx.invoke(export, flavor_path=flavor_path, export_path=temp_dir, workers=7)
         release_artifacts = glob.glob(f'{temp_dir}/*.tar.gz')
         for release_artifact in release_artifacts:
-            release_uploader.upload(Path(release_artifact), repo_id, release_id)
+            release_uploader.upload(archive_path=release_artifact,
+                                    label=f"Flavor {Path(release_artifact).with_suffix('').stem}",
+                                    repo_id=repo_id, release_id=release_id)
