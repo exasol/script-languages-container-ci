@@ -19,7 +19,8 @@ def release(ctx: click.Context,
             docker_password: str,
             docker_release_repository: str,
             config_file: str,
-            upload_url: str,
+            repository: str,
+            release_key: str,
             release_uploader: GithubReleaseAssetUploader,
             is_dry_run: bool):
     """

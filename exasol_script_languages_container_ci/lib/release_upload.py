@@ -1,10 +1,9 @@
 import logging
 import glob
-import re
 from pathlib import Path
 
 from tempfile import TemporaryDirectory
-from typing import Tuple, Sequence
+from typing import Tuple, Union
 
 import click
 from exasol_script_languages_container_tool.cli.commands import export
@@ -12,29 +11,34 @@ from exasol_script_languages_container_tool.cli.commands import export
 from exasol_script_languages_container_ci.lib.github_release_asset_uploader import GithubReleaseAssetUploader
 
 
-def _parse_upload_url(upload_url: str) -> Sequence:
+def _parse_release_key(release_key: str) -> Union[str, int]:
     """
-    upload_url is expected to have the following format: `https://uploads.github.com/repos/exasol/script-languages-repo/releases/123/assets{?name,label}`
-    where `exasol/script-languages-repo` is the repository for which the release will be created and 123 is the id of the release.
-    This method return thes repository and release id as tuple.
+    Release key is expected to be in format: "{key}:{value}" where {key} can be:
+    * "Tag"
+    * "Id"
+    This functions returns the tag as string if the prefix is "Tag:", the release id as integer otherwise.
     """
-    res = re.search(r"^https://uploads.github.com/repos/([a-zA-Z0-9\-_/]+)/releases/([\d]+)/assets", upload_url)
-    if res is None:
-        raise ValueError("Parameter upload_url is in unexpected format.")
-    return res.groups()[0], int(res.groups()[1])
+    if release_key.startswith("Key:"):
+        return release_key[len("Key:"):]
+    elif release_key.startswith("Id:"):
+        return release_key[len("Id:"):]
+    else:
+        raise ValueError("Parameter release_key is in unexpected format.")
 
 
 def release_upload(ctx: click.Context,
                    flavor_path: Tuple[str, ...],
-                   upload_url: str,
+                   repo_id: str,
+                   release_key: str,
                    release_uploader: GithubReleaseAssetUploader) -> None:
 
     """
-    Export the container into a tar.gz and upload to the given url.
-    upload_url is expected to have the following format: `https://uploads.github.com/repos/exasol/script-languages-repo/releases/123/assets{?name,label}`
-    where `exasol/script-languages-repo` is the repository for which the release will be created and 123 is the id of the release.
+    Exports the container into tar.gz(s) and uploads to the repository / release.
+    release_key is expected to have the following format: "{key}:{value}" where {key} can be:
+    * "Tag"
+    * "Id"
     """
-    repo_id, release_id = _parse_upload_url(upload_url)
+    release_id = _parse_release_key(release_key)
     with TemporaryDirectory() as temp_dir:
         logging.info(f"Running command 'export' with parameters: {locals()}")
         ctx.invoke(export, flavor_path=flavor_path, export_path=temp_dir, workers=7)
