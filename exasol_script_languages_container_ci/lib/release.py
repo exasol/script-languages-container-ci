@@ -19,7 +19,7 @@ def release(ctx: click.Context,
             docker_password: str,
             docker_release_repository: str,
             config_file: str,
-            repository: str,
+            source_repo_url: str,
             release_key: str,
             release_uploader: GithubReleaseAssetUploader,
             is_dry_run: bool):
@@ -44,4 +44,4 @@ def release(ctx: click.Context,
         ci_push(ctx, flavor_path=flavor_path,
                 target_docker_repository=docker_release_repository, target_docker_tag_prefix="",
                 docker_user=docker_user, docker_password=docker_password)
-    release_upload(ctx, flavor_path=flavor_path, upload_url=upload_url, release_uploader=release_uploader)
+    release_upload(ctx, flavor_path=flavor_path, source_repo_url=source_repo_url, release_uploader=release_uploader)
