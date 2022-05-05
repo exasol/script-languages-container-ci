@@ -1,6 +1,7 @@
 import logging
 import glob
 import re
+from pathlib import Path
 
 from tempfile import TemporaryDirectory
 from typing import Tuple, Sequence
@@ -39,4 +40,4 @@ def release_upload(ctx: click.Context,
         ctx.invoke(export, flavor_path=flavor_path, export_path=temp_dir, workers=7)
         release_artifacts = glob.glob(f'{temp_dir}/*.tar.gz')
         for release_artifact in release_artifacts:
-            release_uploader.upload(release_artifact, repo_id, release_id)
+            release_uploader.upload(Path(release_artifact), repo_id, release_id)
