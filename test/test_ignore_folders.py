@@ -25,7 +25,7 @@ def commit_files(repo: git.Repo, repo_path: Path, files_to_commit: List[str]):
 def build_config(tmp_path_factory: TempPathFactory):
     config_path = tmp_path_factory.mktemp("build_config") / "build_config.json"
     with open(config_path, "w") as f:
-        config = {"build_ignore": {"ignored_folders": ["doc", "githooks"]}}
+        config = {"build_ignore": {"ignored_paths": ["doc", "githooks"]}}
         json.dump(config, f)
     return config_path
 

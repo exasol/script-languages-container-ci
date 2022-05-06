@@ -31,7 +31,7 @@ def click_stub():
 @pytest.fixture
 def config_file(tmp_path_factory):
     config_file_path = tmp_path_factory.mktemp("config") / "build_config.json"
-    config = {"build_ignore": {"ignored_folders": ["doc"]}}
+    config = {"build_ignore": {"ignored_paths": ["doc"]}}
     with open(config_file_path, "w") as f:
         json.dump(config, f)
     return config_file_path

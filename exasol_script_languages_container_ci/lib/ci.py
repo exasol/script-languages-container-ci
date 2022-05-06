@@ -19,8 +19,8 @@ def check_if_need_to_build(config_file: str, flavor: str):
     affected_files = list(exasol_script_languages_container_ci.lib.common.get_files_of_last_commit())
     logging.debug(f"check_if_need_to_build: Found files of last commit: {affected_files}")
     with get_config(config_file) as config:
-        for ignore_folder in config["build_ignore"]["ignored_folders"]:
-            affected_files = list(filter(lambda file: not file.startswith(ignore_folder), affected_files))
+        for ignore_path in config["build_ignore"]["ignored_paths"]:
+            affected_files = list(filter(lambda file: not file.startswith(ignore_path), affected_files))
 
     if len(affected_files) > 0:
         # Now filter out also other flavor folders
