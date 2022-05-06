@@ -5,8 +5,8 @@ from unittest.mock import MagicMock, call
 from exasol_script_languages_container_ci.lib.release_upload import release_upload
 
 
-class ClickUploadMock:
-    """Helper class which which simulates the created """
+class ClickExportMock:
+    """Helper class which which simulates the creation of the release artifacts"""
 
     def invoke(self, method, flavor_path, export_path, workers):
         if method.name == "export":
@@ -37,7 +37,7 @@ def test_upload_release_id():
     REPO_URL = f"https://github.com/{REPO_ID}"
     RELEASE_ID = 123
     release_uploader = MagicMock()
-    release_upload(ClickUploadMock(), flavor_path=("test-flavor",), source_repo_url=REPO_URL,
+    release_upload(ClickExportMock(), flavor_path=("test-flavor",), source_repo_url=REPO_URL,
                    release_id=RELEASE_ID, release_uploader=release_uploader)
     upload_args = release_uploader.upload.call_args_list
     assert len(upload_args) == 2

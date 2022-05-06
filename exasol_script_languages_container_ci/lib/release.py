@@ -39,7 +39,7 @@ def release(ctx: click.Context,
 
     ci_build(ctx, flavor_path=flavor_path, rebuild=True, build_docker_repository="",
              commit_sha="", docker_user="", docker_password="")
-    #ci_test(ctx, flavor_path=flavor_path)
+    ci_test(ctx, flavor_path=flavor_path)
     if not is_dry_run:
         ci_push(ctx, flavor_path=flavor_path,
                 target_docker_repository=docker_release_repository, target_docker_tag_prefix="",
