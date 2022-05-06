@@ -4,30 +4,12 @@ import re
 from pathlib import Path
 
 from tempfile import TemporaryDirectory
-from typing import Tuple, Union
+from typing import Tuple
 
 import click
 from exasol_script_languages_container_tool.cli.commands import export
 
 from exasol_script_languages_container_ci.lib.github_release_asset_uploader import GithubReleaseAssetUploader
-
-
-def _parse_release_key(release_key: str) -> Union[str, int]:
-    """
-    Release key is expected to be in format: "{key}:{value}" where {key} can be:
-    * "Tag"
-    * "Id"
-    This functions returns the tag as string if the prefix is "Tag:", the release id as integer otherwise.
-    """
-    if release_key.startswith("Tag:"):
-        return release_key[len("Tag:"):]
-    elif release_key.startswith("Id:"):
-        res = re.search(r"^Id:([\d]+)$", release_key)
-        if res is None:
-            raise ValueError("Parameter release_key is in unexpected format.")
-        return int(res.groups()[0])
-    else:
-        raise ValueError("Parameter release_key is in unexpected format.")
 
 
 def _parse_repo_url(source_repo_url: str) -> str:
@@ -45,7 +27,7 @@ def _parse_repo_url(source_repo_url: str) -> str:
 def release_upload(ctx: click.Context,
                    flavor_path: Tuple[str, ...],
                    source_repo_url: str,
-                   release_key: str,
+                   release_id: int,
                    release_uploader: GithubReleaseAssetUploader) -> None:
 
     """
@@ -55,7 +37,6 @@ def release_upload(ctx: click.Context,
     * "Id"
     source_repo_url is expected to have the following format: `https://github.com/exasol/script-languages-repo`
     """
-    release_id = _parse_release_key(release_key)
     repo_id = _parse_repo_url(source_repo_url)
     with TemporaryDirectory() as temp_dir:
         logging.info(f"Running command 'export' with parameters: {locals()}")
