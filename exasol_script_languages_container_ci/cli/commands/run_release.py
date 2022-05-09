@@ -3,6 +3,7 @@ import logging
 import click
 
 from exasol_script_languages_container_ci.cli.cli import cli
+from exasol_script_languages_container_ci.lib.git_access import GitAccess
 from exasol_script_languages_container_ci.lib.github_release_asset_uploader import GithubReleaseAssetUploader
 from exasol_script_languages_container_ci.lib.release import release
 
@@ -22,6 +23,8 @@ from exasol_script_languages_container_ci.lib.release import release
               help="The url of the repository. Usually set by AWS under env variable CODEBUILD_SOURCE_REPO_URL.")
 @click.option('--release-id', required=True, type=int,
               help="The id of the release.")
+@click.option('--github-token', type=str,
+              help="The github access token which provides permission to upload assets to the release.")
 @click.option('--dry-run/--no-dry-run', default=False,
               help="If true, runs release without pushing the container to the docker release repository."
                    "If false, also pushes the container to the docker release repository.")
@@ -34,7 +37,9 @@ def run_release(ctx: click.Context,
                 config_file: str,
                 source_repo_url: str,
                 release_id: int,
+                github_token: str,
                 dry_run: bool):
     logging.basicConfig(level=logging.INFO)
     release(ctx, flavor, docker_user, docker_password,
-            docker_release_repository, config_file, source_repo_url, release_id, GithubReleaseAssetUploader(), dry_run)
+            docker_release_repository, config_file, source_repo_url, release_id,
+            GithubReleaseAssetUploader(github_token), dry_run, GitAccess())

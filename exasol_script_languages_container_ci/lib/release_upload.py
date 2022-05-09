@@ -41,7 +41,7 @@ def release_upload(ctx: click.Context,
     with TemporaryDirectory() as temp_dir:
         logging.info(f"Running command 'export' with parameters: {locals()}")
         ctx.invoke(export, flavor_path=flavor_path, export_path=temp_dir, workers=7)
-        release_artifacts = glob.glob(f'{temp_dir}/*.tar.gz')
+        release_artifacts = glob.glob(f'{temp_dir}/*.tar.gz') + glob.glob("{temp_dir}/*.tar.gz.sha512sum")
         for release_artifact in release_artifacts:
             release_uploader.upload(archive_path=release_artifact,
                                     label=f"Flavor {Path(release_artifact).with_suffix('').stem}",

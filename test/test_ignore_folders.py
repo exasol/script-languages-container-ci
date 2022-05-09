@@ -6,6 +6,7 @@ import pytest
 from _pytest.tmpdir import TempPathFactory
 
 from exasol_script_languages_container_ci.lib.ci import check_if_need_to_build
+from exasol_script_languages_container_ci.lib.git_access import GitAccess
 from test.fixtures import tmp_test_dir
 import git
 
@@ -48,5 +49,5 @@ def test_ignore_folder_should_run_ci(tmp_test_dir, build_config, files_to_commit
     repo_path = Path(tmp_test_dir)
     tmp_repo = git.Repo.init(repo_path)
     commit_files(tmp_repo, repo_path, files_to_commit)
-    assert check_if_need_to_build(str(build_config), TEST_FLAVOR) == expected_result
+    assert check_if_need_to_build(str(build_config), TEST_FLAVOR, GitAccess()) == expected_result
 

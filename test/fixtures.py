@@ -6,7 +6,6 @@ from unittest.mock import Mock, patch, MagicMock
 
 import click
 import pytest
-import exasol_script_languages_container_ci
 
 
 @pytest.fixture(autouse=True)
@@ -47,13 +46,12 @@ def patch_printfile():
         yield
 
 
-@pytest.fixture(autouse=True)
-def patch_get_files_of_last_commit():
+@pytest.fixture()
+def git_access_mock():
     """
-    This overwrites automatically function
-    "exasol_script_languages_container_ci.lib.get_files_of_last_commit" because within the UnitTests
-    we do not have a git repository. We can't return an empty list, because this would make the CI build skip.
+    Return an object which mocks the git access class. The mock object returns some default values useful for the tests.
     """
-    with patch("exasol_script_languages_container_ci.lib.common.get_files_of_last_commit",
-               MagicMock(return_value=["src/udfclient.cpp"])):
-        yield
+    git_access_mock = MagicMock()
+    git_access_mock.get_files_of_last_commit.return_value = ["src/udfclient.cpp"]
+    git_access_mock.get_last_commit_message.return_value = "last commit"
+    return git_access_mock

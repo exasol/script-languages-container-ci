@@ -7,16 +7,16 @@ import click
 from exasol_integration_test_docker_environment.lib.base import luigi_log_config
 from exasol_integration_test_docker_environment.lib.config import build_config
 
-import exasol_script_languages_container_ci
 from exasol_script_languages_container_ci.lib.common import get_config
 from exasol_script_languages_container_ci.lib.ci_build import ci_build
 from exasol_script_languages_container_ci.lib.ci_push import ci_push
 from exasol_script_languages_container_ci.lib.ci_security_scan import ci_security_scan
 from exasol_script_languages_container_ci.lib.ci_test import ci_test
+from exasol_script_languages_container_ci.lib.git_access import GitAccess
 
 
-def check_if_need_to_build(config_file: str, flavor: str):
-    affected_files = list(exasol_script_languages_container_ci.lib.common.get_files_of_last_commit())
+def check_if_need_to_build(config_file: str, flavor: str, git_access: GitAccess):
+    affected_files = list(git_access.get_files_of_last_commit())
     logging.debug(f"check_if_need_to_build: Found files of last commit: {affected_files}")
     with get_config(config_file) as config:
         for ignore_path in config["build_ignore"]["ignored_paths"]:
@@ -39,7 +39,8 @@ def ci(ctx: click.Context,
        docker_build_repository: str,
        docker_release_repository: str,
        commit_sha: str,
-       config_file: str):
+       config_file: str,
+       git_access: GitAccess):
     """
     Run CI build:
     1. Build image
@@ -52,15 +53,16 @@ def ci(ctx: click.Context,
     rebuild = False
     push_to_public_cache = False
 
-    IS_REBUILD = re.compile(r"refs/heads/rebuild/.*")
-    IS_MASTER = re.compile(r"refs/heads/master")
+    IS_REBUILD_REGEX = re.compile(r"refs/heads/rebuild/.*")
+    IS_MASTER_REGEX = re.compile(r"refs/heads/(master|main)")
 
-    rebuild = bool(IS_REBUILD.match(branch_name) or IS_MASTER.match(branch_name))
-    push_to_public_cache = bool(IS_MASTER.match(branch_name))
+    rebuild = bool(IS_REBUILD_REGEX.match(branch_name) or IS_MASTER_REGEX.match(branch_name))
+    push_to_public_cache = bool(IS_MASTER_REGEX.match(branch_name))
+    check_skip_test = not bool(IS_MASTER_REGEX.match(branch_name))
 
     flavor_path = (f"flavors/{flavor}",)
 
-    need_to_run = rebuild or check_if_need_to_build(config_file, flavor)
+    need_to_run = rebuild or check_if_need_to_build(config_file, flavor, git_access)
 
     if need_to_run:
         log_path = Path(build_config.DEFAULT_OUTPUT_DIRECTORY) / "jobs" / "logs" / "main.log"
@@ -69,7 +71,7 @@ def ci(ctx: click.Context,
         ci_build(ctx, flavor_path=flavor_path, rebuild=rebuild, build_docker_repository=docker_build_repository,
                  commit_sha=commit_sha,
                  docker_user=docker_user, docker_password=docker_password)
-        ci_test(ctx, flavor_path=flavor_path)
+        ci_test(ctx, check_for_skip_test=check_skip_test, flavor_path=flavor_path, git_access=git_access)
         ci_security_scan(ctx, flavor_path=flavor_path)
         ci_push(ctx, flavor_path=flavor_path,
                 target_docker_repository=docker_build_repository, target_docker_tag_prefix=commit_sha,

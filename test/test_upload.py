@@ -1,7 +1,6 @@
 from pathlib import Path
 from unittest.mock import MagicMock, call
 
-
 from exasol_script_languages_container_ci.lib.release_upload import release_upload
 
 
@@ -40,14 +39,14 @@ def test_upload_release_id():
     release_upload(ClickExportMock(), flavor_path=("test-flavor",), source_repo_url=REPO_URL,
                    release_id=RELEASE_ID, release_uploader=release_uploader)
     upload_args = release_uploader.upload.call_args_list
-    assert len(upload_args) == 2
     # Compare both dummy filenames here because we don't have guarantee regarding the order of the file-system will read them
     # Important to keep the expression with ComparePathAppendix on the left side!
-    assert call(archive_path=ComparePathAppendix("abc.tar.gz"), label="Flavor abc",
-                repo_id=REPO_ID, release_id=RELEASE_ID, content_type="application/gzip") == upload_args[0] or \
-           call(archive_path=ComparePathAppendix("def.tar.gz"), label="Flavor def",
-                repo_id=REPO_ID, release_id=RELEASE_ID, content_type="application/gzip") == upload_args[0]
-    assert call(archive_path=ComparePathAppendix("abc.tar.gz"), label="Flavor abc",
-                repo_id=REPO_ID, release_id=RELEASE_ID, content_type="application/gzip") == upload_args[1] or \
-           call(archive_path=ComparePathAppendix("def.tar.gz"), label="Flavor def",
-                repo_id=REPO_ID, release_id=RELEASE_ID, content_type="application/gzip") == upload_args[1]
+    assert (len(upload_args) == 2) and \
+           (call(archive_path=ComparePathAppendix("abc.tar.gz"), label="Flavor abc",
+                 repo_id=REPO_ID, release_id=RELEASE_ID, content_type="application/gzip") == upload_args[0] or
+            call(archive_path=ComparePathAppendix("def.tar.gz"), label="Flavor def",
+                 repo_id=REPO_ID, release_id=RELEASE_ID, content_type="application/gzip") == upload_args[0]) and \
+           (call(archive_path=ComparePathAppendix("abc.tar.gz"), label="Flavor abc",
+                 repo_id=REPO_ID, release_id=RELEASE_ID, content_type="application/gzip") == upload_args[1] or
+            call(archive_path=ComparePathAppendix("def.tar.gz"), label="Flavor def",
+                 repo_id=REPO_ID, release_id=RELEASE_ID, content_type="application/gzip") == upload_args[1])
