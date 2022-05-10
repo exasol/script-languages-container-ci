@@ -38,7 +38,26 @@ testdata = [
                            exaslct_calls.push_build_repo_without_sha_call(),
                            exaslct_calls.push_release_repo()
                            ]
-     )
+     ),
+    ("refs/heads/main", [exaslct_calls.build_call(force_rebuild=True),
+                           exaslct_calls.build_test_container_call(force_rebuild=True),
+                           exaslct_calls.run_db_test_call(),
+                           exaslct_calls.run_db_test_call_for_linker_namespace(),
+                           exaslct_calls.security_scan_call(),
+                           exaslct_calls.push_build_repo_with_sha_call(),
+                           exaslct_calls.push_build_repo_without_sha_call(),
+                           exaslct_calls.push_release_repo()
+                           ]
+     ),
+    ("refs/heads/develop", [exaslct_calls.build_call(force_rebuild=True),
+                           exaslct_calls.build_test_container_call(force_rebuild=True),
+                           exaslct_calls.run_db_test_call(),
+                           exaslct_calls.run_db_test_call_for_linker_namespace(),
+                           exaslct_calls.security_scan_call(),
+                           exaslct_calls.push_build_repo_with_sha_call(),
+                           exaslct_calls.push_build_repo_without_sha_call()
+                           ]
+     ),
 
 ]
 

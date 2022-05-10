@@ -11,7 +11,11 @@ class ClickExportMock:
         if method.name == "export":
             with open(f"{export_path}/abc.tar.gz", "w") as f:
                 pass
+            with open(f"{export_path}/abc.tar.gz.sha512sum", "w") as f:
+                pass
             with open(f"{export_path}/def.tar.gz", "w") as f:
+                pass
+            with open(f"{export_path}/def.tar.gz.sha512sum", "w") as f:
                 pass
         else:
             raise RuntimeError(f"Unexpected method invoked: {method}")
@@ -41,12 +45,13 @@ def test_upload_release_id():
     upload_args = release_uploader.upload.call_args_list
     # Compare both dummy filenames here because we don't have guarantee regarding the order of the file-system will read them
     # Important to keep the expression with ComparePathAppendix on the left side!
-    assert (len(upload_args) == 2) and \
+    assert len(upload_args) == 4 and \
            (call(archive_path=ComparePathAppendix("abc.tar.gz"), label="Flavor abc",
-                 repo_id=REPO_ID, release_id=RELEASE_ID, content_type="application/gzip") == upload_args[0] or
+                 repo_id=REPO_ID, release_id=RELEASE_ID, content_type="application/gzip") in upload_args and
+            call(archive_path=ComparePathAppendix("abc.tar.gz.sha512sum"), label="Checksum abc",
+                 repo_id=REPO_ID, release_id=RELEASE_ID, content_type="text/plain") in upload_args and
             call(archive_path=ComparePathAppendix("def.tar.gz"), label="Flavor def",
-                 repo_id=REPO_ID, release_id=RELEASE_ID, content_type="application/gzip") == upload_args[0]) and \
-           (call(archive_path=ComparePathAppendix("abc.tar.gz"), label="Flavor abc",
-                 repo_id=REPO_ID, release_id=RELEASE_ID, content_type="application/gzip") == upload_args[1] or
-            call(archive_path=ComparePathAppendix("def.tar.gz"), label="Flavor def",
-                 repo_id=REPO_ID, release_id=RELEASE_ID, content_type="application/gzip") == upload_args[1])
+                 repo_id=REPO_ID, release_id=RELEASE_ID, content_type="application/gzip") in upload_args and
+
+            call(archive_path=ComparePathAppendix("def.tar.gz.sha512sum"), label="Checksum def",
+                 repo_id=REPO_ID, release_id=RELEASE_ID, content_type="text/plain") in upload_args)

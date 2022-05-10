@@ -4,7 +4,7 @@ import re
 from pathlib import Path
 
 from tempfile import TemporaryDirectory
-from typing import Tuple
+from typing import Tuple, Iterable
 
 import click
 from exasol_script_languages_container_tool.cli.commands import export
@@ -24,6 +24,16 @@ def _parse_repo_url(source_repo_url: str) -> str:
     return res.groups()[0]
 
 
+def _upload_assets(release_artifacts: Iterable[str], repo_id: str, release_id: int, content_type: str,
+                   release_uploader: GithubReleaseAssetUploader, label_prefix: str):
+
+    for release_artifact in release_artifacts:
+        label = Path(release_artifact).name.split(".")[0]
+        release_uploader.upload(archive_path=release_artifact,
+                                label=f"{label_prefix} {label}",
+                                repo_id=repo_id, release_id=release_id, content_type=content_type)
+
+
 def release_upload(ctx: click.Context,
                    flavor_path: Tuple[str, ...],
                    source_repo_url: str,
@@ -41,8 +51,7 @@ def release_upload(ctx: click.Context,
     with TemporaryDirectory() as temp_dir:
         logging.info(f"Running command 'export' with parameters: {locals()}")
         ctx.invoke(export, flavor_path=flavor_path, export_path=temp_dir, workers=7)
-        release_artifacts = glob.glob(f'{temp_dir}/*.tar.gz') + glob.glob("{temp_dir}/*.tar.gz.sha512sum")
-        for release_artifact in release_artifacts:
-            release_uploader.upload(archive_path=release_artifact,
-                                    label=f"Flavor {Path(release_artifact).with_suffix('').stem}",
-                                    repo_id=repo_id, release_id=release_id, content_type="application/gzip")
+        _upload_assets(glob.glob(f'{temp_dir}/*.tar.gz'), repo_id, release_id,
+                       "application/gzip", release_uploader, "Flavor")
+        _upload_assets(glob.glob(f'{temp_dir}/*.tar.gz.sha512sum'), repo_id,
+                       release_id, "text/plain", release_uploader, "Checksum")
