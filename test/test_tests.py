@@ -21,7 +21,7 @@ testdata = [
                                                   exaslct_calls.push_build_repo_without_sha_call()]
      ),
     #Feature branch should skip tests if "skip tests" is in commit message
-    ("Please be so kind and skip tests!", "refs/heads/feature_branch", [exaslct_calls.build_call(force_rebuild=False),
+    ("Please be so kind and [skip tests]!", "refs/heads/feature_branch", [exaslct_calls.build_call(force_rebuild=False),
                                                                         exaslct_calls.build_test_container_call(
                                                                             force_rebuild=False),
                                                                         exaslct_calls.security_scan_call(),
@@ -29,7 +29,7 @@ testdata = [
                                                                         exaslct_calls.push_build_repo_without_sha_call()]
      ),
     #Master branch should execute tests even with skip tests in commit message
-    ("Please be so kind and skip tests!", "refs/heads/master", [exaslct_calls.build_call(force_rebuild=True),
+    ("Please be so kind and [skip tests]!", "refs/heads/master", [exaslct_calls.build_call(force_rebuild=True),
                                                                 exaslct_calls.build_test_container_call(
                                                                     force_rebuild=True),
                                                                 exaslct_calls.run_db_test_call(),
@@ -40,7 +40,7 @@ testdata = [
                                                                 exaslct_calls.push_release_repo()]
      ),
     #Main branch should execute tests even with skip tests in commit message
-    ("Please be so kind and skip tests!", "refs/heads/main", [exaslct_calls.build_call(force_rebuild=True),
+    ("Please be so kind and [skip tests]!", "refs/heads/main", [exaslct_calls.build_call(force_rebuild=True),
                                                               exaslct_calls.build_test_container_call(
                                                                   force_rebuild=True),
                                                               exaslct_calls.run_db_test_call(),
@@ -51,7 +51,7 @@ testdata = [
                                                               exaslct_calls.push_release_repo()]
      ),
     #Develop branch should execute tests even with skip tests in commit message
-    ("Please be so kind and skip tests!", "refs/heads/develop", [exaslct_calls.build_call(force_rebuild=True),
+    ("Please be so kind and [skip tests]!", "refs/heads/develop", [exaslct_calls.build_call(force_rebuild=True),
                                                                  exaslct_calls.build_test_container_call(
                                                                      force_rebuild=True),
                                                                  exaslct_calls.run_db_test_call(),

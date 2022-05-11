@@ -8,7 +8,7 @@ from exasol_integration_test_docker_environment.lib.config import build_config
 
 from exasol_script_languages_container_ci.lib.ci_build import ci_build
 from exasol_script_languages_container_ci.lib.ci_push import ci_push
-from exasol_script_languages_container_ci.lib.ci_test import execute_test
+from exasol_script_languages_container_ci.lib.ci_test import execute_tests
 from exasol_script_languages_container_ci.lib.git_access import GitAccess
 from exasol_script_languages_container_ci.lib.github_release_asset_uploader import GithubReleaseAssetUploader
 from exasol_script_languages_container_ci.lib.release_upload import release_upload
@@ -41,7 +41,7 @@ def release(ctx: click.Context,
 
     ci_build(ctx, flavor_path=flavor_path, rebuild=True, build_docker_repository="",
              commit_sha="", docker_user="", docker_password="")
-    execute_test(ctx, flavor_path=flavor_path)
+    execute_tests(ctx, flavor_path=flavor_path)
     if not is_dry_run:
         ci_push(ctx, flavor_path=flavor_path,
                 target_docker_repository=docker_release_repository, target_docker_tag_prefix="",

@@ -12,7 +12,7 @@ class BuildSteps(Enum):
 class BranchConfig(Enum):
     DEVELOP = {BuildSteps.BUILD_ALL_ALWAYS: True, BuildSteps.REBUILD: True, BuildSteps.TEST_ALWAYS: True,
                BuildSteps.PUSH_TO_DOCKER_RELEASE_REPO: False}
-    MASTER = {BuildSteps.BUILD_ALL_ALWAYS: True, BuildSteps.REBUILD: True, BuildSteps.TEST_ALWAYS: True,
+    MAIN = {BuildSteps.BUILD_ALL_ALWAYS: True, BuildSteps.REBUILD: True, BuildSteps.TEST_ALWAYS: True,
               BuildSteps.PUSH_TO_DOCKER_RELEASE_REPO: True}
     REBUILD = {BuildSteps.BUILD_ALL_ALWAYS: True, BuildSteps.REBUILD: True, BuildSteps.TEST_ALWAYS: True,
                BuildSteps.PUSH_TO_DOCKER_RELEASE_REPO: False}

@@ -10,16 +10,16 @@ from exasol_script_languages_container_ci.lib.git_access import GitAccess
 
 
 def _need_to_run_tests(branch_name: str, git_access: GitAccess):
-    return BranchConfig.test_always(branch_name) or "skip tests" not in git_access.get_last_commit_message()
+    return BranchConfig.test_always(branch_name) or "[skip tests]" not in git_access.get_last_commit_message()
 
 
-def execute_test(ctx: click.Context, flavor_path: Tuple[str, ...]):
+def execute_tests(ctx: click.Context, flavor_path: Tuple[str, ...]):
     """
     Run db tests
     """
-    logging.info(f"Running command 'run_db_test' with parameters {locals()}")
+    logging.info(f"Running command 'run_db_test' for flavor-path {flavor_path}")
     ctx.invoke(run_db_test, flavor_path=flavor_path, workers=7)
-    logging.info(f"Running command 'run_db_test' for linker_namespace_sanity with parameters {locals()}")
+    logging.info(f"Running command 'run_db_test' for linker_namespace_sanity for flavor-path {flavor_path}")
     ctx.invoke(run_db_test, flavor_path=flavor_path, workers=7,
                test_folder=("test/linker_namespace_sanity",), release_goal=("base_test_build_run",))
     print_docker_images(logging.info)
@@ -27,6 +27,6 @@ def execute_test(ctx: click.Context, flavor_path: Tuple[str, ...]):
 
 def ci_test(ctx: click.Context, flavor_path: Tuple[str, ...], branch_name: str, git_access: GitAccess):
     if _need_to_run_tests(branch_name, git_access):
-        execute_test(ctx, flavor_path)
+        execute_tests(ctx, flavor_path)
     else:
         logging.warning("Skipping tests.")
