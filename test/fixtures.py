@@ -6,7 +6,6 @@ from unittest.mock import Mock, patch, MagicMock
 
 import click
 import pytest
-import exasol_script_languages_container_ci
 
 
 @pytest.fixture(autouse=True)
@@ -31,7 +30,7 @@ def click_stub():
 @pytest.fixture
 def config_file(tmp_path_factory):
     config_file_path = tmp_path_factory.mktemp("config") / "build_config.json"
-    config = {"build_ignore": {"ignored_folders": ["doc"]}}
+    config = {"build_ignore": {"ignored_paths": ["doc"]}}
     with open(config_file_path, "w") as f:
         json.dump(config, f)
     return config_file_path
@@ -43,17 +42,16 @@ def patch_printfile():
     This overwrites automatically function "exasol_script_languages_container_ci.lib.print_file" because within the UnitTests
     the output files are not being created. Also accelerate Unit-Tests by avoiding file-access.
     """
-    with patch('exasol_script_languages_container_ci.lib.print_file', MagicMock()):
+    with patch('exasol_script_languages_container_ci.lib.common.print_file', MagicMock()):
         yield
 
 
-@pytest.fixture(autouse=True)
-def patch_get_files_of_last_commit():
+@pytest.fixture()
+def git_access_mock():
     """
-    This overwrites automatically function
-    "exasol_script_languages_container_ci.lib.get_files_of_last_commit" because within the UnitTests
-    we do not have a git repository. We can't return an empty list, because this would make the CI build skip.
+    Return an object which mocks the git access class. The mock object returns some default values useful for the tests.
     """
-    with patch("exasol_script_languages_container_ci.lib.get_files_of_last_commit",
-               MagicMock(return_value=["src/udfclient.cpp"])):
-        yield
+    git_access_mock = MagicMock()
+    git_access_mock.get_files_of_last_commit.return_value = ["src/udfclient.cpp"]
+    git_access_mock.get_last_commit_message.return_value = "last commit"
+    return git_access_mock

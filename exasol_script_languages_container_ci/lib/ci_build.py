@@ -4,17 +4,17 @@ import click
 from exasol_integration_test_docker_environment.cli.commands.build_test_container import build_test_container
 from exasol_script_languages_container_tool.cli.commands import build
 
-from exasol_script_languages_container_ci.lib import print_docker_images
+from exasol_script_languages_container_ci.lib.common import print_docker_images
 import logging
 
 
 def ci_build(ctx: click.Context,
-          flavor_path: Tuple[str, ...],
-          rebuild: bool,
-          build_docker_repository: str,
-          commit_sha: str,
-          docker_user: str,
-          docker_password: str):
+             flavor_path: Tuple[str, ...],
+             rebuild: bool,
+             build_docker_repository: str,
+             commit_sha: str,
+             docker_user: str,
+             docker_password: str):
     """
     Build the script-language container for given flavor. And also build the test container
     """
