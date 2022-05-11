@@ -13,9 +13,9 @@ class ClickExportMock:
                 pass
             with open(f"{export_path}/abc.tar.gz.sha512sum", "w") as f:
                 pass
-            with open(f"{export_path}/def.tar.gz", "w") as f:
+            with open(f"{export_path}/def-8.0.tar.gz", "w") as f:
                 pass
-            with open(f"{export_path}/def.tar.gz.sha512sum", "w") as f:
+            with open(f"{export_path}/def-8.0.tar.gz.sha512sum", "w") as f:
                 pass
         else:
             raise RuntimeError(f"Unexpected method invoked: {method}")
@@ -50,8 +50,8 @@ def test_upload_release_id():
                  repo_id=REPO_ID, release_id=RELEASE_ID, content_type="application/gzip") in upload_args and
             call(archive_path=ComparePathAppendix("abc.tar.gz.sha512sum"), label="Checksum abc",
                  repo_id=REPO_ID, release_id=RELEASE_ID, content_type="text/plain") in upload_args and
-            call(archive_path=ComparePathAppendix("def.tar.gz"), label="Flavor def",
+            call(archive_path=ComparePathAppendix("def-8.0.tar.gz"), label="Flavor def-8.0",
                  repo_id=REPO_ID, release_id=RELEASE_ID, content_type="application/gzip") in upload_args and
 
-            call(archive_path=ComparePathAppendix("def.tar.gz.sha512sum"), label="Checksum def",
+            call(archive_path=ComparePathAppendix("def-8.0.tar.gz.sha512sum"), label="Checksum def-8.0",
                  repo_id=REPO_ID, release_id=RELEASE_ID, content_type="text/plain") in upload_args)
