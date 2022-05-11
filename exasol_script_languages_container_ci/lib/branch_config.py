@@ -37,7 +37,7 @@ class BranchConfig(Enum):
 
 
 def get_branch_config(branch_name: str) -> BranchConfig:
-    matches = ((re.compile(r"refs/heads/(master|main)"), BranchConfig.MASTER),
+    matches = ((re.compile(r"refs/heads/(master|main)"), BranchConfig.MAIN),
                (re.compile(r"refs/heads/develop"), BranchConfig.DEVELOP),
                (re.compile(r"refs/heads/rebuild/.*"), BranchConfig.REBUILD))
 
