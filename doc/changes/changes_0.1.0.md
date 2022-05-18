@@ -1,10 +1,10 @@
-# script-languages-container-ci 0.1.0, released t.b.d.
+# script-languages-container-ci 0.1.0, released 2022-05-18
 
-Code name: t.b.d.
+Code name: Initial release
 
 ## Summary
 
-t.b.d.
+This is the first release of script-languages-container-ci. It provides two basic commands: `run-ci` and `run-release`. 
 
 
 ## Bug Fixes
@@ -24,4 +24,4 @@ n/a
 
 ## Refactoring
 
-n/a
+ - #12: Used script-language-container-tool 0.13.0 and prepared release
