@@ -4,7 +4,7 @@ Code name: Use script-languages-container-tool 0.14.0
 
 ## Summary
 
-This release uses Use script-languages-container-tool 0.14.0.
+This release uses script-languages-container-tool 0.14.0.
 
 
 ## Bug Fixes
