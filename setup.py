@@ -17,11 +17,11 @@ install_requires = \
  'exasol-integration-test-docker-environment @ '
  'https://github.com/exasol/integration-test-docker-environment/releases/download/0.11.0/exasol_integration_test_docker_environment-0.11.0-py3-none-any.whl',
  'exasol_script_languages_container_tool @ '
- 'https://github.com/exasol/script-languages-container-tool/releases/download/0.13.0/exasol_script_languages_container_tool-0.13.0-py3-none-any.whl']
+ 'https://github.com/exasol/script-languages-container-tool/releases/download/0.14.0/exasol_script_languages_container_tool-0.14.0-py3-none-any.whl']
 
 setup_kwargs = {
     'name': 'exasol-script-languages-container-ci',
-    'version': '0.1.0',
+    'version': '0.2.0',
     'description': 'Implements CI builds for script-language-container.',
     'long_description': None,
     'author': 'Thomas Uebensee',
