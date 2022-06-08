@@ -62,7 +62,8 @@ def ci(ctx: click.Context,
         ci_build(ctx, flavor_path=flavor_path, rebuild=rebuild, build_docker_repository=docker_build_repository,
                  commit_sha=commit_sha,
                  docker_user=docker_user, docker_password=docker_password)
-        ci_test(ctx, flavor_path=flavor_path, branch_name=branch_name, git_access=git_access)
+        ci_test(ctx, flavor_path=flavor_path, branch_name=branch_name, git_access=git_access,
+                docker_user=docker_user, docker_password=docker_password)
         ci_security_scan(ctx, flavor_path=flavor_path)
         ci_push(ctx, flavor_path=flavor_path,
                 target_docker_repository=docker_build_repository, target_docker_tag_prefix=commit_sha,
