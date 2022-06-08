@@ -21,12 +21,14 @@ def build_test_container_call(force_rebuild: bool):
 
 
 def run_db_test_call():
-    return call(run_db_test, flavor_path=("flavors/TEST_FLAVOR",), workers=7)
+    return call(run_db_test, flavor_path=("flavors/TEST_FLAVOR",), workers=7,
+                source_docker_username=test_env.docker_user, source_docker_password=test_env.docker_pwd)
 
 
 def run_db_test_call_for_linker_namespace():
     return call(run_db_test, flavor_path=("flavors/TEST_FLAVOR",), workers=7,
-                test_folder=("test/linker_namespace_sanity",), release_goal=("base_test_build_run",))
+                test_folder=("test/linker_namespace_sanity",), release_goal=("base_test_build_run",),
+                source_docker_username=test_env.docker_user, source_docker_password=test_env.docker_pwd)
 
 
 def security_scan_call():
