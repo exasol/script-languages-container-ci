@@ -30,7 +30,7 @@ def click_stub():
 @pytest.fixture
 def config_file(tmp_path_factory):
     config_file_path = tmp_path_factory.mktemp("config") / "build_config.json"
-    config = {"build_ignore": {"ignored_paths": ["doc"]}}
+    config = {"build_ignore": {"ignored_paths": ["doc"]}, "base_branch": "master"}
     with open(config_file_path, "w") as f:
         json.dump(config, f)
     return config_file_path
@@ -52,6 +52,8 @@ def git_access_mock():
     Return an object which mocks the git access class. The mock object returns some default values useful for the tests.
     """
     git_access_mock = MagicMock()
-    git_access_mock.get_files_of_last_commit.return_value = ["src/udfclient.cpp"]
+    git_access_mock.get_last_commits.return_value = ["456", "123"]
+    git_access_mock.get_head_commit_sha_of_branch.return_value = "123"
+    git_access_mock.get_files_of_commit.return_value = ["src/udfclient.cpp"]
     git_access_mock.get_last_commit_message.return_value = "last commit"
     return git_access_mock
