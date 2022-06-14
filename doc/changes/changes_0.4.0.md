@@ -4,7 +4,7 @@ Code name: Changed git history analysis
 
 ## Summary
 
-This release checks for the work '[rebuild]' in the commit message and the ci checks all new commits to evaluate the need to build and test.
+This release checks for the word '[rebuild]' in the commit message and the ci checks all new commits to evaluate the need to build and test.
 
 ## Bug Fixes
 

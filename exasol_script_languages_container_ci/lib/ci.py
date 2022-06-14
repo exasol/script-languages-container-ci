@@ -18,12 +18,12 @@ from exasol_script_languages_container_ci.lib.git_access import GitAccess
 
 def get_all_affected_files(git_access: GitAccess, base_branch: str) -> Set[str]:
     base_last_commit_sha = git_access.get_head_commit_sha_of_branch(base_branch)
-    ret_val = set()
+    changed_files = set()
     for commit in git_access.get_last_commits():
         if commit == base_last_commit_sha:
             break
-        ret_val.update(git_access.get_files_of_commit(commit))
-    return ret_val
+        changed_files.update(git_access.get_files_of_commit(commit))
+    return changed_files
 
 
 def check_if_need_to_build(branch_name: str, config_file: str, flavor: str, git_access: GitAccess):
