@@ -77,7 +77,7 @@ TEST_DATA = [
 ]
 
 
-@pytest.mark.parametrize("test_label, branch_name, files_to_commit,commit_message, expected_result", TEST_DATA)
+@pytest.mark.parametrize("test_name, branch_name, files_to_commit,commit_message, expected_result", TEST_DATA)
 def test_ignore_folder_should_run_ci(test_name, branch_name, tmp_test_dir, build_config, files_to_commit,
                                      commit_message, expected_result):
     """
