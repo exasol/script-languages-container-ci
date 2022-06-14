@@ -1,8 +1,7 @@
 import logging
 import os
-import re
 from pathlib import Path
-from typing import Tuple
+from typing import Set
 
 import click
 from exasol_integration_test_docker_environment.lib.base import luigi_log_config
@@ -13,14 +12,28 @@ from exasol_script_languages_container_ci.lib.common import get_config
 from exasol_script_languages_container_ci.lib.ci_build import ci_build
 from exasol_script_languages_container_ci.lib.ci_push import ci_push
 from exasol_script_languages_container_ci.lib.ci_security_scan import ci_security_scan
-from exasol_script_languages_container_ci.lib.ci_test import ci_test
+from exasol_script_languages_container_ci.lib.ci_test import execute_tests
 from exasol_script_languages_container_ci.lib.git_access import GitAccess
 
 
+def get_all_affected_files(git_access: GitAccess, base_branch: str) -> Set[str]:
+    base_last_commit_sha = git_access.get_head_commit_sha_of_branch(base_branch)
+    changed_files = set()
+    for commit in git_access.get_last_commits():
+        if commit == base_last_commit_sha:
+            break
+        changed_files.update(git_access.get_files_of_commit(commit))
+    return changed_files
+
+
 def check_if_need_to_build(branch_name: str, config_file: str, flavor: str, git_access: GitAccess):
-    affected_files = list(git_access.get_files_of_last_commit())
-    logging.debug(f"check_if_need_to_build: Found files of last commit: {affected_files}")
+    if BranchConfig.build_always(branch_name):
+        return True
+    if "[rebuild]" in git_access.get_last_commit_message():
+        return True
     with get_config(config_file) as config:
+        affected_files = list(get_all_affected_files(git_access, config["base_branch"]))
+        logging.debug(f"check_if_need_to_build: Found files of last commits: {affected_files}")
         for ignore_path in config["build_ignore"]["ignored_paths"]:
             affected_files = list(filter(lambda file: not file.startswith(ignore_path), affected_files))
 
@@ -30,7 +43,7 @@ def check_if_need_to_build(branch_name: str, config_file: str, flavor: str, git_
         affected_files = list(filter(lambda file: not file.startswith("flavors") or file.startswith(this_flavor_path),
                                      affected_files))
     logging.debug(f"check_if_need_to_build: filtered files: {affected_files}")
-    return len(affected_files) > 0 or BranchConfig.build_always(branch_name)
+    return len(affected_files) > 0
 
 
 def ci(ctx: click.Context,
@@ -62,8 +75,7 @@ def ci(ctx: click.Context,
         ci_build(ctx, flavor_path=flavor_path, rebuild=rebuild, build_docker_repository=docker_build_repository,
                  commit_sha=commit_sha,
                  docker_user=docker_user, docker_password=docker_password)
-        ci_test(ctx, flavor_path=flavor_path, branch_name=branch_name, git_access=git_access,
-                docker_user=docker_user, docker_password=docker_password)
+        execute_tests(ctx, flavor_path=flavor_path, docker_user=docker_user, docker_password=docker_password)
         ci_security_scan(ctx, flavor_path=flavor_path)
         ci_push(ctx, flavor_path=flavor_path,
                 target_docker_repository=docker_build_repository, target_docker_tag_prefix=commit_sha,

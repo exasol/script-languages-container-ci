@@ -4,28 +4,23 @@ import re
 
 class BuildSteps(Enum):
     BUILD_ALL_ALWAYS = auto()
-    TEST_ALWAYS = auto()
     REBUILD = auto()
     PUSH_TO_DOCKER_RELEASE_REPO = auto()
 
 
 class BranchConfig(Enum):
-    DEVELOP = {BuildSteps.BUILD_ALL_ALWAYS: True, BuildSteps.REBUILD: True, BuildSteps.TEST_ALWAYS: True,
+    DEVELOP = {BuildSteps.BUILD_ALL_ALWAYS: True, BuildSteps.REBUILD: True,
                BuildSteps.PUSH_TO_DOCKER_RELEASE_REPO: False}
-    MAIN = {BuildSteps.BUILD_ALL_ALWAYS: True, BuildSteps.REBUILD: True, BuildSteps.TEST_ALWAYS: True,
+    MAIN = {BuildSteps.BUILD_ALL_ALWAYS: True, BuildSteps.REBUILD: True,
               BuildSteps.PUSH_TO_DOCKER_RELEASE_REPO: True}
-    REBUILD = {BuildSteps.BUILD_ALL_ALWAYS: True, BuildSteps.REBUILD: True, BuildSteps.TEST_ALWAYS: True,
+    REBUILD = {BuildSteps.BUILD_ALL_ALWAYS: True, BuildSteps.REBUILD: True,
                BuildSteps.PUSH_TO_DOCKER_RELEASE_REPO: False}
-    OTHER = {BuildSteps.BUILD_ALL_ALWAYS: False, BuildSteps.REBUILD: False, BuildSteps.TEST_ALWAYS: False,
+    OTHER = {BuildSteps.BUILD_ALL_ALWAYS: False, BuildSteps.REBUILD: False,
              BuildSteps.PUSH_TO_DOCKER_RELEASE_REPO: False}
 
     @staticmethod
     def build_always(branch_name: str) -> bool:
         return get_branch_config(branch_name).value[BuildSteps.BUILD_ALL_ALWAYS]
-
-    @staticmethod
-    def test_always(branch_name) -> bool:
-        return get_branch_config(branch_name).value[BuildSteps.TEST_ALWAYS]
 
     @staticmethod
     def rebuild(branch_name) -> bool:

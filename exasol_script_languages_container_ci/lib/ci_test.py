@@ -4,13 +4,7 @@ from typing import Tuple
 import click
 from exasol_script_languages_container_tool.cli.commands import run_db_test
 
-from exasol_script_languages_container_ci.lib.branch_config import BranchConfig
 from exasol_script_languages_container_ci.lib.common import print_docker_images
-from exasol_script_languages_container_ci.lib.git_access import GitAccess
-
-
-def _need_to_run_tests(branch_name: str, git_access: GitAccess):
-    return BranchConfig.test_always(branch_name) or "[skip tests]" not in git_access.get_last_commit_message()
 
 
 def execute_tests(ctx: click.Context, flavor_path: Tuple[str, ...], docker_user: str, docker_password: str):
@@ -25,11 +19,3 @@ def execute_tests(ctx: click.Context, flavor_path: Tuple[str, ...], docker_user:
                test_folder=("test/linker_namespace_sanity",), release_goal=("base_test_build_run",),
                source_docker_username=docker_user, source_docker_password=docker_password)
     print_docker_images(logging.info)
-
-
-def ci_test(ctx: click.Context, flavor_path: Tuple[str, ...], branch_name: str, git_access: GitAccess,
-            docker_user: str, docker_password: str):
-    if _need_to_run_tests(branch_name, git_access):
-        execute_tests(ctx, flavor_path, docker_user, docker_password)
-    else:
-        logging.warning("Skipping tests.")
