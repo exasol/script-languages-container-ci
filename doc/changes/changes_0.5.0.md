@@ -12,7 +12,7 @@ n/a
 
 ## Features / Enhancements
 
- -  #19: Updated exaslct to 0.15.0
+n/a
 
 ## Documentation
 
@@ -20,4 +20,4 @@ n/a
 
 ## Refactoring
 
-n/a
+ -  #19: Updated exaslct to 0.15.0
