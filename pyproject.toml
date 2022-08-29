@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "exasol-script-languages-container-ci"
-version = "0.4.0"
+version = "0.5.0"
 description = "Implements CI builds for script-language-container."
 
 license = "MIT"
