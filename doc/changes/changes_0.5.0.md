@@ -1,6 +1,6 @@
 # script-languages-container-ci 0.5.0, released 2022-08-29
 
-Code name: Updated exaslct
+Code name: Updated exaslct to 0.15.0
 
 ## Summary
 
