@@ -1,7 +1,7 @@
 from typing import Tuple
 
 import click
-from exasol_integration_test_docker_environment.cli.commands.build_test_container import build_test_container
+from exasol_integration_test_docker_environment.lib.api.build_test_container import build_test_container
 from exasol_script_languages_container_tool.cli.commands import build
 
 from exasol_script_languages_container_ci.lib.common import print_docker_images

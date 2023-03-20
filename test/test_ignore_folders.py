@@ -15,7 +15,7 @@ def commit_base(repo: git.Repo, repo_path: Path) -> None:
     """
     Create dummy commit on base branch with "something"
     """
-    assert str(repo.active_branch) == "master"
+    assert str(repo.active_branch) == "main"
     (repo_path / "something").parent.mkdir(parents=True, exist_ok=True)
     open(repo_path / "something", 'w').close()
     repo.index.add([str(repo_path / "something")])
@@ -42,7 +42,7 @@ def commit_files(branch_name: str, repo: git.Repo, repo_path: Path,
 def build_config(tmp_path_factory: TempPathFactory):
     config_path = tmp_path_factory.mktemp("build_config") / "build_config.json"
     with open(config_path, "w") as f:
-        config = {"build_ignore": {"ignored_paths": ["doc", "githooks"]}, "base_branch": "master"}
+        config = {"build_ignore": {"ignored_paths": ["doc", "githooks"]}, "base_branch": "main"}
         json.dump(config, f)
     return config_path
 
