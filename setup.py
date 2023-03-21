@@ -20,7 +20,7 @@ install_requires = \
 
 setup_kwargs = {
     'name': 'exasol-script-languages-container-ci',
-    'version': '0.5.0',
+    'version': '0.6.0',
     'description': 'Implements CI builds for script-language-container.',
     'long_description': 'None',
     'author': 'Thomas Uebensee',
