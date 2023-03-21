@@ -14,21 +14,20 @@ install_requires = \
 ['GitPython>=3.1.0',
  'PyGithub>=1.55.0,<2.0.0',
  'click>=8.0.3,<9.0.0',
- 'exasol-integration-test-docker-environment @ '
- 'https://github.com/exasol/integration-test-docker-environment/releases/download/0.11.0/exasol_integration_test_docker_environment-0.11.0-py3-none-any.whl',
- 'exasol_script_languages_container_tool @ '
- 'https://github.com/exasol/script-languages-container-tool/releases/download/0.15.0/exasol_script_languages_container_tool-0.15.0-py3-none-any.whl']
+ 'exasol-integration-test-docker-environment>=1.4.0,<2.0.0',
+ 'exasol-script-languages-container-tool==0.16.0',
+ 'setuptools>=67.6.0,<68.0.0']
 
 setup_kwargs = {
     'name': 'exasol-script-languages-container-ci',
-    'version': '0.5.0',
+    'version': '0.6.0',
     'description': 'Implements CI builds for script-language-container.',
-    'long_description': None,
+    'long_description': 'None',
     'author': 'Thomas Uebensee',
     'author_email': 'ext.thomas.uebensee@exasol.com',
-    'maintainer': None,
-    'maintainer_email': None,
-    'url': None,
+    'maintainer': 'None',
+    'maintainer_email': 'None',
+    'url': 'None',
     'packages': packages,
     'package_data': package_data,
     'install_requires': install_requires,

@@ -1,6 +1,6 @@
 from unittest.mock import call
 
-from exasol_integration_test_docker_environment.cli.commands.build_test_container import build_test_container
+from exasol_integration_test_docker_environment.lib.api.build_test_container import build_test_container
 from exasol_script_languages_container_tool.cli.commands import build, run_db_test, security_scan, push
 
 from test.test_env import test_env

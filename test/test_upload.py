@@ -5,7 +5,7 @@ from exasol_script_languages_container_ci.lib.release_upload import release_uplo
 
 
 class ClickExportMock:
-    """Helper class which which simulates the creation of the release artifacts"""
+    """Helper class which simulates the creation of the release artifacts"""
 
     def invoke(self, method, flavor_path, export_path, workers):
         if method.name == "export":

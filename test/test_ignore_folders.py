@@ -15,11 +15,13 @@ def commit_base(repo: git.Repo, repo_path: Path) -> None:
     """
     Create dummy commit on base branch with "something"
     """
-    assert str(repo.active_branch) == "master"
     (repo_path / "something").parent.mkdir(parents=True, exist_ok=True)
     open(repo_path / "something", 'w').close()
     repo.index.add([str(repo_path / "something")])
     repo.index.commit("Base commit")
+    assert repo.active_branch.name == "master" or repo.active_branch.name == "main"
+    if repo.active_branch.name == "main":
+        repo.active_branch.rename("master")
 
 
 def commit_files(branch_name: str, repo: git.Repo, repo_path: Path,
