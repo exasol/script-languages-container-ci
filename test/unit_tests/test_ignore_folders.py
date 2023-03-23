@@ -7,7 +7,6 @@ from _pytest.tmpdir import TempPathFactory
 
 from exasol_script_languages_container_ci.lib.ci import check_if_need_to_build
 from exasol_script_languages_container_ci.lib.git_access import GitAccess
-from test.fixtures import tmp_test_dir
 import git
 
 

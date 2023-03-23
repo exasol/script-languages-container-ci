@@ -6,9 +6,9 @@ import click
 from exasol_integration_test_docker_environment.lib.base import luigi_log_config
 from exasol_integration_test_docker_environment.lib.config import build_config
 
-from exasol_script_languages_container_ci.lib.ci_build import ci_build
-from exasol_script_languages_container_ci.lib.ci_push import ci_push
-from exasol_script_languages_container_ci.lib.ci_test import execute_tests
+from exasol_script_languages_container_ci.lib.ci_build import CIBuild
+from exasol_script_languages_container_ci.lib.ci_push import CIPush
+from exasol_script_languages_container_ci.lib.ci_test import CIExecuteTest
 from exasol_script_languages_container_ci.lib.git_access import GitAccess
 from exasol_script_languages_container_ci.lib.github_release_asset_uploader import GithubReleaseAssetUploader
 from exasol_script_languages_container_ci.lib.release_upload import release_upload

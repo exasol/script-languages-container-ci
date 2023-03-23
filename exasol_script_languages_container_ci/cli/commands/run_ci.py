@@ -35,5 +35,12 @@ def run_ci(ctx: click.Context,
            commit_sha: str,
            config_file: str):
     logging.basicConfig(level=logging.INFO)
-    ci(ctx, flavor, branch_name, docker_user, docker_password,
-       docker_build_repository, docker_release_repository, commit_sha, config_file, GitAccess())
+    ci(flavor,
+       branch_name,
+       docker_user,
+       docker_password,
+       docker_build_repository,
+       docker_release_repository,
+       commit_sha,
+       config_file,
+       GitAccess())

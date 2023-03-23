@@ -1,5 +1,6 @@
 import json
 import os
+from dataclasses import dataclass
 
 from tempfile import TemporaryDirectory
 from unittest.mock import Mock, patch, MagicMock
@@ -19,13 +20,6 @@ def tmp_test_dir():
         os.chdir(temp_dir)
         yield temp_dir
         os.chdir(old_dir)
-
-
-@pytest.fixture
-def click_stub():
-    click_ctx = click.Context(command=click.Command("dummy"))
-    return Mock(click_ctx)
-
 
 @pytest.fixture
 def config_file(tmp_path_factory):
@@ -57,3 +51,22 @@ def git_access_mock():
     git_access_mock.get_files_of_commit.return_value = ["src/udfclient.cpp"]
     git_access_mock.get_last_commit_message.return_value = "last commit"
     return git_access_mock
+
+
+@dataclass
+class DockerConfig:
+    docker_user: str
+    docker_password: str
+    docker_build_repository: str
+    docker_release_repository: str
+
+
+@pytest.fixture()
+def docker_config() -> DockerConfig:
+    config = DockerConfig(
+        docker_user=os.environ["DOCKER_USER"],
+        docker_password=os.environ["DOCKER_PASSWORD"],
+        docker_build_repository=os.environ["DOCKER_BUILD_REPOSITORY"],
+        docker_release_repository=os.environ["DOCKER_RELEASE_REPOSITORY"]
+    )
+    return config
