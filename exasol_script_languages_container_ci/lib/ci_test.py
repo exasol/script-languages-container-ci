@@ -19,7 +19,6 @@ class CIExecuteTest:
         """
         Run db tests
         """
-        print("execute_tests", flush=True)
         logging.info(f"Running command 'run_db_test' for flavor-path {flavor_path}")
         run_db_test_flavor_result = \
             run_db_test(flavor_path=flavor_path,

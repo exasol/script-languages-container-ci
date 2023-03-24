@@ -14,10 +14,6 @@ def test():
             docker_password=None,
             test_container_folder=test_container_folder
         )
-    print(run_db_test_flavor_result)
-    print()
-    print(run_db_test_linkernamespace)
-
     assert flavor_path in run_db_test_flavor_result.test_results_per_flavor \
            and "release" in run_db_test_flavor_result.test_results_per_flavor[flavor_path].test_results_per_release_goal \
            and flavor_path in run_db_test_linkernamespace.test_results_per_flavor \
