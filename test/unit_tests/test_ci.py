@@ -16,19 +16,19 @@ from test.unit_tests.test_env import test_env
 # Testdata contain tuples of (branch, list(calls to CICommands))
 # The goal is to test that for specific branches the correct list of calls (with expected arguments) is passed to the CICommands
 testdata_ci = [
-    ("refs/heads/feature/test_branch", [ci_calls.build_call(force_rebuild=False),
+    ("refs/heads/feature/test_branch", [ci_calls.build_ci_call(force_rebuild=False),
                                         ci_calls.run_db_test_call(),
                                         ci_calls.security_scan_call(),
                                         ci_calls.push_build_repo_with_sha_call(),
                                         ci_calls.push_build_repo_without_sha_call()]
      ),
-    ("refs/heads/rebuild/feature/test_branch", [ci_calls.build_call(force_rebuild=True),
+    ("refs/heads/rebuild/feature/test_branch", [ci_calls.build_ci_call(force_rebuild=True),
                                                 ci_calls.run_db_test_call(),
                                                 ci_calls.security_scan_call(),
                                                 ci_calls.push_build_repo_with_sha_call(),
                                                 ci_calls.push_build_repo_without_sha_call()]
      ),
-    ("refs/heads/master", [ci_calls.build_call(force_rebuild=True),
+    ("refs/heads/master", [ci_calls.build_ci_call(force_rebuild=True),
                            ci_calls.run_db_test_call(),
                            ci_calls.security_scan_call(),
                            ci_calls.push_build_repo_with_sha_call(),
@@ -36,7 +36,7 @@ testdata_ci = [
                            ci_calls.push_release_repo()
                            ]
      ),
-    ("refs/heads/main", [ci_calls.build_call(force_rebuild=True),
+    ("refs/heads/main", [ci_calls.build_ci_call(force_rebuild=True),
                          ci_calls.run_db_test_call(),
                          ci_calls.security_scan_call(),
                          ci_calls.push_build_repo_with_sha_call(),
@@ -44,7 +44,7 @@ testdata_ci = [
                          ci_calls.push_release_repo()
                          ]
      ),
-    ("refs/heads/develop", [ci_calls.build_call(force_rebuild=True),
+    ("refs/heads/develop", [ci_calls.build_ci_call(force_rebuild=True),
                             ci_calls.run_db_test_call(),
                             ci_calls.security_scan_call(),
                             ci_calls.push_build_repo_with_sha_call(),
