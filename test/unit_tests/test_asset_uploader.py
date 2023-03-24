@@ -11,7 +11,7 @@ from test.mock_cast import mock_cast
 def test():
     github_release_asset_uploader_mock: Union[MagicMock, GithubReleaseAssetUploader] = \
         create_autospec(GithubReleaseAssetUploader)
-    asset_uploader = AssetUploader(release_uploader=github_release_asset_uploader_mock)
+    asset_uploader = AssetUploader(release_asset_uploader=github_release_asset_uploader_mock)
     with TemporaryDirectory() as temp_dir:
         artifact_path = Path(temp_dir)
         release_artifact = artifact_path / "test_artifact.txt"

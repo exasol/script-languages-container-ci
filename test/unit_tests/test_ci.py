@@ -9,7 +9,7 @@ from exasol_script_languages_container_ci.lib.ci_push import CIPush
 from exasol_script_languages_container_ci.lib.ci_security_scan import CISecurityScan
 from exasol_script_languages_container_ci.lib.ci_test import CIExecuteTest
 
-from test.unit_tests import exaslct_calls, ci_calls
+from test.unit_tests import ci_calls
 
 from test.unit_tests.test_env import test_env
 

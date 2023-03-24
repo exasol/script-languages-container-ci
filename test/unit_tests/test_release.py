@@ -11,7 +11,7 @@ from exasol_script_languages_container_ci.lib.ci_test import CIExecuteTest
 from exasol_script_languages_container_ci.lib.release import release
 from exasol_script_languages_container_ci.lib.release_uploader import ReleaseUploader
 
-from test.unit_tests import exaslct_calls, ci_calls
+from test.unit_tests import ci_calls
 
 from test.unit_tests.test_env import test_env
 
