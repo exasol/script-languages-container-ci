@@ -10,7 +10,8 @@ from test.conftest import DockerConfig
 
 def test():
     script_path = Path(__file__).absolute().parent
-    flavor_path = str(script_path / "flavors" / "real-test-flavor")
+    resources_path = script_path / "resources"
+    flavor_path = str(resources_path / "flavors" / "real-test-flavor")
     with TemporaryDirectory() as temp_dir:
         export_result = CIExport().export(flavor_path=(flavor_path,), export_path=temp_dir)
         temp_dir_content = set(Path(temp_dir).iterdir())

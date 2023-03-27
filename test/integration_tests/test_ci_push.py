@@ -8,7 +8,8 @@ from test.conftest import DockerConfig
 
 def test():
     script_path = Path(__file__).absolute().parent
-    flavor_path = str(script_path / "flavors" / "real-test-flavor")
+    resources_path = script_path / "resources"
+    flavor_path = str(resources_path / "flavors" / "real-test-flavor")
     with LocalDockerRegistryContextManager("test_ci_push") as registry:
         CIPush().push(
             flavor_path=(flavor_path,),
@@ -24,4 +25,5 @@ def test():
                  'tag_real-test-flavor-release_GZMZ7BEX4Y6MBG5ZWLQQEFJIKXK6UCTJFJGABSOLIFQ7FHJIRNVA',
                  'tag_real-test-flavor-flavor_test_build_run_YXYWVE3QGQ6OMNEBJ6T5Z7RMYOR3O3BJVR2DKPR5LBA64MDBKPQA'
              ]}
-        assert expected_images == registry.images
+        assert expected_images["name"] == registry.images["name"] \
+               and set(expected_images["tags"]) == set(registry.images["tags"])

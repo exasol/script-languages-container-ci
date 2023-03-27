@@ -30,7 +30,7 @@ pytest-mock = "^3.7.0"
 
 [tool.pytest.ini_options]
 minversion = "6.0"
-addopts = "--ignore=test/integration_tests/flavors --ignore=test/integration_tests/test_container"
+addopts = "--ignore=test/integration_tests/resources"
 
 testpaths = [
     "test"

@@ -16,8 +16,9 @@ testdata = [
     testdata)
 def test(input_docker_build_repository, input_commit_sha, expected_docker_build_repository, expected_source_tag_prefix):
     script_path = Path(__file__).absolute().parent
-    flavor_path = str(script_path / "flavors" / "real-test-flavor")
-    test_container_folder = str(script_path / "test_container")
+    resources_path = script_path / "resources"
+    flavor_path = str(resources_path / "flavors" / "real-test-flavor")
+    test_container_folder = str(resources_path / "test_container")
     slc_image_infos, test_container_image_infos = \
         CIBuild().build(
             flavor_path=(flavor_path,),

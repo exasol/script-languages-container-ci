@@ -8,7 +8,8 @@ from test.conftest import DockerConfig
 
 def test():
     script_path = Path(__file__).absolute().parent
-    flavor_path = str(script_path / "flavors" / "real-test-flavor")
+    resources_path = script_path / "resources"
+    flavor_path = str(resources_path / "flavors" / "real-test-flavor")
     security_scan_result = \
         CISecurityScan().run_security_scan(
             flavor_path=(flavor_path,),

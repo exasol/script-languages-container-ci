@@ -5,8 +5,9 @@ from exasol_script_languages_container_ci.lib.ci_test import CIExecuteTest
 
 def test():
     script_path = Path(__file__).absolute().parent
-    flavor_path = str(script_path / "flavors" / "real-test-flavor")
-    test_container_folder = str(script_path / "test_container")
+    resources_path = script_path / "resources"
+    flavor_path = str(resources_path / "flavors" / "real-test-flavor")
+    test_container_folder = str(resources_path / "test_container")
     run_db_test_flavor_result, run_db_test_linkernamespace = \
         CIExecuteTest().execute_tests(
             flavor_path=(flavor_path,),
