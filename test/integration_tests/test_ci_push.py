@@ -20,9 +20,9 @@ def test():
         expected_images = \
             {'name': 'test_ci_push',
              'tags': [
-                 'tag_real-test-flavor-base_test_build_run_PIZOHDCUUA5C4QZEK4FGI2JA2BEYBFFC4E5FJNHW6PPD3HYQSTRA',
-                 'tag_real-test-flavor-release_GZMZ7BEX4Y6MBG5ZWLQQEFJIKXK6UCTJFJGABSOLIFQ7FHJIRNVA',
-                 'tag_real-test-flavor-flavor_test_build_run_YXYWVE3QGQ6OMNEBJ6T5Z7RMYOR3O3BJVR2DKPR5LBA64MDBKPQA'
+                 'tag_real-test-flavor-base_test_build_run_GUA7R5J3UM27WOHJSQPX2OJNSIEKWCM5YF5GJXKKXZI53LZPV75Q',
+                 'tag_real-test-flavor-flavor_test_build_run_G2OIMXJ2S3VS2EUAQNW4KWQLX3B2C27XYZ2SDMF7TQRS3UMAUWJQ',
+                 'tag_real-test-flavor-release_MNWZZGSSFQ6VCLBDH7CZBEZC4K35QQBSLOW5DSYHF3DFFDX2OOZQ',
              ]}
         assert expected_images["name"] == registry.images["name"] \
                and set(expected_images["tags"]) == set(registry.images["tags"])
