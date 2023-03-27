@@ -15,7 +15,8 @@ def _parse_repo_url(source_repo_url: str) -> str:
     """
     res = re.search(r"^https://github.com/([a-zA-Z0-9\-_/]+)$", source_repo_url)
     if res is None:
-        raise ValueError("Parameter source_repo_url is in unexpected format.")
+        raise ValueError(f"Parameter source_repo_url={source_repo_url} does not match the following regex: "
+                         f"^https://github.com/([a-zA-Z0-9\-_/]+)$")
     return res.groups()[0]
 
 
