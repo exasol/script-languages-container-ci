@@ -12,7 +12,7 @@ This release fixed a bug where only the builds would run. Furthermore, the libra
 
 ## Features / Enhancements
 
-n/a
+ - #26: Prepare release on PyPi
 
 ## Documentation
 
