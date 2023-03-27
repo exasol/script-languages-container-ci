@@ -4,9 +4,10 @@ import os
 import click
 
 from exasol_script_languages_container_ci.cli.cli import cli
-from exasol_script_languages_container_ci.lib.git_access import GitAccess
+from exasol_script_languages_container_ci.lib.asset_uploader import AssetUploader
 from exasol_script_languages_container_ci.lib.github_release_asset_uploader import GithubReleaseAssetUploader
 from exasol_script_languages_container_ci.lib.release import release
+from exasol_script_languages_container_ci.lib.release_uploader import ReleaseUploader
 
 
 @cli.command()
@@ -38,6 +39,15 @@ def run_release(ctx: click.Context,
                 release_id: int,
                 dry_run: bool):
     logging.basicConfig(level=logging.INFO)
-    release(ctx, flavor, docker_user, docker_password,
-            docker_release_repository, config_file, source_repo_url, release_id,
-            GithubReleaseAssetUploader(os.getenv("GITHUB_TOKEN")), dry_run, GitAccess())
+    github_release_asset_uploader = GithubReleaseAssetUploader(os.getenv("GITHUB_TOKEN"))
+    asset_uploader = AssetUploader(release_asset_uploader=github_release_asset_uploader)
+    release_uploader = ReleaseUploader(asset_uploader=asset_uploader)
+    release(flavor=flavor,
+            docker_user=docker_user,
+            docker_password=docker_password,
+            docker_release_repository=docker_release_repository,
+            config_file=config_file,
+            source_repo_url=source_repo_url,
+            release_id=release_id,
+            release_uploader=release_uploader,
+            is_dry_run=dry_run)

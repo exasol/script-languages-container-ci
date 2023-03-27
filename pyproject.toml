@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "exasol-script-languages-container-ci"
-version = "0.6.0"
+version = "1.0.0"
 description = "Implements CI builds for script-language-container."
 
 license = "MIT"
@@ -30,6 +30,7 @@ pytest-mock = "^3.7.0"
 
 [tool.pytest.ini_options]
 minversion = "6.0"
+addopts = "--ignore=test/integration_tests/resources"
 
 testpaths = [
     "test"

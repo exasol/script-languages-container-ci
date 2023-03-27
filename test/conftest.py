@@ -1,5 +1,6 @@
 import json
 import os
+from dataclasses import dataclass
 
 from tempfile import TemporaryDirectory
 from unittest.mock import Mock, patch, MagicMock
@@ -19,13 +20,6 @@ def tmp_test_dir():
         os.chdir(temp_dir)
         yield temp_dir
         os.chdir(old_dir)
-
-
-@pytest.fixture
-def click_stub():
-    click_ctx = click.Context(command=click.Command("dummy"))
-    return Mock(click_ctx)
-
 
 @pytest.fixture
 def config_file(tmp_path_factory):
