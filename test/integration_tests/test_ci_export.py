@@ -1,11 +1,7 @@
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-from exasol_integration_test_docker_environment.lib.docker.images.image_info import ImageState
-
-from exasol_script_languages_container_ci.lib.ci_build import CIBuild
 from exasol_script_languages_container_ci.lib.ci_export import CIExport
-from test.conftest import DockerConfig
 
 
 def test():

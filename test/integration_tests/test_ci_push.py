@@ -3,7 +3,6 @@ from pathlib import Path
 from exasol_integration_test_docker_environment.testing.docker_registry import LocalDockerRegistryContextManager
 
 from exasol_script_languages_container_ci.lib.ci_push import CIPush
-from test.conftest import DockerConfig
 
 
 def test():
