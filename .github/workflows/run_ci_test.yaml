@@ -11,6 +11,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: SCM Checkout
+        uses: actions/checkout@v3
     - name: Setup Python & Poetry Environment
         uses: ./.github/actions/prepare_poetry_env
     - name: Setup poetry env
