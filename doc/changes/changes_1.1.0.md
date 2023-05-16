@@ -1,10 +1,10 @@
-# script-languages-container-ci 1.1.0, T.B.D
+# Script-Languages-Container-CI 1.1.0, 2023-05-16
 
-Code name: T.B.D
+Code name: Updated cript-languages-container-tool to 0.17.0
 
 ## Summary
 
-T.B.D
+Updated cript-languages-container-tool to 0.17.0 and removed setup.py
 
 ## Bug Fixes
 
@@ -20,4 +20,5 @@ n/a
 
 ## Refactoring
 
- -  #29: Removed setup.py and updated poetry in actions
+ - #29: Removed setup.py and updated poetry in actions
+ - #31: Updated script-languages-container-tool to 0.17.0 
