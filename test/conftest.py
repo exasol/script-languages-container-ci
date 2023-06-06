@@ -1,12 +1,27 @@
 import json
 import os
-from dataclasses import dataclass
-
+from pathlib import Path
 from tempfile import TemporaryDirectory
-from unittest.mock import Mock, patch, MagicMock
+from unittest.mock import patch, MagicMock
 
-import click
 import pytest
+
+script_path = Path(__file__).absolute().parent
+
+
+@pytest.fixture
+def resources_path() -> Path:
+    return script_path / "integration_tests/resources"
+
+
+@pytest.fixture
+def flavors_path(resources_path: Path) -> Path:
+    return resources_path / "flavors"
+
+
+@pytest.fixture
+def test_container_folder(resources_path: Path) -> Path:
+    return resources_path / "test_container"
 
 
 @pytest.fixture(autouse=True)
@@ -20,6 +35,7 @@ def tmp_test_dir():
         os.chdir(temp_dir)
         yield temp_dir
         os.chdir(old_dir)
+
 
 @pytest.fixture
 def config_file(tmp_path_factory):

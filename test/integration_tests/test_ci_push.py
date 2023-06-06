@@ -8,7 +8,7 @@ from exasol_script_languages_container_ci.lib.ci_push import CIPush
 def test():
     script_path = Path(__file__).absolute().parent
     resources_path = script_path / "resources"
-    flavor_path = str(resources_path / "flavors" / "real-test-flavor")
+    flavor_path = str(resources_path / "flavors" / "functioning")
     with LocalDockerRegistryContextManager("test_ci_push") as registry:
         CIPush().push(
             flavor_path=(flavor_path,),

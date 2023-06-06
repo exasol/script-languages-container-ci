@@ -1,25 +1,41 @@
 import logging
 from pathlib import Path
-from typing import Tuple
+from typing import Tuple, Callable
 
 from exasol_script_languages_container_tool.lib.api import security_scan
-from exasol_script_languages_container_tool.lib.tasks.security_scan.security_scan import AllScanResult
 
-import exasol_script_languages_container_ci.lib.common
+from exasol_script_languages_container_ci.lib.common import print_file, print_docker_images
+
+
+def _print_docker_images_function():
+    print_docker_images(logging.info)
+
+
+def _print_file_function(path: Path):
+    print_file(path, logging.info)
 
 
 class CISecurityScan:
 
-    def run_security_scan(self, flavor_path: Tuple[str, ...]) -> AllScanResult:
+    def __init__(self,
+                 print_file_function: Callable[[Path], None] = _print_file_function,
+                 print_docker_images_function: Callable[[], None] = _print_docker_images_function
+                 ):
+        self._print_docker_images_function = print_docker_images_function
+        self._print_file_function = print_file_function
+
+    def run_security_scan(self,
+                          flavor_path: Tuple[str, ...]):
         """
         Run security scan and print result
         """
 
         logging.info(f"Running command 'security_scan' with parameters {locals()}")
         security_scan_result = security_scan(flavor_path=flavor_path, workers=7)
-        exasol_script_languages_container_ci.lib.common.print_docker_images(logging.info)
         logging.info("============= SECURITY REPORT ===========")
-        # Important: Call print_file over the global module name, otherwise the patch in the unit-test does not work!
-        exasol_script_languages_container_ci.lib.common.print_file(
-            Path() / ".build_output" / "security_scan" / "security_report", logging.info)
-        return security_scan_result
+        print(security_scan_result)
+        #if security_scan_result.report_path.exists():
+        self._print_file_function(Path(security_scan_result.report_path))
+        self._print_docker_images_function()
+        if not security_scan_result.scans_are_ok:
+            raise AssertionError("Some security scans not successful.")

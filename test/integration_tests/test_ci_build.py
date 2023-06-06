@@ -14,11 +14,13 @@ testdata = [
 @pytest.mark.parametrize(
     "input_docker_build_repository,input_commit_sha,expected_docker_build_repository,expected_source_tag_prefix",
     testdata)
-def test(input_docker_build_repository, input_commit_sha, expected_docker_build_repository, expected_source_tag_prefix):
-    script_path = Path(__file__).absolute().parent
-    resources_path = script_path / "resources"
-    flavor_path = str(resources_path / "flavors" / "real-test-flavor")
-    test_container_folder = str(resources_path / "test_container")
+def test(input_docker_build_repository,
+         input_commit_sha,
+         expected_docker_build_repository,
+         expected_source_tag_prefix,
+         flavors_path,
+         test_container_folder):
+    flavor_path = str(flavors_path / "functioning")
     slc_image_infos, test_container_image_infos = \
         CIBuild().build(
             flavor_path=(flavor_path,),
@@ -27,7 +29,7 @@ def test(input_docker_build_repository, input_commit_sha, expected_docker_build_
             build_docker_repository=input_docker_build_repository,
             docker_user=None,
             docker_password=None,
-            test_container_folder=test_container_folder
+            test_container_folder=str(test_container_folder)
         )
     expected_images = {'release', 'base_test_build_run', 'flavor_test_build_run'}
     actual_images = {key for key in slc_image_infos[flavor_path]}
