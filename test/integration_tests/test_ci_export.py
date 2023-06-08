@@ -4,10 +4,9 @@ from tempfile import TemporaryDirectory
 from exasol_script_languages_container_ci.lib.ci_export import CIExport
 
 
-def test():
-    script_path = Path(__file__).absolute().parent
-    resources_path = script_path / "resources"
-    flavor_path = str(resources_path / "flavors" / "functioning")
+def test(flavors_path):
+    flavor_name = "functioning"
+    flavor_path = str(flavors_path / flavor_name)
     with TemporaryDirectory() as temp_dir:
         export_result = CIExport().export(flavor_path=(flavor_path,), export_path=temp_dir)
         temp_dir_content = set(Path(temp_dir).iterdir())

@@ -20,7 +20,8 @@ def test(input_docker_build_repository,
          expected_source_tag_prefix,
          flavors_path,
          test_container_folder):
-    flavor_path = str(flavors_path / "functioning")
+    flavor_name = "functioning"
+    flavor_path = str(flavors_path / flavor_name)
     slc_image_infos, test_container_image_infos = \
         CIBuild().build(
             flavor_path=(flavor_path,),
@@ -35,10 +36,10 @@ def test(input_docker_build_repository,
     actual_images = {key for key in slc_image_infos[flavor_path]}
     assert flavor_path in slc_image_infos.keys() \
            and expected_images == actual_images \
-           and slc_image_infos[flavor_path]["release"].target_tag == "real-test-flavor-release" \
+           and slc_image_infos[flavor_path]["release"].target_tag == f"{flavor_name}-release" \
            and slc_image_infos[flavor_path]["release"].target_repository_name == 'exasol/script-language-container' \
            and slc_image_infos[flavor_path][
-               "release"].source_tag == f"{expected_source_tag_prefix}real-test-flavor-release" \
+               "release"].source_tag == f"{expected_source_tag_prefix}{flavor_name}-release" \
            and slc_image_infos[flavor_path]["release"].source_repository_name == expected_docker_build_repository \
            and slc_image_infos[flavor_path]["release"].image_state == ImageState.WAS_BUILD.name \
            and test_container_image_infos.target_tag == "db-test-container" \
