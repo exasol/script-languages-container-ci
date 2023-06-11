@@ -1,3 +1,3 @@
 generic_language_tests=
-test_folders=functioning_test
+test_folders=succesful_test
 # trailing new line required!
