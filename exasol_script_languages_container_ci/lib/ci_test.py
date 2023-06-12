@@ -1,23 +1,11 @@
 import logging
-from pathlib import Path
-from typing import Tuple, Callable, Protocol, Optional
+from typing import Tuple, Protocol
 
-from exasol_integration_test_docker_environment.cli.options.test_environment_options import LATEST_DB_VERSION
 from exasol_script_languages_container_tool.lib.api.run_db_tests import run_db_test
+from exasol_script_languages_container_tool.lib.tasks.test.test_container import AllTestsResult
 
 from exasol_script_languages_container_ci.lib.ci_step_output_printer import CIStepOutputPrinterProtocol, \
     CIStepOutputPrinter
-from exasol_script_languages_container_ci.lib.common import print_docker_images, print_file
-
-from exasol_script_languages_container_tool.lib.tasks.test.test_container import AllTestsResult
-
-
-def _print_docker_images_function():
-    print_docker_images(logging.info)
-
-
-def _print_file_function(path: Path):
-    print_file(path, logging.info)
 
 
 class DBTestRunnerProtocol(Protocol):

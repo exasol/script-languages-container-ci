@@ -46,15 +46,6 @@ def config_file(tmp_path_factory):
     return config_file_path
 
 
-@pytest.fixture(autouse=True)
-def patch_printfile():
-    """
-    This overwrites automatically function "exasol_script_languages_container_ci.lib.print_file" because within the UnitTests
-    the output files are not being created. Also accelerate Unit-Tests by avoiding file-access.
-    """
-    with patch('exasol_script_languages_container_ci.lib.common.print_file', MagicMock()):
-        yield
-
 
 @pytest.fixture()
 def git_access_mock():

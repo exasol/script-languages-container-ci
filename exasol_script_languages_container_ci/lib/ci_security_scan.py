@@ -6,15 +6,6 @@ from exasol_script_languages_container_tool.lib.api import security_scan
 
 from exasol_script_languages_container_ci.lib.ci_step_output_printer import CIStepOutputPrinterProtocol, \
     CIStepOutputPrinter
-from exasol_script_languages_container_ci.lib.common import print_file, print_docker_images
-
-
-def _print_docker_images_function():
-    print_docker_images(logging.info)
-
-
-def _print_file_function(path: Path):
-    print_file(path, logging.info)
 
 
 class CISecurityScan:
