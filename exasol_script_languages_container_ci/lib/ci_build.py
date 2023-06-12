@@ -22,7 +22,7 @@ class CIBuild:
               commit_sha: str,
               docker_user: str,
               docker_password: str,
-              test_container_folder: str) -> Tuple[Dict[str, ImageInfo], ImageInfo]:
+              test_container_folder: str):
         """
         Build the script-language container for given flavor. And also build the test container
         """
@@ -53,4 +53,3 @@ class CIBuild:
             source_docker_tag_prefix=commit_sha
         )
         self._ci_step_output_printer.print_docker_images()
-        return slc_image_infos, test_container_image_infos

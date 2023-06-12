@@ -15,7 +15,7 @@ class CIExport:
 
     def export(self,
                flavor_path: Tuple[str, ...],
-               export_path: str) -> ExportContainerResult:
+               export_path: str):
         """
         Export the flavor as tar.gz file
         """
@@ -25,4 +25,3 @@ class CIExport:
                                export_path=export_path,
                                workers=7)
         self._ci_step_output_printer.print_docker_images()
-        return export_result

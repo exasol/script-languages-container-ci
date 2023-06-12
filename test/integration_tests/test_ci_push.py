@@ -6,7 +6,7 @@ from exasol_script_languages_container_ci.lib.ci_push import CIPush
 
 
 def test(flavors_path):
-    flavor_name = "functioning"
+    flavor_name = "successful_ci_process"
     flavor_path = str(flavors_path / flavor_name)
     with LocalDockerRegistryContextManager("test_ci_push") as registry:
         CIPush().push(
