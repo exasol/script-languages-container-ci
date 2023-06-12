@@ -1,47 +1,53 @@
-from pathlib import Path
-from unittest.mock import Mock, call
-
 import pytest
 
-from exasol_script_languages_container_ci.lib.ci_test import CIExecuteTest
-from test.matchers import regex_matcher, file_exists_matcher
+from exasol_script_languages_container_ci.lib.ci_test import DBTestRunner, DBTestRunnerProtocol
+from test.contract_tests.test_ci_test import IntactFlavorDBTestsContract, IntactFlavorLinkerNamespaceTestsContract, \
+    BrokenTestFlavorDBTestsContract, BrokenTestFlavorLinkerNamespaceTestsContract
 
 
-def test_functioning(flavors_path: Path, test_container_folder: Path):
-    flavor_path = str(flavors_path / "functioning")
-    print_file_function_mock = Mock()
-    print_docker_images_function_mock = Mock()
-    CIExecuteTest(
-        print_file_function=print_file_function_mock,
-        print_docker_images_function=print_docker_images_function_mock
-    ).execute_tests(
-        flavor_path=(flavor_path,),
-        docker_user=None,
-        docker_password=None,
-        test_container_folder=str(test_container_folder),
-
-    )
-    assert print_file_function_mock.mock_calls == \
-           [call(file_exists_matcher()),
-            call(file_exists_matcher())] \
-           and print_docker_images_function_mock.mock_calls == [call()]
+@pytest.fixture()
+def intact_flavor_path(flavors_path):
+    return str(flavors_path / "successful_ci_process")
 
 
-def test_broken_test(flavors_path: Path, test_container_folder: Path):
-    flavor_path = str(flavors_path / "broken-test")
-    print_file_function_mock = Mock()
-    print_docker_images_function_mock = Mock()
-    with pytest.raises(Exception):
-        CIExecuteTest(
-            print_file_function=print_file_function_mock,
-            print_docker_images_function=print_docker_images_function_mock
-        ).execute_tests(
-            flavor_path=(flavor_path,),
-            docker_user=None,
-            docker_password=None,
-            test_container_folder=str(test_container_folder),
-        )
-        assert print_file_function_mock.mock_calls == [
-            call(file_exists_matcher()),
-            call(file_exists_matcher())] \
-               and print_docker_images_function_mock.mock_calls == [call()]
+@pytest.fixture()
+def broken_test_flavor_path(flavors_path):
+    return str(flavors_path / "broken_run_db_test")
+
+
+@pytest.fixture()
+def successful_test_test_container(test_containers_folder):
+    return str(test_containers_folder / "successful_test")
+
+
+@pytest.fixture()
+def broken_test_test_container(test_containers_folder):
+    return str(test_containers_folder / "broken_test")
+
+
+class TestIntactFlavorDBTestsContract(IntactFlavorDBTestsContract):
+
+    @pytest.fixture
+    def db_test_runner(self) -> DBTestRunnerProtocol:
+        return DBTestRunner()
+
+
+class TestIntactFlavorLinkerNamespaceTestsContract(IntactFlavorLinkerNamespaceTestsContract):
+
+    @pytest.fixture
+    def db_test_runner(self) -> DBTestRunnerProtocol:
+        return DBTestRunner()
+
+
+class TestBrokenTestFlavorDBTestsContract(BrokenTestFlavorDBTestsContract):
+
+    @pytest.fixture
+    def db_test_runner(self) -> DBTestRunnerProtocol:
+        return DBTestRunner()
+
+
+class TestBrokenTestFlavorLinkerNamespaceTestsContract(BrokenTestFlavorLinkerNamespaceTestsContract):
+
+    @pytest.fixture
+    def db_test_runner(self) -> DBTestRunnerProtocol:
+        return DBTestRunner()

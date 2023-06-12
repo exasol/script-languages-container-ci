@@ -19,7 +19,7 @@ def test(input_docker_build_repository,
          expected_docker_build_repository,
          expected_source_tag_prefix,
          flavors_path,
-         test_container_folder):
+         test_containers_folder):
     flavor_name = "functioning"
     flavor_path = str(flavors_path / flavor_name)
     slc_image_infos, test_container_image_infos = \
@@ -30,7 +30,7 @@ def test(input_docker_build_repository,
             build_docker_repository=input_docker_build_repository,
             docker_user=None,
             docker_password=None,
-            test_container_folder=str(test_container_folder)
+            test_container_folder=str(test_containers_folder)
         )
     expected_images = {'release', 'base_test_build_run', 'flavor_test_build_run'}
     actual_images = {key for key in slc_image_infos[flavor_path]}

@@ -20,8 +20,8 @@ def flavors_path(resources_path: Path) -> Path:
 
 
 @pytest.fixture
-def test_container_folder(resources_path: Path) -> Path:
-    return resources_path / "test_container"
+def test_containers_folder(resources_path: Path) -> Path:
+    return resources_path / "test_containers"
 
 
 @pytest.fixture(autouse=True)
