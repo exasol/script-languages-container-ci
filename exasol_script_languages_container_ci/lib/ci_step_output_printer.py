@@ -45,7 +45,7 @@ class CIStepOutputPrinter(CIStepOutputPrinterProtocol):
 
     def print_file(self, filename: Path):
         """
-        Opens file readonly, reads it content and prints to writer.
+        Print the file's content to the writer.
         """
         with open(filename, "r") as f:
             self._writer(f.read())
