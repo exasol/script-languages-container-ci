@@ -24,4 +24,4 @@ class CIExport:
         export_result = export(flavor_path=flavor_path,
                                export_path=export_path,
                                workers=7)
-        self._printer.print_docker_images()
+        self._printer.print_exasol_docker_images()

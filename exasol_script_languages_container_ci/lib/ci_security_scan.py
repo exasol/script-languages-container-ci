@@ -23,6 +23,6 @@ class CISecurityScan:
         security_scan_result = security_scan(flavor_path=flavor_path, workers=7)
         logging.info("============= SECURITY REPORT ===========")
         self._printer.print_file(Path(security_scan_result.report_path))
-        self._printer.print_docker_images()
+        self._printer.print_exasol_docker_images()
         if not security_scan_result.scans_are_ok:
             raise AssertionError("Some security scans not successful.")

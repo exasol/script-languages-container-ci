@@ -2,16 +2,26 @@ from inspect import cleandoc
 from pathlib import Path
 from typing import Callable, Protocol
 
-from exasol_script_languages_container_ci.lib.common import _get_docker_images
+import docker
 
 
 class CIStepOutputPrinterProtocol(Protocol):
 
-    def print_docker_images(self):
+    def print_exasol_docker_images(self):
         raise NotImplementedError()
 
     def print_file(self, filename: Path):
         raise NotImplementedError()
+
+
+def _get_exasol_docker_images():
+    docker_client = docker.from_env()
+    try:
+        exa_images = [str(img) for img in docker_client.images.list() if "exasol" in str(img)]
+        return exa_images
+    finally:
+        docker_client.close()
+        return []
 
 
 class CIStepOutputPrinter(CIStepOutputPrinterProtocol):
@@ -19,9 +29,9 @@ class CIStepOutputPrinter(CIStepOutputPrinterProtocol):
     def __init__(self, writer: Callable[[str], None]):
         self._writer = writer
 
-    def print_docker_images(self):
+    def print_exasol_docker_images(self):
         """
-        Prints all docker images whith "exa" in it's name to stdout.
+        Prints all docker images with "exasol" in it's name to stdout.
         :return: None
         """
 
@@ -30,7 +40,7 @@ class CIStepOutputPrinter(CIStepOutputPrinterProtocol):
             Printing docker images
             {seperator}
             {images}""").format(
-            seperator=20 * "=", images="\n".join(_get_docker_images())
+            seperator=20 * "=", images="\n".join(_get_exasol_docker_images())
         ))
 
     def print_file(self, filename: Path):

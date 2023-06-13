@@ -7,16 +7,6 @@ from inspect import cleandoc
 import docker
 
 
-def _get_docker_images():
-    docker_client = docker.from_env()
-    exa_images = []
-    try:
-        exa_images = [str(img) for img in docker_client.images.list() if "exasol" in str(img)]
-    finally:
-        docker_client.close()
-    return exa_images
-
-
 @contextmanager
 def get_config(config_file: str):
     """

@@ -31,4 +31,4 @@ class CIPush:
              target_docker_tag_prefix=target_docker_tag_prefix,
              target_docker_username=docker_user,
              target_docker_password=docker_password)
-        self._printer.print_docker_images()
+        self._printer.print_exasol_docker_images()

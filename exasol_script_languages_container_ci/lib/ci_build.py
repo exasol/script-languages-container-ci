@@ -52,4 +52,4 @@ class CIBuild:
             source_docker_repository_name=build_docker_repository,
             source_docker_tag_prefix=commit_sha
         )
-        self._printer.print_docker_images()
+        self._printer.print_exasol_docker_images()

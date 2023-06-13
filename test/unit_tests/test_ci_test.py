@@ -64,17 +64,15 @@ class TestSuccessfulFlavor(BaseCIExecuteTest):
         mock_cast(self.db_test_runner_mock.run).side_effect = [self.db_tests_all_tests_result,
                                                                self.linker_namespace_tests_all_tests_result]
 
-    @pytest.fixture
-    def run(self, complete_setup):
-        return self.execute_tests()
-
-    def test_ci_step_output_printer_call(self, run):
+    def test_ci_step_output_printer_call(self, complete_setup):
+        self.execute_tests()
         assert self.printer_mock.mock_calls == [
             call.print_file(self.db_tests_all_tests_result.command_line_output_path),
             call.print_file(self.linker_namespace_tests_all_tests_result.command_line_output_path),
             call.print_docker_images()]
 
-    def test_db_test_runner_calls(self, run, run_db_tests_calls):
+    def test_db_test_runner_calls(self, complete_setup, run_db_tests_calls):
+        self.execute_tests()
         assert self.db_test_runner_mock.mock_calls == run_db_tests_calls
 
 

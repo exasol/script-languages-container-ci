@@ -64,7 +64,7 @@ class CIExecuteTest:
                                                                         docker_user=docker_user,
                                                                         docker_password=docker_password,
                                                                         test_container_folder=test_container_folder)
-        self._printer.print_docker_images()
+        self._printer.print_exasol_docker_images()
         tests_are_ok = db_tests_are_ok and linker_namespace_tests_are_ok
         if not tests_are_ok:
             raise AssertionError("Not all tests are ok!")
