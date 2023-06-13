@@ -5,7 +5,7 @@ from exasol_script_languages_container_ci.lib.ci_export import CIExport
 
 
 def test(flavors_path):
-    flavor_name = "successful_ci_process"
+    flavor_name = "successful"
     flavor_path = str(flavors_path / flavor_name)
     with TemporaryDirectory() as temp_dir:
         CIExport().export(flavor_path=(flavor_path,), export_path=temp_dir)

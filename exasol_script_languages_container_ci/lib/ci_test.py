@@ -44,9 +44,9 @@ class CIExecuteTest:
 
     def __init__(self,
                  db_test_runner: DBTestRunnerProtocol = DBTestRunner(),
-                 ci_step_output_printer: CIStepOutputPrinterProtocol = CIStepOutputPrinter(logging.info)):
+                 printer: CIStepOutputPrinterProtocol = CIStepOutputPrinter(logging.info)):
         self._db_test_runner = db_test_runner
-        self._ci_step_output_printer = ci_step_output_printer
+        self._printer = printer
 
     def execute_tests(self,
                       flavor_path: Tuple[str, ...],
@@ -64,7 +64,7 @@ class CIExecuteTest:
                                                                         docker_user=docker_user,
                                                                         docker_password=docker_password,
                                                                         test_container_folder=test_container_folder)
-        self._ci_step_output_printer.print_docker_images()
+        self._printer.print_docker_images()
         tests_are_ok = db_tests_are_ok and linker_namespace_tests_are_ok
         if not tests_are_ok:
             raise AssertionError("Not all tests are ok!")
@@ -82,7 +82,7 @@ class CIExecuteTest:
                                      docker_username=docker_user,
                                      docker_password=docker_password,
                                      test_container_folder=test_container_folder)
-        self._ci_step_output_printer.print_file(db_test_result.command_line_output_path)
+        self._printer.print_file(db_test_result.command_line_output_path)
         return db_test_result.tests_are_ok
 
     def run_linker_namespace_tests(self,
@@ -98,5 +98,5 @@ class CIExecuteTest:
                                      docker_username=docker_user,
                                      docker_password=docker_password,
                                      test_container_folder=test_container_folder)
-        self._ci_step_output_printer.print_file(linker_namespace_test_result.command_line_output_path)
+        self._printer.print_file(linker_namespace_test_result.command_line_output_path)
         return linker_namespace_test_result.tests_are_ok

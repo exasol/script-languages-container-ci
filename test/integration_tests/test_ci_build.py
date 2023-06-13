@@ -1,5 +1,4 @@
 import pytest
-from exasol_integration_test_docker_environment.lib.docker.images.image_info import ImageState
 
 from exasol_script_languages_container_ci.lib.ci_build import CIBuild
 
@@ -18,9 +17,9 @@ def test(input_docker_build_repository,
          expected_source_tag_prefix,
          flavors_path,
          test_containers_folder):
-    flavor_name = "successful_ci_process"
-    flavor_path = str(flavors_path / flavor_name)
-    test_container_folder = str(test_containers_folder / "successful_test")
+    test_type = "successful"
+    flavor_path = str(flavors_path / test_type)
+    test_container_folder = str(test_containers_folder / test_type)
     CIBuild().build(
         flavor_path=(flavor_path,),
         rebuild=True,

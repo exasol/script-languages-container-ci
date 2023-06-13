@@ -10,8 +10,8 @@ from exasol_script_languages_container_ci.lib.ci_step_output_printer import CISt
 
 class CIExport:
 
-    def __init__(self, ci_step_output_printer: CIStepOutputPrinterProtocol = CIStepOutputPrinter(logging.info)):
-        self._ci_step_output_printer = ci_step_output_printer
+    def __init__(self, printer: CIStepOutputPrinterProtocol = CIStepOutputPrinter(logging.info)):
+        self._printer = printer
 
     def export(self,
                flavor_path: Tuple[str, ...],
@@ -24,4 +24,4 @@ class CIExport:
         export_result = export(flavor_path=flavor_path,
                                export_path=export_path,
                                workers=7)
-        self._ci_step_output_printer.print_docker_images()
+        self._printer.print_docker_images()

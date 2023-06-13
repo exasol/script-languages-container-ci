@@ -9,8 +9,8 @@ from exasol_script_languages_container_ci.lib.ci_step_output_printer import CISt
 
 class CIPush:
 
-    def __init__(self, ci_step_output_printer: CIStepOutputPrinterProtocol = CIStepOutputPrinter(logging.info)):
-        self._ci_step_output_printer = ci_step_output_printer
+    def __init__(self, printer: CIStepOutputPrinterProtocol = CIStepOutputPrinter(logging.info)):
+        self._printer = printer
 
     def push(self,
              flavor_path: Tuple[str, ...],
@@ -31,4 +31,4 @@ class CIPush:
              target_docker_tag_prefix=target_docker_tag_prefix,
              target_docker_username=docker_user,
              target_docker_password=docker_password)
-        self._ci_step_output_printer.print_docker_images()
+        self._printer.print_docker_images()

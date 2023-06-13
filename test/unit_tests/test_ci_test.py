@@ -19,12 +19,12 @@ class BaseCIExecuteTest:
         return self.db_test_runner_mock
 
     @pytest.fixture
-    def setup_ci_execute_test(self, db_test_runner):
-        self.ci_step_output_printer_mock = create_autospec(CIStepOutputPrinterProtocol)
+    def base_setup(self, db_test_runner):
+        self.printer_mock = create_autospec(CIStepOutputPrinterProtocol)
         self.flavor_path = "test_flavor"
         self.test_container_folder = "test_container_folder"
         self.ci_execute_test = CIExecuteTest(
-            ci_step_output_printer=self.ci_step_output_printer_mock,
+            printer=self.printer_mock,
             db_test_runner=db_test_runner
         )
 
@@ -35,7 +35,7 @@ class BaseCIExecuteTest:
         all_tests_result.command_line_output_path = create_autospec(Path)
         return all_tests_result
 
-    def run_execute_tests(self):
+    def execute_tests(self):
         self.ci_execute_test.execute_tests(
             flavor_path=(self.flavor_path,),
             docker_user=None,
@@ -55,21 +55,21 @@ class BaseCIExecuteTest:
         ]
 
 
-class TestIntactFlavor(BaseCIExecuteTest):
+class TestSuccessfulFlavor(BaseCIExecuteTest):
 
     @pytest.fixture
-    def setup_intact_flavor(self, setup_ci_execute_test):
+    def complete_setup(self, base_setup):
         self.db_tests_all_tests_result = self.create_all_tests_result_mock(tests_are_ok=True)
         self.linker_namespace_tests_all_tests_result = self.create_all_tests_result_mock(tests_are_ok=True)
         mock_cast(self.db_test_runner_mock.run).side_effect = [self.db_tests_all_tests_result,
                                                                self.linker_namespace_tests_all_tests_result]
 
     @pytest.fixture
-    def run(self, setup_intact_flavor):
-        return self.run_execute_tests()
+    def run(self, complete_setup):
+        return self.execute_tests()
 
     def test_ci_step_output_printer_call(self, run):
-        assert self.ci_step_output_printer_mock.mock_calls == [
+        assert self.printer_mock.mock_calls == [
             call.print_file(self.db_tests_all_tests_result.command_line_output_path),
             call.print_file(self.linker_namespace_tests_all_tests_result.command_line_output_path),
             call.print_docker_images()]
@@ -78,7 +78,7 @@ class TestIntactFlavor(BaseCIExecuteTest):
         assert self.db_test_runner_mock.mock_calls == run_db_tests_calls
 
 
-class TestBrokenTestFlavor(BaseCIExecuteTest):
+class TestFailingRunDBTestFlavor(BaseCIExecuteTest):
 
     @pytest.fixture(
         params=[
@@ -87,27 +87,26 @@ class TestBrokenTestFlavor(BaseCIExecuteTest):
             (False, False)
         ]
     )
-    def setup_broken_test_flavor(self, setup_ci_execute_test, request):
+    def complete_setup(self, base_setup, request):
         self.db_tests_all_tests_result = self.create_all_tests_result_mock(tests_are_ok=request.param[0])
         self.linker_namespace_tests_all_tests_result = self.create_all_tests_result_mock(tests_are_ok=request.param[1])
         mock_cast(self.db_test_runner_mock.run).side_effect = [self.db_tests_all_tests_result,
                                                                self.linker_namespace_tests_all_tests_result]
 
     @pytest.fixture
-    def run_suppress_exeception(self, setup_broken_test_flavor):
+    def run_suppress_exception(self, complete_setup):
         with suppress(Exception):
-            self.run_execute_tests()
+            self.execute_tests()
 
-    def test_raises(self, setup_broken_test_flavor):
+    def test_raises(self, complete_setup):
         with pytest.raises(AssertionError, match="Not all tests are ok!"):
-            self.run_execute_tests()
+            self.execute_tests()
 
-    def test_ci_step_output_printer_call(self, run_suppress_exeception):
-        assert self.ci_step_output_printer_mock.mock_calls == [
+    def test_ci_step_output_printer_call(self, run_suppress_exception):
+        assert self.printer_mock.mock_calls == [
             call.print_file(self.db_tests_all_tests_result.command_line_output_path),
             call.print_file(self.linker_namespace_tests_all_tests_result.command_line_output_path),
             call.print_docker_images()]
 
-    def test_db_test_runner_calls(self, run_suppress_exeception,
-                                                     run_db_tests_calls):
+    def test_db_test_runner_calls(self, run_suppress_exception, run_db_tests_calls):
         assert self.db_test_runner_mock.mock_calls == run_db_tests_calls

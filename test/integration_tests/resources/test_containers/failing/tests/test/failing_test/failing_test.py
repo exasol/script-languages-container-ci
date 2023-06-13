@@ -4,7 +4,7 @@ from exasol_python_test_framework import udf
 from exasol_python_test_framework import docker_db_environment
 
 
-class BrokenTest(udf.TestCase):
+class FailingTest(udf.TestCase):
 
     def test_dummy(self):
         assert False
