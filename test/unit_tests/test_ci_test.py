@@ -69,7 +69,7 @@ class TestSuccessfulFlavor(BaseCIExecuteTest):
         assert self.printer_mock.mock_calls == [
             call.print_file(self.db_tests_all_tests_result.command_line_output_path),
             call.print_file(self.linker_namespace_tests_all_tests_result.command_line_output_path),
-            call.print_docker_images()]
+            call.print_exasol_docker_images()]
 
     def test_db_test_runner_calls(self, complete_setup, run_db_tests_calls):
         self.execute_tests()
@@ -104,7 +104,7 @@ class TestFailingRunDBTestFlavor(BaseCIExecuteTest):
         assert self.printer_mock.mock_calls == [
             call.print_file(self.db_tests_all_tests_result.command_line_output_path),
             call.print_file(self.linker_namespace_tests_all_tests_result.command_line_output_path),
-            call.print_docker_images()]
+            call.print_exasol_docker_images()]
 
     def test_db_test_runner_calls(self, run_suppress_exception, run_db_tests_calls):
         assert self.db_test_runner_mock.mock_calls == run_db_tests_calls

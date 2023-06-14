@@ -17,7 +17,7 @@ def test_successful_flavor(flavors_path, test_containers_folder):
     )
     assert printer_mock.mock_calls == [
         call.print_file(file_exists_matcher()),
-        call.print_docker_images()]
+        call.print_exasol_docker_images()]
 
 
 def test_failing_security_scan(flavors_path):
@@ -31,4 +31,4 @@ def test_failing_security_scan(flavors_path):
         )
     assert printer_mock.mock_calls == [
         call.print_file(file_exists_matcher()),
-        call.print_docker_images()]
+        call.print_exasol_docker_images()]
