@@ -6,10 +6,15 @@ from exasol_integration_test_docker_environment.lib.docker.images.image_info imp
 from exasol_script_languages_container_tool.lib.api import build
 from exasol_script_languages_container_tool.lib.tasks.test.test_container_content import build_test_container_content
 
-from exasol_script_languages_container_ci.lib.common import print_docker_images
+from exasol_script_languages_container_ci.lib.ci_step_output_printer import CIStepOutputPrinterProtocol, \
+    CIStepOutputPrinter
 
 
 class CIBuild:
+
+    def __init__(self, printer: CIStepOutputPrinterProtocol = CIStepOutputPrinter(logging.info)):
+        self._printer = printer
+
     def build(self,
               flavor_path: Tuple[str, ...],
               rebuild: bool,
@@ -17,7 +22,7 @@ class CIBuild:
               commit_sha: str,
               docker_user: str,
               docker_password: str,
-              test_container_folder: str) -> Tuple[Dict[str, Dict[str, ImageInfo]], ImageInfo]:
+              test_container_folder: str):
         """
         Build the script-language container for given flavor. And also build the test container
         """
@@ -47,5 +52,4 @@ class CIBuild:
             source_docker_repository_name=build_docker_repository,
             source_docker_tag_prefix=commit_sha
         )
-        print_docker_images(logging.info)
-        return slc_image_infos, test_container_image_infos
+        self._printer.print_exasol_docker_images()

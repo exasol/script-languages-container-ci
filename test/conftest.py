@@ -1,12 +1,27 @@
 import json
 import os
-from dataclasses import dataclass
-
+from pathlib import Path
 from tempfile import TemporaryDirectory
-from unittest.mock import Mock, patch, MagicMock
+from unittest.mock import patch, MagicMock
 
-import click
 import pytest
+
+script_path = Path(__file__).absolute().parent
+
+
+@pytest.fixture
+def resources_path() -> Path:
+    return script_path / "integration_tests/resources"
+
+
+@pytest.fixture
+def flavors_path(resources_path: Path) -> Path:
+    return resources_path / "flavors"
+
+
+@pytest.fixture
+def test_containers_folder(resources_path: Path) -> Path:
+    return resources_path / "test_containers"
 
 
 @pytest.fixture(autouse=True)
@@ -21,6 +36,7 @@ def tmp_test_dir():
         yield temp_dir
         os.chdir(old_dir)
 
+
 @pytest.fixture
 def config_file(tmp_path_factory):
     config_file_path = tmp_path_factory.mktemp("config") / "build_config.json"
@@ -29,15 +45,6 @@ def config_file(tmp_path_factory):
         json.dump(config, f)
     return config_file_path
 
-
-@pytest.fixture(autouse=True)
-def patch_printfile():
-    """
-    This overwrites automatically function "exasol_script_languages_container_ci.lib.print_file" because within the UnitTests
-    the output files are not being created. Also accelerate Unit-Tests by avoiding file-access.
-    """
-    with patch('exasol_script_languages_container_ci.lib.common.print_file', MagicMock()):
-        yield
 
 
 @pytest.fixture()

@@ -1,22 +1,34 @@
-from pathlib import Path
+import pytest
 
-from exasol_script_languages_container_ci.lib.ci_test import CIExecuteTest
+from exasol_script_languages_container_ci.lib.ci_test import DBTestRunner, DBTestRunnerProtocol
+from test.contract_tests.test_ci_test import SuccessfulFlavorDBTestsContract, \
+    SuccessfulFlavorLinkerNamespaceTestsContract, \
+    FailingRunDBTestFlavorDBTestsContract, FailingRunDBTestFlavorLinkerNamespaceTestsContract
 
 
-def test():
-    script_path = Path(__file__).absolute().parent
-    resources_path = script_path / "resources"
-    flavor_path = str(resources_path / "flavors" / "real-test-flavor")
-    test_container_folder = str(resources_path / "test_container")
-    run_db_test_flavor_result, run_db_test_linkernamespace = \
-        CIExecuteTest().execute_tests(
-            flavor_path=(flavor_path,),
-            docker_user=None,
-            docker_password=None,
-            test_container_folder=test_container_folder
-        )
-    assert flavor_path in run_db_test_flavor_result.test_results_per_flavor \
-           and "release" in run_db_test_flavor_result.test_results_per_flavor[flavor_path].test_results_per_release_goal \
-           and flavor_path in run_db_test_linkernamespace.test_results_per_flavor \
-           and "base_test_build_run" in run_db_test_linkernamespace.test_results_per_flavor[
-               flavor_path].test_results_per_release_goal
+class TestSuccessfulFlavorDBTestsContract(SuccessfulFlavorDBTestsContract):
+
+    @pytest.fixture
+    def db_test_runner(self) -> DBTestRunnerProtocol:
+        return DBTestRunner()
+
+
+class TestSuccessfulFlavorLinkerNamespaceTestsContract(SuccessfulFlavorLinkerNamespaceTestsContract):
+
+    @pytest.fixture
+    def db_test_runner(self) -> DBTestRunnerProtocol:
+        return DBTestRunner()
+
+
+class TestFailingRunDBTestFlavorDBTestsContract(FailingRunDBTestFlavorDBTestsContract):
+
+    @pytest.fixture
+    def db_test_runner(self) -> DBTestRunnerProtocol:
+        return DBTestRunner()
+
+
+class TestFailingRunDBTestFlavorLinkerNamespaceTestsContract(FailingRunDBTestFlavorLinkerNamespaceTestsContract):
+
+    @pytest.fixture
+    def db_test_runner(self) -> DBTestRunnerProtocol:
+        return DBTestRunner()

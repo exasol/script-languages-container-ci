@@ -1,13 +1,17 @@
 import logging
 from typing import Tuple
 
-import click
 from exasol_script_languages_container_tool.lib.api.push import push
 
-from exasol_script_languages_container_ci.lib.common import print_docker_images
+from exasol_script_languages_container_ci.lib.ci_step_output_printer import CIStepOutputPrinterProtocol, \
+    CIStepOutputPrinter
 
 
 class CIPush:
+
+    def __init__(self, printer: CIStepOutputPrinterProtocol = CIStepOutputPrinter(logging.info)):
+        self._printer = printer
+
     def push(self,
              flavor_path: Tuple[str, ...],
              target_docker_repository: str,
@@ -27,4 +31,4 @@ class CIPush:
              target_docker_tag_prefix=target_docker_tag_prefix,
              target_docker_username=docker_user,
              target_docker_password=docker_password)
-        print_docker_images(logging.info)
+        self._printer.print_exasol_docker_images()

@@ -4,13 +4,18 @@ from typing import Tuple
 from exasol_script_languages_container_tool.lib.api import export
 from exasol_script_languages_container_tool.lib.tasks.export.export_containers import ExportContainerResult
 
-from exasol_script_languages_container_ci.lib.common import print_docker_images
+from exasol_script_languages_container_ci.lib.ci_step_output_printer import CIStepOutputPrinterProtocol, \
+    CIStepOutputPrinter
 
 
 class CIExport:
+
+    def __init__(self, printer: CIStepOutputPrinterProtocol = CIStepOutputPrinter(logging.info)):
+        self._printer = printer
+
     def export(self,
                flavor_path: Tuple[str, ...],
-               export_path: str) -> ExportContainerResult:
+               export_path: str):
         """
         Export the flavor as tar.gz file
         """
@@ -19,5 +24,4 @@ class CIExport:
         export_result = export(flavor_path=flavor_path,
                                export_path=export_path,
                                workers=7)
-        print_docker_images(logging.info)
-        return export_result
+        self._printer.print_exasol_docker_images()
