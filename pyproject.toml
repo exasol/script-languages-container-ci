@@ -13,8 +13,8 @@ authors = [
 python = ">=3.8.0,<4.0"
 click = "^8.0.3"
 GitPython = ">=3.1.0"
-exasol-script-languages-container-tool = "^0.17.0"
-exasol-integration-test-docker-environment = "^1.4.0"
+exasol-script-languages-container-tool = "^0.18.0"
+exasol-integration-test-docker-environment = "^1.7.1"
 PyGithub = "^1.55.0"
 setuptools = "^67.6.0"
 
