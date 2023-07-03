@@ -8,7 +8,7 @@ def test_loading_generated_module(tmp_path):
     config_data_model_file = tmp_path / CONFIG_DATA_MODEL_FILE_NAME
     generate_config_data_model(config_data_model_file)
     module = load_module(config_data_model_file)
-    assert True
+    assert {"Config", "Build", "Release", "Ignore", "Release"}.issubset(module.__dict__.keys())
 
 
 def test_using_generated_module(tmp_path, expected_json_config):
