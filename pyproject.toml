@@ -17,6 +17,7 @@ exasol-script-languages-container-tool = "^0.18.0"
 exasol-integration-test-docker-environment = "^1.7.1"
 PyGithub = "^1.55.0"
 setuptools = "^67.6.0"
+datamodel-code-generator = "^0.20.0"
 
 [build-system]
 requires = ["poetry_core>=1.0.0"]

@@ -6,6 +6,7 @@ import pytest
 from _pytest.tmpdir import TempPathFactory
 
 from exasol_script_languages_container_ci.lib.ci import check_if_need_to_build
+from exasol_script_languages_container_ci.lib.config.config_data_model import Config, Build, Release, Ignore
 from exasol_script_languages_container_ci.lib.git_access import GitAccess
 import git
 
@@ -40,12 +41,10 @@ def commit_files(branch_name: str, repo: git.Repo, repo_path: Path,
 
 
 @pytest.fixture
-def build_config(tmp_path_factory: TempPathFactory):
-    config_path = tmp_path_factory.mktemp("build_config") / "build_config.json"
-    with open(config_path, "w") as f:
-        config = {"build_ignore": {"ignored_paths": ["doc", "githooks"]}, "base_branch": "master"}
-        json.dump(config, f)
-    return config_path
+def build_config() -> Config:
+    config = Config(build=Build(base_branch="master", ignore=Ignore(paths=["doc", "githooks"])),
+                    release=Release(timeout_in_minutes=10))
+    return config
 
 
 TEST_FLAVOR = "flavor_xyz"
@@ -71,16 +70,25 @@ TEST_DATA = [
     # files of the current flavor, the build must run
     ("changes_in_current_flavor_before_last_commit_build_must_run", "refs/heads/feature_branch",
      [[f"flavors/{TEST_FLAVOR}/build_steps.py"], ["flavors/flavor_abc/build_steps.py"]], "message", True),
-    ("develop_must_always_run", "refs/heads/develop", [["doc/something"]], "message", True), #Even if folder should be ignored, in case of develop branch we always expect to run
-    ("master_must_always_run", "refs/heads/master", [["doc/something"]], "message", True), #Even if folder should be ignored, in case of master branch we always expect to run
-    ("main_must_always_run", "refs/heads/main", [["doc/something"]], "message", True), #Even if folder should be ignored, in case of main branch we always expect to run
-    ("rebuild_must_always_run", "refs/heads/rebuild/feature_branch", [["doc/something"]], "message", True), #Even if folder should be ignored, in case of rebuild/* branch we always expect to run
+    ("develop_must_always_run", "refs/heads/develop", [["doc/something"]], "message", True),
+    # Even if folder should be ignored, in case of develop branch we always expect to run
+    ("master_must_always_run", "refs/heads/master", [["doc/something"]], "message", True),
+    # Even if folder should be ignored, in case of master branch we always expect to run
+    ("main_must_always_run", "refs/heads/main", [["doc/something"]], "message", True),
+    # Even if folder should be ignored, in case of main branch we always expect to run
+    ("rebuild_must_always_run", "refs/heads/rebuild/feature_branch", [["doc/something"]], "message", True),
+    # Even if folder should be ignored, in case of rebuild/* branch we always expect to run
 ]
 
 
 @pytest.mark.parametrize("test_name, branch_name, files_to_commit,commit_message, expected_result", TEST_DATA)
-def test_ignore_folder_should_run_ci(test_name, branch_name, tmp_test_dir, build_config, files_to_commit,
-                                     commit_message, expected_result):
+def test_ignore_folder_should_run_ci(test_name: str,
+                                     branch_name: str,
+                                     tmp_test_dir,
+                                     build_config: Config,
+                                     files_to_commit,
+                                     commit_message: str,
+                                     expected_result: bool):
     """
     This test creates a temporary git repository, commits the given file list (files_for_commit), then runs
     ci.check_if_need_to_build() and checks if it returned the expected result
@@ -88,5 +96,4 @@ def test_ignore_folder_should_run_ci(test_name, branch_name, tmp_test_dir, build
     repo_path = Path(tmp_test_dir)
     tmp_repo = git.Repo.init(repo_path)
     commit_files(branch_name, tmp_repo, repo_path, files_to_commit, commit_message)
-    assert check_if_need_to_build(branch_name, str(build_config), TEST_FLAVOR, GitAccess()) == expected_result
-
+    assert check_if_need_to_build(branch_name, build_config, TEST_FLAVOR, GitAccess()) == expected_result

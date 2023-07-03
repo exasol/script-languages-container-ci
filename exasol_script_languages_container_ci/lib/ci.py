@@ -3,16 +3,15 @@ import os
 from pathlib import Path
 from typing import Set
 
-import click
+from exasol_integration_test_docker_environment.cli.options.system_options import DEFAULT_OUTPUT_DIRECTORY
 from exasol_integration_test_docker_environment.lib.base import luigi_log_config
-from exasol_integration_test_docker_environment.lib.config import build_config
 
 from exasol_script_languages_container_ci.lib.branch_config import BranchConfig
-from exasol_script_languages_container_ci.lib.common import get_config
 from exasol_script_languages_container_ci.lib.ci_build import CIBuild
 from exasol_script_languages_container_ci.lib.ci_push import CIPush
 from exasol_script_languages_container_ci.lib.ci_security_scan import CISecurityScan
 from exasol_script_languages_container_ci.lib.ci_test import CIExecuteTest
+from exasol_script_languages_container_ci.lib.config.config_data_model import Config
 from exasol_script_languages_container_ci.lib.git_access import GitAccess
 
 
@@ -26,16 +25,15 @@ def get_all_affected_files(git_access: GitAccess, base_branch: str) -> Set[str]:
     return changed_files
 
 
-def check_if_need_to_build(branch_name: str, config_file: str, flavor: str, git_access: GitAccess):
+def check_if_need_to_build(branch_name: str, config: Config, flavor: str, git_access: GitAccess):
     if BranchConfig.build_always(branch_name):
         return True
     if "[rebuild]" in git_access.get_last_commit_message():
         return True
-    with get_config(config_file) as config:
-        affected_files = list(get_all_affected_files(git_access, config["base_branch"]))
-        logging.debug(f"check_if_need_to_build: Found files of last commits: {affected_files}")
-        for ignore_path in config["build_ignore"]["ignored_paths"]:
-            affected_files = list(filter(lambda file: not file.startswith(ignore_path), affected_files))
+    affected_files = list(get_all_affected_files(git_access, config.build.base_branch))
+    logging.debug(f"check_if_need_to_build: Found files of last commits: {affected_files}")
+    for ignore_path in config.build.ignore.paths:
+        affected_files = list(filter(lambda file: not file.startswith(ignore_path), affected_files))
 
     if len(affected_files) > 0:
         # Now filter out also other flavor folders
@@ -53,7 +51,7 @@ def ci(flavor: str,
        docker_build_repository: str,
        docker_release_repository: str,
        commit_sha: str,
-       config_file: str,
+       build_config: Config,
        git_access: GitAccess,
        ci_build: CIBuild = CIBuild(),
        ci_execute_tests: CIExecuteTest = CIExecuteTest(),
@@ -71,9 +69,9 @@ def ci(flavor: str,
     flavor_path = (f"flavors/{flavor}",)
     test_container_folder = "test_container"
     rebuild = BranchConfig.rebuild(branch_name)
-    needs_to_build = check_if_need_to_build(branch_name, config_file, flavor, git_access)
+    needs_to_build = check_if_need_to_build(branch_name, build_config, flavor, git_access)
     if needs_to_build:
-        log_path = Path(build_config.DEFAULT_OUTPUT_DIRECTORY) / "jobs" / "logs" / "main.log"
+        log_path = Path(DEFAULT_OUTPUT_DIRECTORY) / "jobs" / "logs" / "main.log"
         os.environ[luigi_log_config.LOG_ENV_VARIABLE_NAME] = f"{log_path.absolute()}"
 
         ci_build.build(flavor_path=flavor_path,
