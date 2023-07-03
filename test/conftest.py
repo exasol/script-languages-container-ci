@@ -29,7 +29,7 @@ def pytest_addoption(parser):
 def pytest_configure(config):
     """
     Some of our tests are based on the pydantic model. We need to make sure, the tests work with the newest
-    version. However, we also need regenerate the file as early as possible, before other modules import it.
+    version. However, we also need to regenerate the file as early as possible, before other modules import it.
     For that reason. we are triggering the regeneration in conftest.
     """
 
