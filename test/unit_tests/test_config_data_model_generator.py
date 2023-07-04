@@ -16,7 +16,7 @@ def test_using_generated_module(tmp_path, expected_json_config):
     generate_config_data_model(config_data_model_file)
     module = load_module(config_data_model_file)
     config = create_config(module)
-    actual_json = config.json(indent=4)
+    actual_json = config.model_dump_json(indent=4)
     assert actual_json == expected_json_config
 
 
