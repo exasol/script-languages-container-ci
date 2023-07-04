@@ -5,6 +5,7 @@ import click
 
 from exasol_script_languages_container_ci.cli.cli import cli
 from exasol_script_languages_container_ci.lib.asset_uploader import AssetUploader
+from exasol_script_languages_container_ci.lib.config.config_data_model import Config
 from exasol_script_languages_container_ci.lib.github_release_asset_uploader import GithubReleaseAssetUploader
 from exasol_script_languages_container_ci.lib.release import release
 from exasol_script_languages_container_ci.lib.release_uploader import ReleaseUploader
@@ -42,11 +43,12 @@ def run_release(ctx: click.Context,
     github_release_asset_uploader = GithubReleaseAssetUploader(os.getenv("GITHUB_TOKEN"))
     asset_uploader = AssetUploader(release_asset_uploader=github_release_asset_uploader)
     release_uploader = ReleaseUploader(asset_uploader=asset_uploader)
+    build_config = Config.parse_file(config_file)
     release(flavor=flavor,
             docker_user=docker_user,
             docker_password=docker_password,
             docker_release_repository=docker_release_repository,
-            config_file=config_file,
+            build_config=build_config,
             source_repo_url=source_repo_url,
             release_id=release_id,
             release_uploader=release_uploader,

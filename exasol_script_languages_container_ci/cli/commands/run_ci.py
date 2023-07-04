@@ -4,6 +4,7 @@ import click
 
 from exasol_script_languages_container_ci.cli.cli import cli
 from exasol_script_languages_container_ci.lib.ci import ci
+from exasol_script_languages_container_ci.lib.config.config_data_model import Config
 from exasol_script_languages_container_ci.lib.git_access import GitAccess
 
 
@@ -35,12 +36,13 @@ def run_ci(ctx: click.Context,
            commit_sha: str,
            config_file: str):
     logging.basicConfig(level=logging.INFO)
-    ci(flavor,
-       branch_name,
-       docker_user,
-       docker_password,
-       docker_build_repository,
-       docker_release_repository,
-       commit_sha,
-       config_file,
-       GitAccess())
+    build_config = Config.parse_file(config_file)
+    ci(flavor=flavor,
+       branch_name=branch_name,
+       docker_user=docker_user,
+       docker_password=docker_password,
+       docker_build_repository=docker_build_repository,
+       docker_release_repository=docker_release_repository,
+       commit_sha=commit_sha,
+       build_config=build_config,
+       git_access=GitAccess())

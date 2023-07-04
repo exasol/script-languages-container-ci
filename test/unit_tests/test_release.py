@@ -8,6 +8,7 @@ from exasol_script_languages_container_ci.lib.ci_build import CIBuild
 from exasol_script_languages_container_ci.lib.ci_push import CIPush
 from exasol_script_languages_container_ci.lib.ci_security_scan import CISecurityScan
 from exasol_script_languages_container_ci.lib.ci_test import CIExecuteTest
+from exasol_script_languages_container_ci.lib.config.config_data_model import Config
 from exasol_script_languages_container_ci.lib.release import release
 from exasol_script_languages_container_ci.lib.release_uploader import ReleaseUploader
 
@@ -34,7 +35,7 @@ testdata_ci = [
 
 
 @pytest.mark.parametrize("is_dry_run,expected_calls", testdata_ci)
-def test(is_dry_run: bool, expected_calls, config_file):
+def test(is_dry_run: bool, expected_calls, build_config:Config):
     """
     Test that the correct steps are executed for the release:
      1. Build Image (force_rebuild = true/false)
@@ -48,8 +49,8 @@ def test(is_dry_run: bool, expected_calls, config_file):
             docker_user=test_env.docker_user,
             docker_password=test_env.docker_pwd,
             docker_release_repository=test_env.docker_release_repo,
-            config_file=config_file,
             source_repo_url="https://github.com/test_source_repo_url",
+            build_config=build_config,
             release_id=123,
             is_dry_run=is_dry_run,
             release_uploader=ci_commands_mock,
