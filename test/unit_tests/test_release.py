@@ -18,24 +18,28 @@ from test.unit_tests.test_env import test_env
 
 # Testdata contain tuples of (dry_run, list(calls to CICommands))
 testdata_ci = [
-    (True, [ci_calls.build_release_call(),
-            ci_calls.run_db_test_call(),
-            ci_calls.security_scan_call(),
-            ci_calls.release_upload()
-            ]
+    (True, [
+        ci_calls.prepare(),
+        ci_calls.build_release_call(),
+        ci_calls.run_db_test_call(),
+        ci_calls.security_scan_call(),
+        ci_calls.release_upload()
+    ]
      ),
-    (False, [ci_calls.build_release_call(),
-             ci_calls.run_db_test_call(),
-             ci_calls.security_scan_call(),
-             ci_calls.push_release_repo(),
-             ci_calls.release_upload()
-             ]
+    (False, [
+        ci_calls.prepare(),
+        ci_calls.build_release_call(),
+        ci_calls.run_db_test_call(),
+        ci_calls.security_scan_call(),
+        ci_calls.push_release_repo(),
+        ci_calls.release_upload()
+    ]
      ),
 ]
 
 
 @pytest.mark.parametrize("is_dry_run,expected_calls", testdata_ci)
-def test(is_dry_run: bool, expected_calls, build_config:Config):
+def test(is_dry_run: bool, expected_calls, build_config: Config):
     """
     Test that the correct steps are executed for the release:
      1. Build Image (force_rebuild = true/false)
@@ -57,5 +61,6 @@ def test(is_dry_run: bool, expected_calls, build_config:Config):
             ci_build=ci_commands_mock,
             ci_push=ci_commands_mock,
             ci_execute_tests=ci_commands_mock,
-            ci_security_scan=ci_commands_mock)
+            ci_security_scan=ci_commands_mock,
+            ci_prepare=ci_commands_mock)
     assert ci_commands_mock.mock_calls == expected_calls

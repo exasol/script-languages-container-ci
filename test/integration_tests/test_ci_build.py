@@ -1,3 +1,7 @@
+import logging
+import os
+from pathlib import Path
+
 import pytest
 
 from exasol_script_languages_container_ci.lib.ci_build import CIBuild
@@ -21,6 +25,10 @@ def test(input_docker_build_repository,
     test_type = "successful"
     flavor_path = str(flavors_path / test_type)
     test_container_folder = str(test_containers_folder / test_type)
+    logging.basicConfig(level=logging.DEBUG)
+    logging.info("test")
+    os.makedirs(".build_output/jobs", exist_ok=True)
+    print("cwd",Path(".").absolute())
     with not_raises(Exception):
         CIBuild().build(
             flavor_path=(flavor_path,),
