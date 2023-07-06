@@ -1,13 +1,9 @@
 import logging
-import os
-from pathlib import Path
-from typing import Set
-
-from exasol_integration_test_docker_environment.cli.options.system_options import DEFAULT_OUTPUT_DIRECTORY
-from exasol_integration_test_docker_environment.lib.base import luigi_log_config
+from typing import Set, Callable
 
 from exasol_script_languages_container_ci.lib.branch_config import BranchConfig
 from exasol_script_languages_container_ci.lib.ci_build import CIBuild
+from exasol_script_languages_container_ci.lib.ci_prepare import CIPrepare
 from exasol_script_languages_container_ci.lib.ci_push import CIPush
 from exasol_script_languages_container_ci.lib.ci_security_scan import CISecurityScan
 from exasol_script_languages_container_ci.lib.ci_test import CIExecuteTest
@@ -56,7 +52,8 @@ def ci(flavor: str,
        ci_build: CIBuild = CIBuild(),
        ci_execute_tests: CIExecuteTest = CIExecuteTest(),
        ci_push: CIPush = CIPush(),
-       ci_security_scan: CISecurityScan = CISecurityScan()):
+       ci_security_scan: CISecurityScan = CISecurityScan(),
+       ci_prepare: CIPrepare = CIPrepare()):
     """
     Run CI build:
     1. Build image
@@ -71,9 +68,7 @@ def ci(flavor: str,
     rebuild = BranchConfig.rebuild(branch_name)
     needs_to_build = check_if_need_to_build(branch_name, build_config, flavor, git_access)
     if needs_to_build:
-        log_path = Path(DEFAULT_OUTPUT_DIRECTORY) / "jobs" / "logs" / "main.log"
-        os.environ[luigi_log_config.LOG_ENV_VARIABLE_NAME] = f"{log_path.absolute()}"
-
+        ci_prepare.prepare()
         ci_build.build(flavor_path=flavor_path,
                        rebuild=rebuild,
                        build_docker_repository=docker_build_repository,
