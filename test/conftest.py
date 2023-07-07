@@ -4,6 +4,7 @@ import os
 from inspect import cleandoc
 from pathlib import Path
 from tempfile import TemporaryDirectory
+from unittest import mock
 from unittest.mock import patch, MagicMock
 
 import pytest
@@ -53,6 +54,12 @@ def flavors_path(resources_path: Path) -> Path:
 @pytest.fixture
 def test_containers_folder(resources_path: Path) -> Path:
     return resources_path / "test_containers"
+
+
+@pytest.fixture()
+def mock_settings_env_vars():
+    with mock.patch.dict(os.environ, {}):
+        yield
 
 
 @pytest.fixture(autouse=True)

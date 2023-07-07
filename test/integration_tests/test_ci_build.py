@@ -25,7 +25,6 @@ def test(input_docker_build_repository,
     test_type = "successful"
     flavor_path = str(flavors_path / test_type)
     test_container_folder = str(test_containers_folder / test_type)
-    print("cwd",Path(".").absolute())
     with not_raises(Exception):
         CIBuild().build(
             flavor_path=(flavor_path,),
