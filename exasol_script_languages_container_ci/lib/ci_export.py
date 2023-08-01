@@ -23,5 +23,8 @@ class CIExport:
         logging.info(f"Running command 'push' with parameters: {locals()}")
         export_result = export(flavor_path=flavor_path,
                                export_path=export_path,
-                               workers=7)
+                               workers=7,
+                               log_level="INFO",
+                               use_job_specific_log_file=True
+                               )
         self._printer.print_exasol_docker_images()

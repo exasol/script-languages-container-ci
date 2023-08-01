@@ -30,5 +30,8 @@ class CIPush:
              target_docker_repository_name=target_docker_repository,
              target_docker_tag_prefix=target_docker_tag_prefix,
              target_docker_username=docker_user,
-             target_docker_password=docker_password)
+             target_docker_password=docker_password,
+             log_level="INFO",
+             use_job_specific_log_file=True
+             )
         self._printer.print_exasol_docker_images()
