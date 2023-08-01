@@ -34,7 +34,10 @@ class CIBuild:
                                     source_docker_username=docker_user,
                                     source_docker_password=docker_password,
                                     shortcut_build=False,
-                                    workers=7)
+                                    workers=7,
+                                    log_level="WARNING",
+                                    use_job_specific_log_file=True
+                                    )
         else:
             slc_image_infos = build(flavor_path=flavor_path, force_rebuild=rebuild,
                                     source_docker_repository_name=build_docker_repository,
@@ -42,7 +45,10 @@ class CIBuild:
                                     source_docker_username=docker_user,
                                     source_docker_password=docker_password,
                                     shortcut_build=False,
-                                    workers=7)
+                                    workers=7,
+                                    log_level="WARNING",
+                                    use_job_specific_log_file=True
+                                    )
         logging.info(f"Running command 'build_test_container' with parameters: {locals()}")
         content = build_test_container_content(test_container_folder)
         test_container_image_infos = build_test_container(
@@ -50,6 +56,8 @@ class CIBuild:
             workers=7,
             test_container_content=content,
             source_docker_repository_name=build_docker_repository,
-            source_docker_tag_prefix=commit_sha
+            source_docker_tag_prefix=commit_sha,
+            log_level="WARNING",
+            use_job_specific_log_file=True
         )
         self._printer.print_exasol_docker_images()
