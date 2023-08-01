@@ -37,7 +37,7 @@ class DBTestRunner(DBTestRunnerProtocol):
             workers=workers,
             source_docker_username=docker_username,
             source_docker_password=docker_password,
-            log_level="INFO",
+            log_level="WARNING",
             use_job_specific_log_file=True
         )
 

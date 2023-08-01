@@ -35,7 +35,7 @@ class CIBuild:
                                     source_docker_password=docker_password,
                                     shortcut_build=False,
                                     workers=7,
-                                    log_level="INFO",
+                                    log_level="WARNING",
                                     use_job_specific_log_file=True
                                     )
         else:
@@ -46,7 +46,7 @@ class CIBuild:
                                     source_docker_password=docker_password,
                                     shortcut_build=False,
                                     workers=7,
-                                    log_level="INFO",
+                                    log_level="WARNING",
                                     use_job_specific_log_file=True
                                     )
         logging.info(f"Running command 'build_test_container' with parameters: {locals()}")
@@ -57,7 +57,7 @@ class CIBuild:
             test_container_content=content,
             source_docker_repository_name=build_docker_repository,
             source_docker_tag_prefix=commit_sha,
-            log_level="INFO",
+            log_level="WARNING",
             use_job_specific_log_file=True
         )
         self._printer.print_exasol_docker_images()

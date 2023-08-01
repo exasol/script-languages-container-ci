@@ -22,7 +22,7 @@ class CISecurityScan:
         logging.info(f"Running command 'security_scan' with parameters {locals()}")
         security_scan_result = security_scan(flavor_path=flavor_path,
                                              workers=7,
-                                             log_level="INFO",
+                                             log_level="WARNING",
                                              use_job_specific_log_file=True
                                              )
         logging.info("============= SECURITY REPORT ===========")
