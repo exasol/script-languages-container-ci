@@ -1,4 +1,4 @@
-pyodbc>=5.0.0
+pyodbc<5.0.0
 pytz
 lxml
 docker
