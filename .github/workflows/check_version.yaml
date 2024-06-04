@@ -12,6 +12,9 @@ jobs:
       - name: SCM Checkout
         uses: actions/checkout@v3
       - name: Setup Python & Poetry Environment
-        uses: ./.github/actions/prepare_poetry_env
+        uses: exasol/python-toolbox/.github/actions/python-environment@0.12.0
+        with:
+          python-version: "python3.10"
+          poetry-version: '1.8.2'
       - name: Check Release
-        run: ./scripts/build/check_release.sh "python3.8"
+        run: ./scripts/build/check_release.sh "python3.10"
