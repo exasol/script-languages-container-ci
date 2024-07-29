@@ -1,6 +1,6 @@
-pyodbc<5.0.0
+pyodbc
 pytz
 lxml
 docker
 scipy
-https://github.com/exasol/exasol-python-test-framework/releases/download/0.1.0/exasol_python_test_framework-0.1.0-py3-none-any.whl
+exasol-python-test-framework==0.6.0
