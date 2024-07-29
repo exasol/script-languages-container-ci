@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "exasol-script-languages-container-ci"
-version = "1.4.0"
+version = "1.5.0"
 description = "Implements CI builds for script-language-container."
 
 license = "MIT"
@@ -13,8 +13,8 @@ authors = [
 python = ">=3.10.0,<4.0"
 click = "^8.1.7"
 GitPython = ">=3.1.0"
-exasol-script-languages-container-tool = "^0.19.0"
-exasol-integration-test-docker-environment = "^3.0.0"
+exasol-script-languages-container-tool = "^0.20.0"
+exasol-integration-test-docker-environment = "^3.1.0"
 PyGithub = "^2.3.0"
 setuptools = "^70.0.0"
 datamodel-code-generator = ">=0.25.5 <0.30.0"
