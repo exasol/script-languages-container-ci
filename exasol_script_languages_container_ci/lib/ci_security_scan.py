@@ -1,8 +1,8 @@
 import logging
 from pathlib import Path
-from typing import Tuple, Callable
+from typing import Tuple
 
-from exasol_script_languages_container_tool.lib.api import security_scan
+from exasol.slc.api import security_scan
 
 from exasol_script_languages_container_ci.lib.ci_step_output_printer import CIStepOutputPrinterProtocol, \
     CIStepOutputPrinter

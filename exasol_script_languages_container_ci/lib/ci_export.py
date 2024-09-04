@@ -1,8 +1,7 @@
 import logging
 from typing import Tuple
 
-from exasol_script_languages_container_tool.lib.api import export
-from exasol_script_languages_container_tool.lib.tasks.export.export_containers import ExportContainerResult
+from exasol.slc.api import export
 
 from exasol_script_languages_container_ci.lib.ci_step_output_printer import CIStepOutputPrinterProtocol, \
     CIStepOutputPrinter
