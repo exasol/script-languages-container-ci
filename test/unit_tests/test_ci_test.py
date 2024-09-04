@@ -4,7 +4,7 @@ from typing import Union
 from unittest.mock import call, create_autospec, MagicMock
 
 import pytest
-from exasol_script_languages_container_tool.lib.tasks.test.test_container import AllTestsResult
+from exasol.slc.models.test_result import AllTestsResult
 
 from exasol_script_languages_container_ci.lib.ci_step_output_printer import CIStepOutputPrinterProtocol
 from exasol_script_languages_container_ci.lib.ci_test import CIExecuteTest, DBTestRunnerProtocol

@@ -1,8 +1,8 @@
 import logging
 from typing import Tuple, Protocol
 
-from exasol_script_languages_container_tool.lib.api.run_db_tests import run_db_test
-from exasol_script_languages_container_tool.lib.tasks.test.test_container import AllTestsResult
+from exasol.slc.api.run_db_tests import run_db_test
+from exasol.slc.models.test_result import AllTestsResult
 
 from exasol_script_languages_container_ci.lib.ci_step_output_printer import CIStepOutputPrinterProtocol, \
     CIStepOutputPrinter

@@ -1,10 +1,9 @@
 import logging
-from typing import Tuple, Dict, Optional
+from typing import Tuple, Optional
 
 from exasol_integration_test_docker_environment.lib.api.build_test_container import build_test_container
-from exasol_integration_test_docker_environment.lib.docker.images.image_info import ImageInfo
-from exasol_script_languages_container_tool.lib.api import build
-from exasol_script_languages_container_tool.lib.tasks.test.test_container_content import build_test_container_content
+from exasol.slc.api import build
+from exasol.slc.internal.tasks.test.test_container_content import build_test_container_content
 
 from exasol_script_languages_container_ci.lib.ci_step_output_printer import CIStepOutputPrinterProtocol, \
     CIStepOutputPrinter
