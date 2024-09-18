@@ -13,7 +13,7 @@ from exasol_script_languages_container_ci.lib.git_access import GitAccess
 
 def get_all_affected_files(git_access: GitAccess, base_branch: str) -> Set[str]:
     base_last_commit_sha = git_access.get_head_commit_sha_of_branch(base_branch)
-    changed_files = set()
+    changed_files = set()  # type: ignore
     for commit in git_access.get_last_commits():
         if commit == base_last_commit_sha:
             break

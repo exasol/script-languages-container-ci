@@ -50,8 +50,8 @@ def release(
         rebuild=True,
         build_docker_repository=None,
         commit_sha="",
-        docker_user=None,
-        docker_password=None,
+        docker_user=None,  # type: ignore
+        docker_password=None,  # type: ignore
         test_container_folder=test_container_folder,
     )
     ci_execute_tests.execute_tests(

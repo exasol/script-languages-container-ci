@@ -31,7 +31,7 @@ def generate_config_data_model(output_file: Path) -> Path:
         with temp_output_file.open("rt") as temp_output_file_handle:
             with output_file.open("wt") as output_file_handle:
                 lines = (line for line in temp_output_file_handle)
-                lines = filter(lambda line: "#   timestamp: " not in line, lines)
+                lines = filter(lambda line: "#   timestamp: " not in line, lines)  # type: ignore
                 for line in lines:
                     output_file_handle.write(line)
     return output_file

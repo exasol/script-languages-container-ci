@@ -10,15 +10,15 @@ repos:
         language: system
         entry: poetry run nox -s fix
 
-#  - repo: local
-#    hooks:
-#      - id: type-check
-#        name: type-check
-#        types: [ python ]
-#        pass_filenames: false
-#        language: system
-#        entry: poetry run nox -s type-check
-#
+  - repo: local
+    hooks:
+      - id: type-check
+        name: type-check
+        types: [ python ]
+        pass_filenames: false
+        language: system
+        entry: poetry run nox -s type-check
+
 #  - repo: local
 #    hooks:
 #      - id: lint

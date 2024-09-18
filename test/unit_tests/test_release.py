@@ -62,11 +62,11 @@ def test(is_dry_run: bool, expected_calls, build_config: Config):
         build_config=build_config,
         release_id=123,
         is_dry_run=is_dry_run,
-        release_uploader=ci_commands_mock,
-        ci_build=ci_commands_mock,
-        ci_push=ci_commands_mock,
-        ci_execute_tests=ci_commands_mock,
-        ci_security_scan=ci_commands_mock,
-        ci_prepare=ci_commands_mock,
+        release_uploader=ci_commands_mock,  # type: ignore
+        ci_build=ci_commands_mock,  # type: ignore
+        ci_push=ci_commands_mock,  # type: ignore
+        ci_execute_tests=ci_commands_mock,  # type: ignore
+        ci_security_scan=ci_commands_mock,  # type: ignore
+        ci_prepare=ci_commands_mock,  # type: ignore
     )
-    assert ci_commands_mock.mock_calls == expected_calls
+    assert ci_commands_mock.mock_calls == expected_calls  # type: ignore

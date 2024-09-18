@@ -18,7 +18,7 @@ class GitAccess:
         :raise: ValueError: if the refs with label 'branch_name' does not exists or is not unique.
         """
         repo = Repo()
-        branch = [b for b in repo.refs if b.name == branch_name]
+        branch = [b for b in repo.refs if b.name == branch_name]  # type: ignore
         if len(branch) == 0:
             ex_msg = f"Branch '{branch_name}' does not exist."
             raise ValueError(ex_msg)
@@ -40,4 +40,4 @@ class GitAccess:
         Returns the files of the specific commits of the repo in the cwd.
         """
         repo = Repo()
-        return repo.commit(commit_sha).stats.files.keys()
+        return repo.commit(commit_sha).stats.files.keys()  # type: ignore

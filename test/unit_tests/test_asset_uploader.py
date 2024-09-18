@@ -10,7 +10,7 @@ from exasol_script_languages_container_ci.lib.github_release_asset_uploader impo
 )
 
 
-def test():
+def test() -> None:
     github_release_asset_uploader_mock: Union[MagicMock, GithubReleaseAssetUploader] = (
         create_autospec(GithubReleaseAssetUploader)
     )

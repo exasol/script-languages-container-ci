@@ -12,10 +12,10 @@ from exasol_script_languages_container_ci.lib.release_uploader import ReleaseUpl
     autospec=True,
 )
 def test(temp_dir_mock):
-    asset_uploader_mock: Union[MagicMock, AssetUploader] = create_autospec(
+    asset_uploader_mock: Union[MagicMock, AssetUploader] = create_autospec(  # type: ignore
         AssetUploader
     )
-    ci_export_mock: Union[MagicMock, CIExport] = create_autospec(CIExport)
+    ci_export_mock: Union[MagicMock, CIExport] = create_autospec(CIExport)  # type: ignore
     release_uploader = ReleaseUploader(asset_uploader_mock, ci_export_mock)
     release_uploader.release_upload(
         release_id=123,
