@@ -15,8 +15,10 @@ def _parse_repo_url(source_repo_url: str) -> str:
     """
     res = re.search(r"^https://github.com/([a-zA-Z0-9\-_/]+)$", source_repo_url)
     if res is None:
-        raise ValueError(f"Parameter source_repo_url={source_repo_url} does not match the following regex: "
-                         f"^https://github.com/([a-zA-Z0-9\-_/]+)$")
+        raise ValueError(
+            f"Parameter source_repo_url={source_repo_url} does not match the following regex: "
+            f"^https://github.com/([a-zA-Z0-9\-_/]+)$"
+        )
     return res.groups()[0]
 
 
@@ -26,10 +28,9 @@ class ReleaseUploader:
         self._ci_export = ci_export
         self._asset_uploader = asset_uploader
 
-    def release_upload(self,
-                       flavor_path: Tuple[str, ...],
-                       source_repo_url: str,
-                       release_id: int) -> None:
+    def release_upload(
+        self, flavor_path: Tuple[str, ...], source_repo_url: str, release_id: int
+    ) -> None:
         """
         Exports the container into tar.gz(s) and uploads to the repository / release.
         release_key is expected to have the following format: "{key}:{value}" where {key} can be:
@@ -47,11 +48,13 @@ class ReleaseUploader:
                 content_type="application/gzip",
                 artifact_path=temp_dir,
                 file_suffix=".tar.gz",
-                label_prefix="Flavor")
+                label_prefix="Flavor",
+            )
             self._asset_uploader.upload_assets(
                 repo_id=repo_id,
                 release_id=release_id,
                 content_type="text/plain",
                 artifact_path=temp_dir,
                 file_suffix=".tar.gz.sha512sum",
-                label_prefix="Checksum")
+                label_prefix="Checksum",
+            )

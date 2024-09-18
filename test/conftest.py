@@ -5,13 +5,20 @@ from inspect import cleandoc
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from unittest import mock
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
 
 import pytest
 
-from exasol_script_languages_container_ci.lib.config.config_data_model import Config, Build, Ignore, Release
-from exasol_script_languages_container_ci.lib.config.data_model_generator import config_data_model_default_output_file, \
-    regenerate_config_data_model
+from exasol_script_languages_container_ci.lib.config.config_data_model import (
+    Build,
+    Config,
+    Ignore,
+    Release,
+)
+from exasol_script_languages_container_ci.lib.config.data_model_generator import (
+    config_data_model_default_output_file,
+    regenerate_config_data_model,
+)
 
 script_path = Path(__file__).absolute().parent
 
@@ -22,8 +29,10 @@ logger = logging.getLogger(__name__)
 
 def pytest_addoption(parser):
     parser.addoption(
-        DISABLE_PYDANTIC_MODEL_GENERATION, action="store_true", default=False,
-        help="Disables the generation of the pydantic models from the json schemas"
+        DISABLE_PYDANTIC_MODEL_GENERATION,
+        action="store_true",
+        default=False,
+        help="Disables the generation of the pydantic models from the json schemas",
     )
 
 
@@ -78,10 +87,9 @@ def tmp_test_dir():
 @pytest.fixture
 def build_config() -> Config:
     return Config(
-        build=Build(
-            ignore=Ignore(paths=["doc"]),
-            base_branch="master"),
-        release=Release(timeout_in_minutes=1))
+        build=Build(ignore=Ignore(paths=["doc"]), base_branch="master"),
+        release=Release(timeout_in_minutes=1),
+    )
 
 
 @pytest.fixture()
@@ -99,7 +107,8 @@ def git_access_mock():
 
 @pytest.fixture
 def expected_json_config() -> str:
-    json = cleandoc("""
+    json = cleandoc(
+        """
     {
         "build": {
             "ignore": {
@@ -113,5 +122,6 @@ def expected_json_config() -> str:
         "release": {
             "timeout_in_minutes": 1
         }
-    }""")
+    }"""
+    )
     return json

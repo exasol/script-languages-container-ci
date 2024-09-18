@@ -41,4 +41,3 @@ class GitAccess:
         """
         repo = Repo()
         return repo.commit(commit_sha).stats.files.keys()
-
