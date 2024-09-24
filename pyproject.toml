@@ -12,7 +12,7 @@ authors = [
 packages = [
     {include = "README.md"},
     {include = "LICENSE"},
-    {include = "exasol_script_languages_container_tool"},
+    {include = "exasol_script_languages_container_ci"},
 ]
 
 [tool.poetry.dependencies]
