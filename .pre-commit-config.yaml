@@ -19,14 +19,14 @@ repos:
         language: system
         entry: poetry run nox -s type-check
 
-#  - repo: local
-#    hooks:
-#      - id: lint
-#        name: lint
-#        types: [ python ]
-#        pass_filenames: false
-#        language: system
-#        entry: poetry run nox -s lint
+  - repo: local
+    hooks:
+      - id: lint
+        name: lint
+        types: [ python ]
+        pass_filenames: false
+        language: system
+        entry: poetry run nox -s lint
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.4.0
