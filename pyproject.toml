@@ -26,7 +26,7 @@ setuptools = "^73.0.0"
 datamodel-code-generator = ">=0.25.5 <0.30.0"
 
 [tool.poetry.group.dev.dependencies]
-exasol-toolbox = "^0.14.0"
+exasol-toolbox = ">=0.15.0,<1.0"
 
 [build-system]
 requires = ["poetry_core>=1.0.0"]
