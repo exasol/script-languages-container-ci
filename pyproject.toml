@@ -37,6 +37,9 @@ toml = ">=0.10.2"
 pytest = "^7.1.1"
 pytest-mock = "^3.7.0"
 
+[tool.isort]
+profile = "black"
+force_grid_wrap = 2
 
 [tool.pytest.ini_options]
 minversion = "6.0"
