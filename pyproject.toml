@@ -43,7 +43,7 @@ force_grid_wrap = 2
 
 [tool.pytest.ini_options]
 minversion = "6.0"
-addopts = "--ignore=test/integration_tests/resources"
+addopts = "--ignore=test/integration/resources"
 
 testpaths = [
     "test"

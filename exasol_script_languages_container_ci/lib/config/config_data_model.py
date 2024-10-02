@@ -5,17 +5,14 @@ from __future__ import annotations
 
 from typing import List
 
-from pydantic import (
-    BaseModel,
-    Extra,
-)
+from pydantic import BaseModel, Extra
 
 
 class Ignore(BaseModel):
     class Config:
         extra = Extra.forbid
 
-    paths: list[str]
+    paths: List[str]
 
 
 class Build(BaseModel):

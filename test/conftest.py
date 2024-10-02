@@ -55,7 +55,7 @@ def pytest_configure(config):
 
 @pytest.fixture
 def resources_path() -> Path:
-    return script_path / "integration_tests/resources"
+    return script_path / "integration/resources"
 
 
 @pytest.fixture
