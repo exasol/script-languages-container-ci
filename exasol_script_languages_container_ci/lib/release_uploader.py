@@ -17,7 +17,7 @@ def _parse_repo_url(source_repo_url: str) -> str:
     if res is None:
         raise ValueError(
             f"Parameter source_repo_url={source_repo_url} does not match the following regex: "
-            f"^https://github.com/([a-zA-Z0-9\-_/]+)$"
+            rf"^https://github.com/([a-zA-Z0-9\-_/]+)$"
         )
     return res.groups()[0]
 
