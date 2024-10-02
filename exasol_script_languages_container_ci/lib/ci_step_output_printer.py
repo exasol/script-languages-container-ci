@@ -1,6 +1,9 @@
 from inspect import cleandoc
 from pathlib import Path
-from typing import Callable, Protocol
+from typing import (
+    Callable,
+    Protocol,
+)
 
 import docker
 

@@ -3,7 +3,10 @@ import logging
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-from datamodel_code_generator import InputFileType, generate
+from datamodel_code_generator import (
+    InputFileType,
+    generate,
+)
 
 from exasol_script_languages_container_ci.lib.render_template import render_template
 

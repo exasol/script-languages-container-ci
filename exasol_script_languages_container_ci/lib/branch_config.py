@@ -1,5 +1,8 @@
 import re
-from enum import Enum, auto
+from enum import (
+    Enum,
+    auto,
+)
 
 
 class BuildSteps(Enum):

@@ -1,5 +1,8 @@
 import logging
-from typing import Protocol, Tuple
+from typing import (
+    Protocol,
+    Tuple,
+)
 
 from exasol.slc.api.run_db_tests import run_db_test
 from exasol.slc.models.test_result import AllTestsResult

@@ -1,6 +1,12 @@
 from test.mock_cast import mock_cast
 from typing import Union
-from unittest.mock import MagicMock, Mock, call, create_autospec, patch
+from unittest.mock import (
+    MagicMock,
+    Mock,
+    call,
+    create_autospec,
+    patch,
+)
 
 from exasol_script_languages_container_ci.lib.asset_uploader import AssetUploader
 from exasol_script_languages_container_ci.lib.ci_export import CIExport

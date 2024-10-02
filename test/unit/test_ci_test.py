@@ -2,7 +2,11 @@ from contextlib import suppress
 from pathlib import Path
 from test.mock_cast import mock_cast
 from typing import Union
-from unittest.mock import MagicMock, call, create_autospec
+from unittest.mock import (
+    MagicMock,
+    call,
+    create_autospec,
+)
 
 import pytest
 from exasol.slc.models.test_result import AllTestsResult

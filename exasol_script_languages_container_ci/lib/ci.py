@@ -1,5 +1,8 @@
 import logging
-from typing import Callable, Set
+from typing import (
+    Callable,
+    Set,
+)
 
 from exasol_script_languages_container_ci.lib.branch_config import BranchConfig
 from exasol_script_languages_container_ci.lib.ci_build import CIBuild

@@ -1,5 +1,8 @@
 import logging
-from typing import Optional, Tuple
+from typing import (
+    Optional,
+    Tuple,
+)
 
 from exasol.slc.api import build
 from exasol.slc.internal.tasks.test.test_container_content import (

@@ -5,7 +5,10 @@ from inspect import cleandoc
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from unittest import mock
-from unittest.mock import MagicMock, patch
+from unittest.mock import (
+    MagicMock,
+    patch,
+)
 
 import pytest
 
