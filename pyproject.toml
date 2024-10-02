@@ -50,7 +50,7 @@ testpaths = [
 ]
 
 [[tool.mypy.overrides]]
-module = ["exasol_integration_test_docker_environment.*"]
+module = ["exasol_integration_test_docker_environment.*", "docker.*", "toml"]
 ignore_missing_imports = true
 
 
