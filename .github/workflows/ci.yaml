@@ -19,4 +19,4 @@ jobs:
           python-version: "3.10"
           poetry-version: '1.8.2'
       - name: Run pytest
-        run: nox -s integration-tests
+        run: poetry run nox -s integration-tests
