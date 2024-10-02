@@ -1,14 +1,18 @@
 import sys
 
-from exasol_script_languages_container_ci.lib.config.data_model_generator import CONFIG_DATA_MODEL_FILE_NAME, \
-    generate_config_data_model
+from exasol_script_languages_container_ci.lib.config.data_model_generator import (
+    CONFIG_DATA_MODEL_FILE_NAME,
+    generate_config_data_model,
+)
 
 
 def test_loading_generated_module(tmp_path):
     config_data_model_file = tmp_path / CONFIG_DATA_MODEL_FILE_NAME
     generate_config_data_model(config_data_model_file)
     module = load_module(config_data_model_file)
-    assert {"Config", "Build", "Release", "Ignore", "Release"}.issubset(module.__dict__.keys())
+    assert {"Config", "Build", "Release", "Ignore", "Release"}.issubset(
+        module.__dict__.keys()
+    )
 
 
 def test_using_generated_module(tmp_path, expected_json_config):
@@ -23,23 +27,16 @@ def test_using_generated_module(tmp_path, expected_json_config):
 def create_config(module):
     config = module.Config(
         build=module.Build(
-            ignore=module.Ignore(
-                paths=[
-                    "a/b/c",
-                    "e/f/g"
-                ]
-            ),
-            base_branch=""
+            ignore=module.Ignore(paths=["a/b/c", "e/f/g"]), base_branch=""
         ),
-        release=module.Release(
-            timeout_in_minutes=1
-        )
+        release=module.Release(timeout_in_minutes=1),
     )
     return config
 
 
 def load_module(config_data_model_file):
     import importlib.util
+
     module_name = "test_create_model_can_be_imported"
     spec = importlib.util.spec_from_file_location(module_name, config_data_model_file)
     module = importlib.util.module_from_spec(spec)

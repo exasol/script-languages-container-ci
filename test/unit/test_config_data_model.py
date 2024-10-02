@@ -1,25 +1,18 @@
-
-
 import pytest
 
-from exasol_script_languages_container_ci.lib.config.config_data_model import Config, Build, Ignore, Release
+from exasol_script_languages_container_ci.lib.config.config_data_model import (
+    Build,
+    Config,
+    Ignore,
+    Release,
+)
 
 
 @pytest.fixture
 def expected_config() -> Config:
     config = Config(
-        build=Build(
-            ignore=Ignore(
-                paths=[
-                    "a/b/c",
-                    "e/f/g"
-                ]
-            ),
-            base_branch=""
-        ),
-        release=Release(
-            timeout_in_minutes=1
-        )
+        build=Build(ignore=Ignore(paths=["a/b/c", "e/f/g"]), base_branch=""),
+        release=Release(timeout_in_minutes=1),
     )
     return config
 

@@ -3,3 +3,5 @@ dist
 .build_output
 .pytest_cache
 __pycache__
+.lint.json
+.lint.txt

@@ -9,6 +9,12 @@ authors = [
     "Thomas Uebensee <ext.thomas.uebensee@exasol.com>"
 ]
 
+packages = [
+    {include = "README.md"},
+    {include = "LICENSE"},
+    {include = "exasol_script_languages_container_ci"},
+]
+
 [tool.poetry.dependencies]
 python = ">=3.10.0,<4.0"
 click = "^8.1.7"
@@ -19,6 +25,9 @@ PyGithub = "^2.3.0"
 setuptools = "^73.0.0"
 datamodel-code-generator = ">=0.25.5 <0.30.0"
 
+[tool.poetry.group.dev.dependencies]
+exasol-toolbox = ">=0.15.0,<1.0"
+
 [build-system]
 requires = ["poetry_core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
@@ -28,11 +37,25 @@ toml = ">=0.10.2"
 pytest = "^7.1.1"
 pytest-mock = "^3.7.0"
 
+[tool.isort]
+profile = "black"
+force_grid_wrap = 2
 
 [tool.pytest.ini_options]
 minversion = "6.0"
-addopts = "--ignore=test/integration_tests/resources"
+addopts = "--ignore=test/integration/resources"
 
 testpaths = [
     "test"
 ]
+
+[[tool.mypy.overrides]]
+module = ["exasol_integration_test_docker_environment.*", "docker.*", "toml"]
+ignore_missing_imports = true
+
+
+[tool.pylint.'MESSAGES CONTROL']
+max-line-length = 120
+disable = """
+    W,R,C,
+"""

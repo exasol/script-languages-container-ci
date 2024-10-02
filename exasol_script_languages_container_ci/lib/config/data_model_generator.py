@@ -3,7 +3,10 @@ import logging
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-from datamodel_code_generator import generate, InputFileType
+from datamodel_code_generator import (
+    InputFileType,
+    generate,
+)
 
 from exasol_script_languages_container_ci.lib.render_template import render_template
 
@@ -21,12 +24,17 @@ def generate_config_data_model(output_file: Path) -> Path:
     schema_json = json.dumps(schema_dict)
     with TemporaryDirectory() as directory:
         temp_output_file = Path(directory) / CONFIG_DATA_MODEL_FILE_NAME
-        generate(schema_json, input_file_type=InputFileType.JsonSchema, output=temp_output_file,
-                 class_name="Config", apply_default_values_for_required_fields=True)
+        generate(
+            schema_json,
+            input_file_type=InputFileType.JsonSchema,
+            output=temp_output_file,
+            class_name="Config",
+            apply_default_values_for_required_fields=True,
+        )
         with temp_output_file.open("rt") as temp_output_file_handle:
             with output_file.open("wt") as output_file_handle:
                 lines = (line for line in temp_output_file_handle)
-                lines = filter(lambda line: "#   timestamp: " not in line, lines)
+                lines = filter(lambda line: "#   timestamp: " not in line, lines)  # type: ignore
                 for line in lines:
                     output_file_handle.write(line)
     return output_file

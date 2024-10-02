@@ -1,4 +1,3 @@
-
 class TestEnv:
     docker_user = "test_docker_user"
     docker_pwd = "test_docker_pwd"

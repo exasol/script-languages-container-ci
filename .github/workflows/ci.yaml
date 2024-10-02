@@ -1,4 +1,4 @@
-name: Run Unit Tests
+name: Run Integration Tests
 
 on:
   push:
@@ -14,9 +14,9 @@ jobs:
       - name: SCM Checkout
         uses: actions/checkout@v4
       - name: Setup Python & Poetry Environment
-        uses: exasol/python-toolbox/.github/actions/python-environment@0.12.0
+        uses: exasol/python-toolbox/.github/actions/python-environment@0.15.0
         with:
           python-version: "3.10"
           poetry-version: '1.8.2'
       - name: Run pytest
-        run: poetry run pytest
+        run: poetry run nox -s integration-tests
