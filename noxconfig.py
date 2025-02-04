@@ -14,7 +14,13 @@ class Config:
     version_file: Path = (
         Path(__file__).parent / "exasol_script_languages_container_ci" / "version.py"
     )
-    path_filters: Iterable[str] = ("dist", ".eggs", "venv", "resources")
+    path_filters: Iterable[str] = (
+        "dist",
+        ".eggs",
+        "venv",
+        "resources",
+        "config_data_model.py",
+    )
 
 
 PROJECT_CONFIG = Config()

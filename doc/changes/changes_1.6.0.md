@@ -1,6 +1,6 @@
 # Script-Languages-Container-CI 1.6.0, 2024-09-04
 
-Code name: Update SLCT to 2.0.0
+Code name: Update SLCT to 1.0.0
 
 ## Summary
 
