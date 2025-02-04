@@ -1,10 +1,7 @@
 import logging
 from pathlib import Path
 
-from github import (
-    Github,
-    GithubException,
-)
+from github import Github, GithubException
 
 
 class GithubReleaseAssetUploader:

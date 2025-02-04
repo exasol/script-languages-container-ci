@@ -1,11 +1,7 @@
 from test.unit import ci_calls
 from test.unit.test_env import test_env
 from typing import Union
-from unittest.mock import (
-    MagicMock,
-    Mock,
-    create_autospec,
-)
+from unittest.mock import MagicMock, Mock, create_autospec
 
 import pytest
 

@@ -1,8 +1,5 @@
 from test.matchers import file_exists_matcher
-from unittest.mock import (
-    call,
-    create_autospec,
-)
+from unittest.mock import call, create_autospec
 
 import pytest
 

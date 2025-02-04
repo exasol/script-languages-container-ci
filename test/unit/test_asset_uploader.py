@@ -2,10 +2,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 from test.mock_cast import mock_cast
 from typing import Union
-from unittest.mock import (
-    MagicMock,
-    create_autospec,
-)
+from unittest.mock import MagicMock, create_autospec
 
 from exasol_script_languages_container_ci.lib.asset_uploader import AssetUploader
 from exasol_script_languages_container_ci.lib.github_release_asset_uploader import (
