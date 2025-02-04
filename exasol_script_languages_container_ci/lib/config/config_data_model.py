@@ -12,7 +12,7 @@ class Ignore(BaseModel):
     class Config:
         extra = Extra.forbid
 
-    paths: List[str]
+    paths: list[str]
 
 
 class Build(BaseModel):

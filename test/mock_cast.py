@@ -1,7 +1,4 @@
-from typing import (
-    Any,
-    cast,
-)
+from typing import Any, cast
 from unittest.mock import Mock
 
 
