@@ -3,7 +3,7 @@ import os
 from pathlib import Path
 
 import pytest
-from exasol_integration_test_docker_environment.lib.base import luigi_log_config
+from exasol_integration_test_docker_environment.lib.logging import luigi_log_config
 
 from exasol_script_languages_container_ci.lib.ci_build import CIBuild
 from exasol_script_languages_container_ci.lib.ci_prepare import CIPrepare

@@ -1,7 +1,4 @@
 import pytest
-from exasol_integration_test_docker_environment.lib.api.api_errors import (
-    TaskRuntimeError,
-)
 
 from exasol_script_languages_container_ci.lib.ci_test import DBTestRunnerProtocol
 

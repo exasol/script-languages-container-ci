@@ -4,7 +4,7 @@ from pathlib import Path
 from exasol_integration_test_docker_environment.cli.options.system_options import (
     DEFAULT_OUTPUT_DIRECTORY,
 )
-from exasol_integration_test_docker_environment.lib.base import luigi_log_config
+from exasol_integration_test_docker_environment.lib.logging import luigi_log_config
 
 
 class CIPrepare:
