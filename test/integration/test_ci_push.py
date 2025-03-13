@@ -1,5 +1,3 @@
-from pathlib import Path
-
 from exasol_integration_test_docker_environment.testing.docker_registry import (
     LocalDockerRegistryContextManager,
 )
