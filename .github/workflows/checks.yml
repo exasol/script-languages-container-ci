@@ -22,21 +22,6 @@ jobs:
         run: |
           poetry run -- version-check exasol_script_languages_container_ci/version.py
 
-  Documentation:
-    name: Docs
-    needs: [ Version-Check ]
-    runs-on: ubuntu-24.04
-
-    steps:
-      - name: SCM Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Python & Poetry Environment
-        uses: exasol/python-toolbox/.github/actions/python-environment@1.0.1
-
-      - name: Build Documentation
-        run: |
-          poetry run -- nox -s docs:build
 
   build-matrix:
     name: Generate Build Matrix
@@ -149,7 +134,7 @@ jobs:
 
   Tests:
     name: Unit-Tests (Python-${{ matrix.python-version }}, Exasol-${{ matrix.exasol-version}})
-    needs: [ Documentation, Lint, Type-Check, Security, Format, build-matrix ]
+    needs: [ Lint, Type-Check, Security, Format, build-matrix ]
     runs-on: ubuntu-24.04
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -178,7 +163,6 @@ jobs:
 
   Data-Model:
     name: Unit-Tests (Python-${{ matrix.python-version }}, Exasol-${{ matrix.exasol-version}})
-    needs: [ Documentation, Lint, Type-Check, Security, Format, build-matrix ]
     runs-on: ubuntu-24.04
     steps:
       - name: SCM Checkout
