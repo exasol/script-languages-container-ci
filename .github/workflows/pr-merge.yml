@@ -16,10 +16,6 @@ jobs:
     uses: ./.github/workflows/checks.yml
     secrets: inherit
 
-  publish-docs:
-    name: Publish Documentation
-    uses: ./.github/workflows/gh-pages.yml
-
   metrics:
     needs: [ ci-job ]
     uses: ./.github/workflows/report.yml
