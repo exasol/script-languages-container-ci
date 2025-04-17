@@ -1,14 +1,15 @@
-[tool.poetry]
+[project]
 name = "exasol-script-languages-container-ci"
-version = "1.8.0"
+version = "2.0.0"
 description = "Implements CI builds for script-language-container."
 
 license = "MIT"
 
 authors = [
-    "Thomas Uebensee <ext.thomas.uebensee@exasol.com>"
+    { name="Thomas Uebensee", email="Thomas Uebensee <ext.thomas.uebensee@exasol.com>" }
 ]
 
+[tool.poetry]
 packages = [
     {include = "README.md"},
     {include = "LICENSE"},
@@ -25,17 +26,16 @@ PyGithub = "^2.3.0"
 setuptools = "^73.0.0"
 datamodel-code-generator = ">=0.25.5 <0.30.0"
 
-[tool.poetry.group.dev.dependencies]
-exasol-toolbox = ">=0.15.0,<1.0"
-
 [build-system]
-requires = ["poetry_core>=1.0.0"]
+requires = ["poetry_core>=2.0.0"]
 build-backend = "poetry.core.masonry.api"
 
-[tool.poetry.dev-dependencies]
+
+[tool.poetry.group.dev.dependencies]
 toml = ">=0.10.2"
 pytest = "^7.1.1"
 pytest-mock = "^3.7.0"
+exasol-toolbox = ">=0.15.0,<1.0"
 
 [tool.black]
 line-length = 88
