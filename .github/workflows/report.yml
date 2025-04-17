@@ -24,12 +24,6 @@ jobs:
         with:
           path: ./artifacts
 
-      - name: Check artifacts
-        run: |
-          ls -la ./artifacts
-          echo running tree artifacts
-          tree artifacts
-
       - name: Copy Artifacts into Root Folder
         working-directory: ./artifacts
         run: |
