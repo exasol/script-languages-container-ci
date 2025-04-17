@@ -25,7 +25,6 @@ jobs:
           path: ./artifacts
 
       - name: Check artifacts
-        working-directory: ./artifacts
         run: |
           ls -la ./artifacts
           echo running tree artifacts
