@@ -15,7 +15,3 @@ jobs:
     name: Checks
     uses: ./.github/workflows/checks.yml
     secrets: inherit
-
-  metrics:
-    needs: [ ci-job ]
-    uses: ./.github/workflows/report.yml

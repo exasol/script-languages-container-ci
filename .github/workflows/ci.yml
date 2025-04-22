@@ -16,7 +16,3 @@ jobs:
   CI:
     uses: ./.github/workflows/merge-gate.yml
     secrets: inherit
-
-  Metrics:
-    needs: [ CI ]
-    uses: ./.github/workflows/report.yml
