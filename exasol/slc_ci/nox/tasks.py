@@ -27,7 +27,7 @@ def _parse_flavor(session: Session) -> str:
             usage=f"nox -s {session.name} -- --flavor <flavor>",
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         )
-        p.add_argument("--flavor")
+        p.add_argument("--flavor", required=True)
         return p
 
     args = parser().parse_args(session.posargs)
@@ -82,9 +82,9 @@ def run_db_tests(session: nox.Session):
             usage="nox -s run-db-tests -- --flavor <flavor> --test-set <test-set-name>",
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         )
-        p.add_argument("--flavor")
-        p.add_argument("--test-set-name")
-        p.add_argument("--slc-directory")
+        p.add_argument("--flavor", required=True)
+        p.add_argument("--test-set-name", required=True)
+        p.add_argument("--slc-directory", required=True)
         return p
 
     args = parser().parse_args(session.posargs)
@@ -126,8 +126,8 @@ def run_check_if_build_needed(session: nox.Session):
             usage="nox -s check-if-build-need -- --flavor <flavor> --branch-name <branch_name>",
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         )
-        p.add_argument("--flavor")
-        p.add_argument("--branch-name")
+        p.add_argument("--flavor", required=True)
+        p.add_argument("--branch-name", required=True)
         return p
 
     args = parser().parse_args(session.posargs)
@@ -147,15 +147,14 @@ def run_export_and_scan_vulnerabilities(session: nox.Session):
         p = ArgumentParser(
             usage="nox -s check-if-build-need -- --flavor <flavor> --branch-name <branch_name> "
             "--docker-user <docker_user> --docker-password <docker_password> "
-            "--docker-build-repository <docker_build_repository> --commit-sha <commit_sha>",
+            "--commit-sha <commit_sha>",
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         )
-        p.add_argument("--flavor")
-        p.add_argument("--branch-name")
-        p.add_argument("--docker-user")
-        p.add_argument("--docker-password")
-        p.add_argument("--docker-build-repository")
-        p.add_argument("--commit-sha")
+        p.add_argument("--flavor", required=True)
+        p.add_argument("--branch-name", required=True)
+        p.add_argument("--docker-user", required=True)
+        p.add_argument("--docker-password", required=True)
+        p.add_argument("--commit-sha", required=True)
         return p
 
     args = parser().parse_args(session.posargs)
@@ -165,7 +164,6 @@ def run_export_and_scan_vulnerabilities(session: nox.Session):
         branch_name=args.branch_name,
         docker_user=args.docker_user,
         docker_password=args.docker_password,
-        docker_build_repository=args.docker_build_repository,
         commit_sha=args.commit_sha,
     )
     print(slc_cache_file)
