@@ -15,6 +15,7 @@ packages = [
     {include = "README.md"},
     {include = "LICENSE"},
     {include = "exasol_script_languages_container_ci"},
+    {include = "exasol"},
 ]
 
 [tool.poetry.dependencies]
