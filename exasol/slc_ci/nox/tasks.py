@@ -137,7 +137,7 @@ def run_check_if_build_needed(session: nox.Session):
     print("True") if need_to_build else print("False")
 
 
-@nox.session(name="ci:check-if-build-need", python=False)
+@nox.session(name="ci:export-and-scan-vulnerabilities", python=False)
 def run_export_and_scan_vulnerabilities(session: nox.Session):
     """
     Exports the SLC and runs the vulnerabilities checks. Returns the path to the cached SLC.
