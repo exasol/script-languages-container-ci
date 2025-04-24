@@ -28,8 +28,9 @@ def _write_github_output(args: argparse.Namespace, value: str) -> None:
 
 @nox.session(name="ci:find-available-flavors", python=False)
 def run_find_available_flavors(session: Session) -> None:
+    args = ArgumentParserBuilder(session).with_github_output().parse()
     flavor_list = list(api.get_flavors(SLC_BUILD_CONFIG.flavors_path))
-    print(json.dumps(flavor_list))
+    _write_github_output(args, json.dumps(flavor_list))
 
 
 @nox.session(name="ci:get-build-runner-for-flavor", python=False)

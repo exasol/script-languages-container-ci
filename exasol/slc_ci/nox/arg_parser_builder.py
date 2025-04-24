@@ -46,5 +46,5 @@ class ArgumentParserBuilder:
         return self
 
     def parse(self) -> argparse.Namespace:
-        self._parser.usage = f"nox -s {self._session.name} {' '.join(self._usages)}"
+        self._parser.usage = f"nox -s {self._session.name} -- {' '.join(self._usages)}"
         return self._parser.parse_args(self._session.posargs)
