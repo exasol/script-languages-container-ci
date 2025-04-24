@@ -4,12 +4,14 @@ from typing import List
 from exasol.slc_ci.lib.ci_prepare import CIPrepare
 from exasol.slc_ci.lib.ci_test import CIExecuteTest
 from exasol.slc_ci.lib.run_tests import run_tests as lib_run_tests
+from exasol.slc_ci.model.flavor_ci_model import FlavorCiConfig
 
 
 def run_tests(
     flavor: str,
     slc_path: Path,
-    test_folders: List[str],
+    flavor_config: FlavorCiConfig,
+    test_set: str,
     docker_user: str,
     docker_password: str,
 ) -> None:
@@ -19,7 +21,8 @@ def run_tests(
     return lib_run_tests(
         flavor=flavor,
         slc_path=slc_path,
-        test_folders=test_folders,
+        flavor_config=flavor_config,
+        test_set=test_set,
         docker_user=docker_user,
         docker_password=docker_password,
         ci_prepare=ci_prepare,
