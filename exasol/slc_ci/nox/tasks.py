@@ -96,7 +96,7 @@ def run_db_tests(session: nox.Session):
     ]
     if len(matched_test_set) != 1:
         raise ValueError(f"Invalid test set name: {args.test_set_name}")
-    test_set_folders = [folder for folder in matched_test_set[0].test_folders]
+    test_set_folders = [folder for folder in matched_test_set[0].folders]
     slc_directory = Path(args.slc_directory)
     if not slc_directory.exists():
         raise ValueError(f"{args.slc_directory} does not exist")
@@ -108,7 +108,7 @@ def run_db_tests(session: nox.Session):
 
     api.run_tests(
         flavor=args.flavor,
-        slc_path=args.slc_directory,
+        slc_path=slc_files[0],
         test_folders=test_set_folders,
         docker_user=args.docker_user,
         docker_password=args.docker_password,
