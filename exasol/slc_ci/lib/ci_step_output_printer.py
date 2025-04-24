@@ -23,7 +23,6 @@ def _get_exasol_docker_images():
         return exa_images
     finally:
         docker_client.close()
-        return []
 
 
 class CIStepOutputPrinter(CIStepOutputPrinterProtocol):
