@@ -67,7 +67,7 @@ def run_get_test_set_names_for_flavor(session: nox.Session):
     """
     flavor = _parse_flavor(session)
     flavor_config = api.get_flavor_ci_model(SLC_BUILD_CONFIG, flavor)
-    test_sets_names = [test_set.name for test_set in flavor_config.test_sets]
+    test_sets_names = [test_set.name for test_set in flavor_config.test_config.test_sets]
     print(json.dumps(test_sets_names))
 
 
