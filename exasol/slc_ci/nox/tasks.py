@@ -147,7 +147,7 @@ def run_export_and_scan_vulnerabilities(session: nox.Session):
         p = ArgumentParser(
             usage="nox -s check-if-build-need -- --flavor <flavor> --branch-name <branch_name> "
             "--docker-user <docker_user> --docker-password <docker_password> "
-            "--commit-sha <commit_sha>",
+            "--commit-sha <commit_sha> --github-output $GITHUB_OUTPUT",
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         )
         p.add_argument("--flavor", required=True)
@@ -155,6 +155,7 @@ def run_export_and_scan_vulnerabilities(session: nox.Session):
         p.add_argument("--docker-user", required=True)
         p.add_argument("--docker-password", required=True)
         p.add_argument("--commit-sha", required=True)
+        p.add_argument("--github-output", required=True)
         return p
 
     args = parser().parse_args(session.posargs)
@@ -166,4 +167,6 @@ def run_export_and_scan_vulnerabilities(session: nox.Session):
         docker_password=args.docker_password,
         commit_sha=args.commit_sha,
     )
-    print(slc_cache_file)
+    with open(args.github_output, "a") as f:
+        print(f"slc_path={slc_cache_file}", file=f)
+
