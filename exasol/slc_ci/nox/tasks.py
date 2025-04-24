@@ -37,7 +37,7 @@ def _parse_flavor(session: Session) -> str:
 @nox.session(name="ci:find-available-flavors", python=False)
 def run_find_available_flavors(session: Session) -> None:
     flavor_list = list(api.get_flavors(SLC_BUILD_CONFIG.flavors_path))
-    print(json.dumps(flavor_list, indent=2))
+    print(json.dumps(flavor_list))
 
 
 @nox.session(name="ci:get-build-runner-for-flavor", python=False)
