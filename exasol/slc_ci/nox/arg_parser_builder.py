@@ -24,7 +24,7 @@ class ArgumentParserBuilder:
         self._add_arg("docker-password")
         return self
 
-    def with_testset(self) -> "ArgumentParserBuilder":
+    def with_testset_name(self) -> "ArgumentParserBuilder":
         self._add_arg("test-set-name")
         return self
 

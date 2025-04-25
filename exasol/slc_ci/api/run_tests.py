@@ -1,5 +1,4 @@
 from pathlib import Path
-from typing import List
 
 from exasol.slc_ci.lib.ci_prepare import CIPrepare
 from exasol.slc_ci.lib.ci_test import CIExecuteTest
@@ -11,7 +10,7 @@ def run_tests(
     flavor: str,
     slc_path: Path,
     flavor_config: FlavorCiConfig,
-    test_set: str,
+    test_set_name: str,
     docker_user: str,
     docker_password: str,
 ) -> None:
@@ -22,7 +21,7 @@ def run_tests(
         flavor=flavor,
         slc_path=slc_path,
         flavor_config=flavor_config,
-        test_set=test_set,
+        test_set_name=test_set_name,
         docker_user=docker_user,
         docker_password=docker_password,
         ci_prepare=ci_prepare,

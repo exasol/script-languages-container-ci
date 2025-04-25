@@ -77,7 +77,7 @@ def run_db_tests(session: nox.Session):
         ArgumentParserBuilder(session)
         .with_flavor()
         .with_docker()
-        .with_testset()
+        .with_testset_name()
         .with_slc_directory()
         .parse()
     )
@@ -87,7 +87,7 @@ def run_db_tests(session: nox.Session):
         flavor=args.flavor,
         slc_path=args.slc_directory,
         flavor_config=flavor_config,
-        test_set=args.test_set_name,
+        test_set_name=args.test_set_name,
         docker_user=args.docker_user,
         docker_password=args.docker_password,
     )

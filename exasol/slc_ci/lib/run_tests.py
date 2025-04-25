@@ -10,7 +10,7 @@ def run_tests(
     flavor: str,
     slc_path: Path,
     flavor_config: FlavorCiConfig,
-    test_set: str,
+    test_set_name: str,
     docker_user: str,
     docker_password: str,
     ci_prepare: CIPrepare = CIPrepare(),
@@ -20,10 +20,10 @@ def run_tests(
     matched_test_set = [
         test_set
         for test_set in flavor_config.test_config.test_sets
-        if test_set.name == test_set
+        if test_set.name == test_set_name
     ]
     if len(matched_test_set) != 1:
-        raise ValueError(f"Invalid test set name: {test_set}")
+        raise ValueError(f"Invalid test set name: {test_set_name}")
     test_set_folders = [folder for folder in matched_test_set[0].folders]
     if not slc_path.exists():
         raise ValueError(f"{slc_path} does not exist")
