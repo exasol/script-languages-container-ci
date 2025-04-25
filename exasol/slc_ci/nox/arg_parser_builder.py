@@ -32,8 +32,7 @@ class ArgumentParserBuilder:
         self._add_arg("slc-directory")
         return self
 
-    def with_github_output(self) -> "ArgumentParserBuilder":
-        self._add_arg("github-output")
+    def with_github_var(self) -> "ArgumentParserBuilder":
         self._add_arg("github-var")
         return self
 

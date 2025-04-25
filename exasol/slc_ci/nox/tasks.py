@@ -12,6 +12,7 @@ __all__ = [
 
 import argparse
 import json
+import os
 
 import nox
 from nox import Session
@@ -22,13 +23,14 @@ from exasol.slc_ci.nox.arg_parser_builder import ArgumentParserBuilder
 
 
 def _write_github_output(args: argparse.Namespace, value: str) -> None:
-    with open(args.github_output, "a") as github_output:
-        print(f"{args.github_var}={value}", file=github_output)
+    github_output = os.environ["GITHUB_OUTPUT"]
+    with open(github_output, "a") as github_output_file:
+        print(f"{args.github_var}={value}", file=github_output_file)
 
 
 @nox.session(name="ci:find-available-flavors", python=False)
 def run_find_available_flavors(session: Session) -> None:
-    args = ArgumentParserBuilder(session).with_github_output().parse()
+    args = ArgumentParserBuilder(session).with_github_var().parse()
     flavor_list = list(api.get_flavors(SLC_BUILD_CONFIG.flavors_path))
     _write_github_output(args, json.dumps(flavor_list))
 
@@ -38,7 +40,7 @@ def run_get_build_runner_for_flavor(session: nox.Session):
     """
     Returns the runner for a flavor
     """
-    args = ArgumentParserBuilder(session).with_flavor().with_github_output().parse()
+    args = ArgumentParserBuilder(session).with_flavor().with_github_var().parse()
     flavor_config = api.get_flavor_ci_model(SLC_BUILD_CONFIG, args.flavor)
     _write_github_output(args, flavor_config.build_runner)
 
@@ -48,7 +50,7 @@ def run_get_test_runner_for_flavor(session: nox.Session):
     """
     Returns the test-runner for a flavor
     """
-    args = ArgumentParserBuilder(session).with_flavor().with_github_output().parse()
+    args = ArgumentParserBuilder(session).with_flavor().with_github_var().parse()
     flavor_config = api.get_flavor_ci_model(SLC_BUILD_CONFIG, args.flavor)
     _write_github_output(args, flavor_config.test_config.test_runner)
 
@@ -58,7 +60,7 @@ def run_get_test_set_names_for_flavor(session: nox.Session):
     """
     Returns the test-set names for a flavor as JSON list
     """
-    args = ArgumentParserBuilder(session).with_flavor().with_github_output().parse()
+    args = ArgumentParserBuilder(session).with_flavor().with_github_var().parse()
     flavor_config = api.get_flavor_ci_model(SLC_BUILD_CONFIG, args.flavor)
     test_sets_names = [
         test_set.name for test_set in flavor_config.test_config.test_sets
@@ -100,7 +102,7 @@ def run_check_if_build_needed(session: nox.Session):
         ArgumentParserBuilder(session)
         .with_flavor()
         .with_branch_name()
-        .with_github_output()
+        .with_github_var()
         .parse()
     )
     need_to_build = api.check_if_build_needed(
@@ -119,7 +121,7 @@ def run_export_and_scan_vulnerabilities(session: nox.Session):
         .with_flavor()
         .with_branch_name()
         .with_docker()
-        .with_github_output()
+        .with_github_var()
         .with_commit_sha()
         .parse()
     )
