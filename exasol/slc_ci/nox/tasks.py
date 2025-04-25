@@ -85,7 +85,7 @@ def run_db_tests(session: nox.Session):
 
     api.run_tests(
         flavor=args.flavor,
-        slc_path=args.slc_directory,
+        slc_directory=args.slc_directory,
         flavor_config=flavor_config,
         test_set_name=args.test_set_name,
         docker_user=args.docker_user,
