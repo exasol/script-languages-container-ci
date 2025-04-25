@@ -8,7 +8,7 @@ from exasol.slc_ci.model.flavor_ci_model import FlavorCiConfig
 
 def run_tests(
     flavor: str,
-    slc_path: Path,
+    slc_directory: str,
     flavor_config: FlavorCiConfig,
     test_set_name: str,
     docker_user: str,
@@ -19,7 +19,7 @@ def run_tests(
 
     return lib_run_tests(
         flavor=flavor,
-        slc_path=slc_path,
+        slc_directory=slc_directory,
         flavor_config=flavor_config,
         test_set_name=test_set_name,
         docker_user=docker_user,

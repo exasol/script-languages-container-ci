@@ -8,7 +8,7 @@ from exasol.slc_ci.model.flavor_ci_model import FlavorCiConfig
 
 def run_tests(
     flavor: str,
-    slc_path: Path,
+    slc_directory: str,
     flavor_config: FlavorCiConfig,
     test_set_name: str,
     docker_user: str,
@@ -25,6 +25,7 @@ def run_tests(
     if len(matched_test_set) != 1:
         raise ValueError(f"Invalid test set name: {test_set_name}")
     test_set_folders = [folder for folder in matched_test_set[0].folders]
+    slc_path = Path(slc_directory)
     if not slc_path.exists():
         raise ValueError(f"{slc_path} does not exist")
     slc_files = list(slc_path.glob(f"{flavor}*.tar.gz"))
