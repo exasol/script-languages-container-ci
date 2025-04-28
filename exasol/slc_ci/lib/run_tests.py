@@ -31,8 +31,9 @@ def run_tests(
     slc_files = list(slc_path.glob(f"{flavor}*.tar.gz"))
     if len(slc_files) != 1:
         raise ValueError(
-            f"{flavor} does not contain expected tar.gz file, but \n {slc_files}"
+            f"{slc_directory} does not contain expected tar.gz file, but \n {slc_files}"
         )
+    slc_file_path = slc_files[0]
 
     flavor_path = (f"flavors/{flavor}",)
     test_container_folder = "test_container"
@@ -41,7 +42,7 @@ def run_tests(
     for test_folder in test_set_folders:
         ci_test.execute_tests(
             flavor_path=flavor_path,
-            slc_path=slc_path,
+            slc_path=slc_file_path,
             test_folder=test_folder,
             test_container_folder=test_container_folder,
             docker_user=docker_user,
