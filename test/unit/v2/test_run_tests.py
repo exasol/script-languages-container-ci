@@ -22,10 +22,10 @@ def slc_directory(tmp_path: Path) -> Path:
 
 def run_db_test_call(slc_path: Path, test_folder: str):
     return call.execute_tests(
-        flavor_path=(f"flavors/{TEST_FLAVOR}",),
+        flavor_path=( str(test_env.build_config.flavors_path / TEST_FLAVOR),),
         docker_user=test_env.docker_user,
         docker_password=test_env.docker_pwd,
-        test_container_folder="test_container",
+        test_container_folder=test_env.build_config.test_container_folder,
         slc_path=slc_path,
         test_folder=test_folder,
     )
@@ -37,6 +37,7 @@ def test_run_tests(slc_directory):
         flavor=TEST_FLAVOR,
         slc_directory=str(slc_directory),
         flavor_config=test_env.flavor_config,
+        build_config=test_env.build_config,
         test_set_name="some_test_name",
         docker_user=test_env.docker_user,
         docker_password=test_env.docker_pwd,

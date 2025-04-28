@@ -3,6 +3,7 @@ from pathlib import Path
 
 from exasol.slc_ci.lib.ci_prepare import CIPrepare
 from exasol.slc_ci.lib.ci_test import CIExecuteTest
+from exasol.slc_ci.model.build_config import BuildConfig
 from exasol.slc_ci.model.flavor_ci_model import FlavorCiConfig
 
 
@@ -10,6 +11,7 @@ def run_tests(
     flavor: str,
     slc_directory: str,
     flavor_config: FlavorCiConfig,
+    build_config: BuildConfig,
     test_set_name: str,
     docker_user: str,
     docker_password: str,
@@ -35,8 +37,8 @@ def run_tests(
         )
     slc_file_path = slc_files[0]
 
-    flavor_path = (f"flavors/{flavor}",)
-    test_container_folder = "test_container"
+    flavor_path = (str( build_config.flavors_path / flavor),)
+    test_container_folder = build_config.test_container_folder
 
     ci_prepare.prepare()
     for test_folder in test_set_folders:

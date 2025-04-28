@@ -29,7 +29,7 @@ def export_and_scan_vulnerabilities(
         f"Running build image and scan vulnerabilities for parameters: {locals()}"
     )
 
-    flavor_path = (f"{build_config.flavors_path.name}/{flavor}",)
+    flavor_path = (f"{build_config.flavors_path}/{flavor}",)
     test_container_folder = build_config.test_container_folder
     rebuild = BranchConfig.rebuild(branch_name)
     ci_prepare.prepare()

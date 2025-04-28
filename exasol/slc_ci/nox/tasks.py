@@ -87,6 +87,7 @@ def run_db_tests(session: nox.Session):
         flavor=args.flavor,
         slc_directory=args.slc_directory,
         flavor_config=flavor_config,
+        build_config=SLC_BUILD_CONFIG,
         test_set_name=args.test_set_name,
         docker_user=args.docker_user,
         docker_password=args.docker_password,

@@ -181,6 +181,7 @@ def test_run_db_tests(
         flavor="flavor_a",
         slc_directory="some_directory",
         flavor_config=test_env.flavor_config,
+        build_config=test_env.build_config,
         test_set_name="all",
         docker_user="some_user",
         docker_password="super_secret",

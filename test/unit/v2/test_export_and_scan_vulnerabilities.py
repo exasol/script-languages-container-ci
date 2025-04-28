@@ -49,18 +49,19 @@ def test_export_and_scan_vulnerabilities(slc_directory, git_access_mock):
         ci_export=ci_export_mock,
         ci_push=ci_commands_mock,
     )
+    expected_flavor_path = str(test_env.build_config.flavors_path / TEST_FLAVOR)
     assert ci_commands_mock.mock_calls == [
         call.prepare(),
-        call.build(flavor_path=(f'flavors/{TEST_FLAVOR}',), rebuild=False,
+        call.build(flavor_path=(expected_flavor_path,), rebuild=False,
                    build_docker_repository=test_env.build_config.docker_build_repository, commit_sha=test_env.commit_sha,
                    docker_user=test_env.docker_user, docker_password=test_env.docker_pwd,
-                   test_container_folder='test_container'),
-        call.run_security_scan(flavor_path=(f'flavors/{TEST_FLAVOR}',)),
-        call.push(flavor_path=(f'flavors/{TEST_FLAVOR}',), target_docker_repository=test_env.build_config.docker_build_repository,
+                   test_container_folder=test_env.build_config.test_container_folder,),
+        call.run_security_scan(flavor_path=(expected_flavor_path,)),
+        call.push(flavor_path=(expected_flavor_path,), target_docker_repository=test_env.build_config.docker_build_repository,
                   target_docker_tag_prefix=test_env.commit_sha, docker_user=test_env.docker_user,
                   docker_password=test_env.docker_pwd),
-        call.push(flavor_path=(f'flavors/{TEST_FLAVOR}',), target_docker_repository=test_env.build_config.docker_build_repository,
+        call.push(flavor_path=(expected_flavor_path,), target_docker_repository=test_env.build_config.docker_build_repository,
                   target_docker_tag_prefix='', docker_user=test_env.docker_user, docker_password=test_env.docker_pwd),
     ]
-    assert ci_export_mock.mock_calls == [call.export(flavor_path=(f'flavors/{TEST_FLAVOR}',))]
+    assert ci_export_mock.mock_calls == [call.export(flavor_path=(expected_flavor_path,))]
     assert result == res_slc_path
