@@ -37,7 +37,7 @@ def run_tests(
         )
     slc_file_path = slc_files[0]
 
-    flavor_path = (str( build_config.flavors_path / flavor),)
+    flavor_path = (str(build_config.flavors_path / flavor),)
     test_container_folder = build_config.test_container_folder
 
     ci_prepare.prepare()

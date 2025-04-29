@@ -2,7 +2,12 @@ from inspect import cleandoc
 
 import pytest
 
-from exasol_script_languages_container_ci.lib.config.config_data_model import Config, Build, Ignore, Release
+from exasol_script_languages_container_ci.lib.config.config_data_model import (
+    Build,
+    Config,
+    Ignore,
+    Release,
+)
 
 
 @pytest.fixture

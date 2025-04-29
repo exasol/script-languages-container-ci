@@ -4,9 +4,7 @@ from unittest.mock import call, create_autospec
 import pytest
 
 from exasol.slc_ci.lib.ci_security_scan import CISecurityScan
-from exasol.slc_ci.lib.ci_step_output_printer import (
-    CIStepOutputPrinterProtocol,
-)
+from exasol.slc_ci.lib.ci_step_output_printer import CIStepOutputPrinterProtocol
 
 
 def test_successful_flavor(flavors_path, test_containers_folder):

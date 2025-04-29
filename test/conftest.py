@@ -1,17 +1,15 @@
 import logging
 import os
 from tempfile import TemporaryDirectory
+from test.integration.fixtures import *
+from test.unit.v1.fixtures import *
 from unittest import mock
 from unittest.mock import MagicMock, patch
-
-
 
 from exasol_script_languages_container_ci.lib.config.data_model_generator import (
     config_data_model_default_output_file,
     regenerate_config_data_model,
 )
-from test.unit.v1.fixtures import *
-from test.integration.fixtures import *
 
 DISABLE_PYDANTIC_MODEL_GENERATION = "--disable-pydantic-model-generation"
 
@@ -58,7 +56,6 @@ def tmp_test_dir():
         os.chdir(temp_dir)
         yield temp_dir
         os.chdir(old_dir)
-
 
 
 @pytest.fixture()

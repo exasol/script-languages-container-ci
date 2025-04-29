@@ -5,10 +5,7 @@ from test.contract.v2.test_ci_test import (
 
 import pytest
 
-from exasol.slc_ci.lib.ci_test import (
-    DBTestRunner,
-    DBTestRunnerProtocol,
-)
+from exasol.slc_ci.lib.ci_test import DBTestRunner, DBTestRunnerProtocol
 
 
 class TestSuccessfulFlavorDBTestsContract(SuccessfulFlavorDBTestsContract):
@@ -18,10 +15,8 @@ class TestSuccessfulFlavorDBTestsContract(SuccessfulFlavorDBTestsContract):
         return DBTestRunner()
 
 
-
 class TestFailingRunDBTestFlavorDBTestsContract(FailingRunDBTestFlavorDBTestsContract):
 
     @pytest.fixture
     def db_test_runner(self) -> DBTestRunnerProtocol:
         return DBTestRunner()
-

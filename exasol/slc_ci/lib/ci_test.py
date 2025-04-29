@@ -19,8 +19,8 @@ class DBTestRunnerProtocol(Protocol):
         test_folder: Tuple[str, ...],
         test_container_folder: str,
         workers: int,
-        docker_username: str,
-        docker_password: str,
+        docker_username: Optional[str],
+        docker_password: Optional[str],
         use_existing_container: Optional[str],
     ) -> AllTestsResult:
         raise NotImplementedError()
@@ -34,8 +34,8 @@ class DBTestRunner(DBTestRunnerProtocol):
         test_folder: Tuple[str, ...],
         test_container_folder: str,
         workers: int,
-        docker_username: str,
-        docker_password: str,
+        docker_username: Optional[str],
+        docker_password: Optional[str],
         use_existing_container: Optional[str],
     ) -> AllTestsResult:
         return run_db_test(

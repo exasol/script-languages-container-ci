@@ -1,6 +1,7 @@
 import argparse
 import sys
 from pathlib import Path
+from test.unit.v2.test_env import test_env
 from unittest import mock
 from unittest.mock import MagicMock
 
@@ -9,7 +10,6 @@ import pytest
 from _pytest.monkeypatch import MonkeyPatch
 
 import exasol.slc_ci.api as api
-from test.unit.v2.test_env import test_env
 
 FLAVORS = ["flavor_a", "flavor_b"]
 
@@ -17,11 +17,12 @@ FLAVORS = ["flavor_a", "flavor_b"]
 @pytest.fixture(scope="module")
 def nox_tasks():
     resources_path = Path(__file__).parent / "resources"
-    #exasol.slc_ci.nox.tasks imports 'slc_build_config.py`. We must ensure that this modul can be found by adding it to the sys path.
+    # exasol.slc_ci.nox.tasks imports 'slc_build_config.py`. We must ensure that this modul can be found by adding it to the sys path.
     sys.path.append(str(resources_path))
     import exasol.slc_ci.nox.tasks as nox_tasks
+
     yield nox_tasks
-    #now remove 'slc_build_config.py` again from sys path.
+    # now remove 'slc_build_config.py` again from sys path.
     sys.path.pop()
 
 
@@ -66,10 +67,10 @@ def fake_session_builder():
         global_config = argparse.Namespace(posargs=args)
         session_runner = nox.sessions.SessionRunner(
             name=session_name,
-            signatures=None,
-            func=None,
+            signatures=[],
+            func=None, #type: ignore
             global_config=global_config,
-            manifest=None,
+            manifest=None, #type: ignore
         )
         return nox.sessions.Session(session_runner)
 
@@ -203,7 +204,9 @@ def test_run_check_if_build_needed(
     nox_tasks.run_check_if_build_needed(fake_session)
     assert mock_check_if_build_needed.call_count == 1
     assert mock_check_if_build_needed.call_args == mock.call(
-        branch_name="feature/abc", flavor="flavor_a", build_config=nox_tasks.SLC_BUILD_CONFIG
+        branch_name="feature/abc",
+        flavor="flavor_a",
+        build_config=nox_tasks.SLC_BUILD_CONFIG,
     )
     out_content = github_output.read_text()
     assert out_content == """test=True\n"""

@@ -7,13 +7,8 @@ from unittest.mock import MagicMock, call, create_autospec
 import pytest
 from exasol.slc.models.test_result import AllTestsResult
 
-from exasol.slc_ci.lib.ci_step_output_printer import (
-    CIStepOutputPrinterProtocol,
-)
-from exasol.slc_ci.lib.ci_test import (
-    CIExecuteTest,
-    DBTestRunnerProtocol,
-)
+from exasol.slc_ci.lib.ci_step_output_printer import CIStepOutputPrinterProtocol
+from exasol.slc_ci.lib.ci_test import CIExecuteTest, DBTestRunnerProtocol
 
 
 class BaseCIExecuteTest:

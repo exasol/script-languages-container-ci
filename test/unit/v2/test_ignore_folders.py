@@ -1,13 +1,12 @@
 from pathlib import Path
+from test.unit.v2.test_env import test_env
 from typing import List
 
 import git
 import pytest
 
 from exasol.slc_ci.lib.check_if_build_needed import check_if_need_to_build
-
-from exasol_script_languages_container_ci.lib.git_access import GitAccess
-from test.unit.v2.test_env import test_env
+from exasol.slc_ci.lib.git_access import GitAccess
 
 
 def commit_base(repo: git.Repo, repo_path: Path) -> None:
@@ -42,7 +41,6 @@ def commit_files(
             open(repo_path / file, "w").close()
             repo.index.add([str(repo_path / file)])
         repo.index.commit(commit_message)
-
 
 
 TEST_FLAVOR = "flavor_xyz"
@@ -152,6 +150,8 @@ def test_ignore_folder_should_run_ci(
     tmp_repo = git.Repo.init(repo_path)
     commit_files(branch_name, tmp_repo, repo_path, files_to_commit, commit_message)
     assert (
-        check_if_need_to_build(branch_name, test_env.build_config, TEST_FLAVOR, GitAccess())
+        check_if_need_to_build(
+            branch_name, test_env.build_config, TEST_FLAVOR, GitAccess()
+        )
         == expected_result
     )

@@ -5,12 +5,15 @@ import pytest
 from exasol.slc_ci.lib.ci_export import CIExport
 from exasol.slc_ci.lib.ci_test import DBTestRunnerProtocol
 
+
 class CreateExistingContainer:
 
     @pytest.fixture
     def use_existing_container(self, tmp_path, flavor_path) -> Path:
         ci_export = CIExport()
-        container_path = ci_export.export(flavor_path=(flavor_path,), output_directory=str(tmp_path))
+        container_path = ci_export.export(
+            flavor_path=(flavor_path,), output_directory=str(tmp_path)
+        )
         return container_path
 
 
@@ -35,7 +38,14 @@ class SuccessfulFlavorDBTestsContract(SuccessfulFlavorContract):
     def db_test_runner(self) -> DBTestRunnerProtocol:
         raise NotImplementedError()
 
-    def test(self, db_test_runner: DBTestRunnerProtocol, test_container: str, flavor_path: str, use_existing_container: Path, test_folder: str):
+    def test(
+        self,
+        db_test_runner: DBTestRunnerProtocol,
+        test_container: str,
+        flavor_path: str,
+        use_existing_container: Path,
+        test_folder: str,
+    ):
         result = db_test_runner.run(
             flavor_path=(flavor_path,),
             test_folder=(test_folder,),
@@ -63,13 +73,21 @@ class FailingRunDBTestFlavorContract(CreateExistingContainer):
     def test_folder(self):
         return "failing_test"
 
+
 class FailingRunDBTestFlavorDBTestsContract(FailingRunDBTestFlavorContract):
 
     @pytest.fixture
     def db_test_runner(self) -> DBTestRunnerProtocol:
         raise NotImplementedError()
 
-    def test(self, db_test_runner: DBTestRunnerProtocol, test_container: str, flavor_path: str, use_existing_container: Path, test_folder: str):
+    def test(
+        self,
+        db_test_runner: DBTestRunnerProtocol,
+        test_container: str,
+        flavor_path: str,
+        use_existing_container: Path,
+        test_folder: str,
+    ):
         result = db_test_runner.run(
             flavor_path=(flavor_path,),
             test_folder=(test_folder,),

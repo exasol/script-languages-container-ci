@@ -4,6 +4,7 @@ import pytest
 
 script_path = Path(__file__).absolute().parent
 
+
 @pytest.fixture
 def resources_path() -> Path:
     return script_path / "resources"
@@ -17,4 +18,3 @@ def flavors_path(resources_path: Path) -> Path:
 @pytest.fixture
 def test_containers_folder(resources_path: Path) -> Path:
     return resources_path / "test_containers"
-

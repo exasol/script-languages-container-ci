@@ -17,7 +17,9 @@ class CIExport:
     ):
         self._printer = printer
 
-    def export(self, flavor_path: Tuple[str, ...], output_directory: str = ".build_output") -> Path:
+    def export(
+        self, flavor_path: Tuple[str, ...], output_directory: str = ".build_output"
+    ) -> Path:
         """
         Export the flavor as tar.gz file.
         The returned path is the path of the tar.gz file.
@@ -29,7 +31,7 @@ class CIExport:
             workers=7,
             log_level="WARNING",
             use_job_specific_log_file=True,
-            output_directory=output_directory
+            output_directory=output_directory,
         )
         self._printer.print_exasol_docker_images()
         export_infos = list(export_result.export_infos.values())

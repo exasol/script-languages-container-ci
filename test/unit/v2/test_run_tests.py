@@ -1,28 +1,27 @@
 from pathlib import Path
-
-from exasol.slc_ci.lib.ci_prepare import CIPrepare
-from exasol.slc_ci.lib.run_tests import run_tests
+from test.unit.v2.test_env import test_env
 from typing import Union
 from unittest.mock import Mock, call
 
 import pytest
 
+from exasol.slc_ci.lib.ci_prepare import CIPrepare
+from exasol.slc_ci.lib.run_tests import run_tests
 from exasol_script_languages_container_ci.lib.ci_test import CIExecuteTest
-from test.unit.v2.test_env import test_env
-
 
 TEST_FLAVOR = "flavor_xyz"
 
+
 @pytest.fixture
 def slc_directory(tmp_path: Path) -> Path:
-    with open(str(tmp_path / f'{TEST_FLAVOR}-dummy_slc.tar.gz'), 'w') as f:
+    with open(str(tmp_path / f"{TEST_FLAVOR}-dummy_slc.tar.gz"), "w") as f:
         f.write("nothing")
     return tmp_path
 
 
 def run_db_test_call(slc_path: Path, test_folder: str):
     return call.execute_tests(
-        flavor_path=( str(test_env.build_config.flavors_path / TEST_FLAVOR),),
+        flavor_path=(str(test_env.build_config.flavors_path / TEST_FLAVOR),),
         docker_user=test_env.docker_user,
         docker_password=test_env.docker_pwd,
         test_container_folder=test_env.build_config.test_container_folder,
@@ -30,8 +29,9 @@ def run_db_test_call(slc_path: Path, test_folder: str):
         test_folder=test_folder,
     )
 
+
 def test_run_tests(slc_directory):
-    ci_commands_mock: Union[CIExecuteTest,CIPrepare,Mock] = Mock()
+    ci_commands_mock: Union[CIExecuteTest, CIPrepare, Mock] = Mock()
 
     run_tests(
         flavor=TEST_FLAVOR,
@@ -42,10 +42,16 @@ def test_run_tests(slc_directory):
         docker_user=test_env.docker_user,
         docker_password=test_env.docker_pwd,
         ci_prepare=ci_commands_mock,
-        ci_test=ci_commands_mock
+        ci_test=ci_commands_mock,
     )
     assert ci_commands_mock.mock_calls == [
         call.prepare(),
-        run_db_test_call(slc_path=slc_directory / f"{TEST_FLAVOR}-dummy_slc.tar.gz", test_folder='all'),
-        run_db_test_call(slc_path=slc_directory / f"{TEST_FLAVOR}-dummy_slc.tar.gz", test_folder='specific'),
+        run_db_test_call(
+            slc_path=slc_directory / f"{TEST_FLAVOR}-dummy_slc.tar.gz",
+            test_folder="all",
+        ),
+        run_db_test_call(
+            slc_path=slc_directory / f"{TEST_FLAVOR}-dummy_slc.tar.gz",
+            test_folder="specific",
+        ),
     ]

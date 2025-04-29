@@ -1,4 +1,5 @@
 import argparse
+from typing import List
 
 import nox
 
@@ -6,7 +7,7 @@ import nox
 class ArgumentParserBuilder:
     def __init__(self, session: nox.Session) -> None:
         self._session = session
-        self._usages = list()
+        self._usages: List[str] = list()
         self._parser = argparse.ArgumentParser(
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         )
