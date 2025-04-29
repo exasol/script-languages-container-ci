@@ -1,7 +1,7 @@
 from typing import Iterable
 
-from exasol.slc_ci.model.build_config import BuildConfig
 import exasol.slc_ci.lib.get_flavors as lib_get_flavors
+from exasol.slc_ci.model.build_config import BuildConfig
 
 
 def get_flavors(build_config: BuildConfig) -> Iterable[str]:

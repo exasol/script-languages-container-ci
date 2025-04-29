@@ -1,8 +1,6 @@
 import argparse
 import sys
 from pathlib import Path
-
-from exasol.slc_ci.lib.git_access import GitAccess
 from test.unit.github.test_env import test_env
 from unittest import mock
 from unittest.mock import MagicMock
@@ -11,9 +9,10 @@ import nox
 import pytest
 from _pytest.monkeypatch import MonkeyPatch
 
-import exasol.slc_ci.lib.get_flavor_ci_model as lib_get_flavor_ci_model
 import exasol.slc_ci.lib.check_if_build_needed as lib_check_if_build_needed
+import exasol.slc_ci.lib.get_flavor_ci_model as lib_get_flavor_ci_model
 import exasol.slc_ci.lib.get_flavors as lib_get_flavors
+from exasol.slc_ci.lib.git_access import GitAccess
 
 FLAVORS = ["flavor_a", "flavor_b"]
 
@@ -40,14 +39,18 @@ def mock_get_flavors(monkeypatch: MonkeyPatch) -> MagicMock:
 @pytest.fixture
 def mock_get_flavor_ci_model(monkeypatch: MonkeyPatch) -> MagicMock:
     mock_function_to_mock = MagicMock(return_value=test_env.flavor_config)
-    monkeypatch.setattr(lib_get_flavor_ci_model, "get_flavor_ci_model", mock_function_to_mock)
+    monkeypatch.setattr(
+        lib_get_flavor_ci_model, "get_flavor_ci_model", mock_function_to_mock
+    )
     return mock_function_to_mock
 
 
 @pytest.fixture
 def mock_check_if_build_needed(monkeypatch: MonkeyPatch) -> MagicMock:
     mock_function_to_mock = MagicMock(return_value=True)
-    monkeypatch.setattr(lib_check_if_build_needed, "check_if_need_to_build", mock_function_to_mock)
+    monkeypatch.setattr(
+        lib_check_if_build_needed, "check_if_need_to_build", mock_function_to_mock
+    )
     return mock_function_to_mock
 
 
@@ -107,6 +110,7 @@ def test_run_get_build_runner_for_flavor(
     out_content = github_output.read_text()
     assert out_content == """test=some_build_runner\n"""
 
+
 def test_run_check_if_build_needed(
     fake_session_builder, nox_tasks, mock_check_if_build_needed, github_output
 ) -> None:
@@ -121,9 +125,14 @@ def test_run_check_if_build_needed(
     )
     nox_tasks.run_check_if_build_needed(fake_session)
     assert mock_check_if_build_needed.call_count == 1
-    assert mock_check_if_build_needed.call_args.kwargs['branch_name'] == "feature/abc"
-    assert mock_check_if_build_needed.call_args.kwargs['build_config'] == nox_tasks.SLC_BUILD_CONFIG
-    assert mock_check_if_build_needed.call_args.kwargs['flavor'] == "flavor_a"
-    assert isinstance(mock_check_if_build_needed.call_args.kwargs['git_access'], GitAccess)
+    assert mock_check_if_build_needed.call_args.kwargs["branch_name"] == "feature/abc"
+    assert (
+        mock_check_if_build_needed.call_args.kwargs["build_config"]
+        == nox_tasks.SLC_BUILD_CONFIG
+    )
+    assert mock_check_if_build_needed.call_args.kwargs["flavor"] == "flavor_a"
+    assert isinstance(
+        mock_check_if_build_needed.call_args.kwargs["git_access"], GitAccess
+    )
     out_content = github_output.read_text()
     assert out_content == """test=True\n"""

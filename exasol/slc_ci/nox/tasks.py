@@ -59,4 +59,3 @@ def run_check_if_build_needed(session: nox.Session):
         branch_name=args.branch_name, flavor=args.flavor, build_config=SLC_BUILD_CONFIG
     )
     _write_github_output(args, "True" if need_to_build else "False")
-
