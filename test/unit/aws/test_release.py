@@ -1,11 +1,10 @@
-from test.unit import ci_calls
-from test.unit.test_env import test_env
+from test.unit.aws import ci_calls
+from test.unit.aws.test_env import test_env
 from typing import Union
-from unittest.mock import MagicMock, Mock, create_autospec
+from unittest.mock import Mock
 
 import pytest
 
-from exasol_script_languages_container_ci.lib.ci import ci
 from exasol_script_languages_container_ci.lib.ci_build import CIBuild
 from exasol_script_languages_container_ci.lib.ci_push import CIPush
 from exasol_script_languages_container_ci.lib.ci_security_scan import CISecurityScan

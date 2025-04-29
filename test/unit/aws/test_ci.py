@@ -1,5 +1,5 @@
-from test.unit import ci_calls
-from test.unit.test_env import test_env
+from test.unit.aws import ci_calls
+from test.unit.aws.test_env import test_env
 from typing import Union
 from unittest.mock import Mock
 

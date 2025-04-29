@@ -1,25 +1,15 @@
-import json
 import logging
 import os
-from inspect import cleandoc
-from pathlib import Path
 from tempfile import TemporaryDirectory
+from test.integration.fixtures import *
+from test.unit.aws.fixtures import *
 from unittest import mock
 from unittest.mock import MagicMock, patch
 
-import pytest
-
-from exasol_script_languages_container_ci.lib.config.config_data_model import (
-    Build,
-    Config,
-    Ignore,
-    Release,
-)
 from exasol_script_languages_container_ci.lib.config.data_model_generator import (
     config_data_model_default_output_file,
     regenerate_config_data_model,
 )
-
 script_path = Path(__file__).absolute().parent
 
 DISABLE_PYDANTIC_MODEL_GENERATION = "--disable-pydantic-model-generation"
@@ -50,20 +40,6 @@ def pytest_configure(config):
         logger.warning("Generation of pydantic models from json schema disabled")
 
 
-@pytest.fixture
-def resources_path() -> Path:
-    return script_path / "integration/resources"
-
-
-@pytest.fixture
-def flavors_path(resources_path: Path) -> Path:
-    return resources_path / "flavors"
-
-
-@pytest.fixture
-def test_containers_folder(resources_path: Path) -> Path:
-    return resources_path / "test_containers"
-
 
 @pytest.fixture()
 def mock_settings_env_vars():
@@ -84,14 +60,6 @@ def tmp_test_dir():
         os.chdir(old_dir)
 
 
-@pytest.fixture
-def build_config() -> Config:
-    return Config(
-        build=Build(ignore=Ignore(paths=["doc"]), base_branch="master"),
-        release=Release(timeout_in_minutes=1),
-    )
-
-
 @pytest.fixture()
 def git_access_mock():
     """
@@ -103,25 +71,3 @@ def git_access_mock():
     git_access_mock.get_files_of_commit.return_value = ["src/udfclient.cpp"]
     git_access_mock.get_last_commit_message.return_value = "last commit"
     return git_access_mock
-
-
-@pytest.fixture
-def expected_json_config() -> str:
-    json = cleandoc(
-        """
-    {
-        "build": {
-            "ignore": {
-                "paths": [
-                    "a/b/c",
-                    "e/f/g"
-                ]
-            },
-            "base_branch": ""
-        },
-        "release": {
-            "timeout_in_minutes": 1
-        }
-    }"""
-    )
-    return json
