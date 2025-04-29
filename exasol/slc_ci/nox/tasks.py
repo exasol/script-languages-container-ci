@@ -16,7 +16,9 @@ import os
 
 import nox
 from nox import Session
-from slc_build_config import SLC_BUILD_CONFIG #type: ignore # pylint: disable=(import-error),
+from slc_build_config import (  # type: ignore # pylint: disable=(import-error),
+    SLC_BUILD_CONFIG,
+)
 
 import exasol.slc_ci.api as api
 from exasol.slc_ci.nox.arg_parser_builder import ArgumentParserBuilder

@@ -68,9 +68,9 @@ def fake_session_builder():
         session_runner = nox.sessions.SessionRunner(
             name=session_name,
             signatures=[],
-            func=None, #type: ignore
+            func=None,  # type: ignore
             global_config=global_config,
-            manifest=None, #type: ignore
+            manifest=None,  # type: ignore
         )
         return nox.sessions.Session(session_runner)
 
