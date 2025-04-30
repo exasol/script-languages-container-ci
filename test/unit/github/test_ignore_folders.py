@@ -1,5 +1,4 @@
 from pathlib import Path
-from test.unit.github.test_env import test_env
 from typing import List
 
 import git
@@ -52,7 +51,7 @@ TEST_DATA = [
         "refs/heads/feature_branch",
         [["flavors/flavor_abc/build_steps.py", "doc/something", "src/udfclient.cpp"]],
         "message",
-        True,
+        "True",
     ),
     # If there are 2 commits, and the last only contains files in the ignore-list, but the first contains
     # files not included in the ignore-path list, the build must run
@@ -64,7 +63,7 @@ TEST_DATA = [
             ["doc/something"],
         ],
         "message",
-        True,
+        "True",
     ),
     # If last commit(s) contain only files included in the ignore-path-list or another flavor the build must not run
     (
@@ -72,7 +71,7 @@ TEST_DATA = [
         "refs/heads/feature_branch",
         [["flavors/flavor_abc/build_steps.py", "doc/something"]],
         "message",
-        False,
+        "False",
     ),
     # If last commit message contains "[rebuild]" the build should always trigger
     (
@@ -80,7 +79,7 @@ TEST_DATA = [
         "refs/heads/feature_branch",
         [["flavors/flavor_abc/build_steps.py", "doc/something"]],
         "message [rebuild]",
-        True,
+        "True",
     ),
     # Affected files on current flavor should trigger a build
     (
@@ -88,7 +87,7 @@ TEST_DATA = [
         "refs/heads/feature_branch",
         [[f"flavors/{TEST_FLAVOR}/build_steps.py", "doc/something"]],
         "message",
-        True,
+        "True",
     ),
     # If there are 2 commits, and the last only contains files in the ignore-list, but the first contains
     # files of the current flavor, the build must run
@@ -100,14 +99,14 @@ TEST_DATA = [
             ["flavors/flavor_abc/build_steps.py"],
         ],
         "message",
-        True,
+        "True",
     ),
     (
         "develop_must_always_run",
         "refs/heads/develop",
         [["doc/something"]],
         "message",
-        True,
+        "True",
     ),
     # Even if folder should be ignored, in case of develop branch we always expect to run
     (
@@ -115,17 +114,17 @@ TEST_DATA = [
         "refs/heads/master",
         [["doc/something"]],
         "message",
-        True,
+        "True",
     ),
     # Even if folder should be ignored, in case of master branch we always expect to run
-    ("main_must_always_run", "refs/heads/main", [["doc/something"]], "message", True),
+    ("main_must_always_run", "refs/heads/main", [["doc/something"]], "message", "True"),
     # Even if folder should be ignored, in case of main branch we always expect to run
     (
         "rebuild_must_always_run",
         "refs/heads/rebuild/feature_branch",
         [["doc/something"]],
         "message",
-        True,
+        "True",
     ),
     # Even if folder should be ignored, in case of rebuild/* branch we always expect to run
 ]
@@ -135,12 +134,14 @@ TEST_DATA = [
     "test_name, branch_name, files_to_commit,commit_message, expected_result", TEST_DATA
 )
 def test_ignore_folder_should_run_ci(
+    github_output_reader,
+    build_config_environment,
     test_name: str,
     branch_name: str,
     tmp_test_dir,
     files_to_commit,
     commit_message: str,
-    expected_result: bool,
+    expected_result: str,
 ):
     """
     This test creates a temporary git repository, commits the given file list (files_for_commit), then runs
@@ -149,9 +150,10 @@ def test_ignore_folder_should_run_ci(
     repo_path = Path(tmp_test_dir)
     tmp_repo = git.Repo.init(repo_path)
     commit_files(branch_name, tmp_repo, repo_path, files_to_commit, commit_message)
+    check_if_need_to_build(
+        branch_name, TEST_FLAVOR, "result", GitAccess()
+    )
+
     assert (
-        check_if_need_to_build(
-            branch_name, test_env.build_config, TEST_FLAVOR, GitAccess()
-        )
-        == expected_result
+        github_output_reader("result") == expected_result
     )

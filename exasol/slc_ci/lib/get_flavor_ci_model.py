@@ -1,4 +1,4 @@
-from exasol.slc_ci.model.build_config import BuildConfig
+from exasol.slc_ci.model.build_config_model import BuildConfig
 from exasol.slc_ci.model.flavor_ci_model import FlavorCiConfig
 
 

@@ -1,15 +1,18 @@
-from dataclasses import dataclass
 from pathlib import Path
 from typing import List
 
+from pydantic import BaseModel
 
-@dataclass(frozen=True)
-class BuildConfig:
-    root: Path
+
+class BuildConfig(BaseModel):
+
+    @property
+    def root_path(self) -> Path:
+        return Path.cwd()
 
     @property
     def flavors_path(self):
-        return self.root / "flavors"
+        return self.root_path / "flavors"
 
     base_branch: str
     ignore_paths: List[str]
@@ -17,3 +20,4 @@ class BuildConfig:
     docker_build_repository: str
     docker_release_repository: str
     test_container_folder: str
+

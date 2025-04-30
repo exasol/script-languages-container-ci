@@ -2,8 +2,10 @@ import logging
 from typing import Set
 
 from exasol.slc_ci.lib.branch_config import BranchConfig
+from exasol.slc_ci.lib.get_build_config_model import get_build_config_model
 from exasol.slc_ci.lib.git_access import GitAccess
-from exasol.slc_ci.model.build_config import BuildConfig
+from exasol.slc_ci.lib.write_github_var import write_github_var
+from exasol.slc_ci.model.build_config_model import BuildConfig
 
 
 def get_all_affected_files(git_access: GitAccess, base_branch: str) -> Set[str]:
@@ -16,9 +18,10 @@ def get_all_affected_files(git_access: GitAccess, base_branch: str) -> Set[str]:
     return changed_files
 
 
-def check_if_need_to_build(
-    branch_name: str, build_config: BuildConfig, flavor: str, git_access: GitAccess
+def _run_check_if_need_to_build(
+    branch_name: str, flavor: str, git_access: GitAccess
 ) -> bool:
+    build_config = get_build_config_model()
     if BranchConfig.build_always(branch_name):
         return True
     if "[rebuild]" in git_access.get_last_commit_message():
@@ -44,3 +47,9 @@ def check_if_need_to_build(
         )
     logging.debug(f"check_if_need_to_build: filtered files: {affected_files}")
     return len(affected_files) > 0
+
+def check_if_need_to_build(
+    branch_name: str, flavor: str, github_var: str, git_access: GitAccess
+) -> None:
+    res = _run_check_if_need_to_build(branch_name, flavor, git_access)
+    write_github_var(github_var, "True" if res else "False")

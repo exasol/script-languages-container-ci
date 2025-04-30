@@ -3,6 +3,7 @@ import os
 from tempfile import TemporaryDirectory
 from test.integration.fixtures import *
 from test.unit.aws.fixtures import *
+from test.unit.github.fixtures import *
 from unittest import mock
 from unittest.mock import MagicMock, patch
 
