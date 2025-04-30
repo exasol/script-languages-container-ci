@@ -1,11 +1,12 @@
+from test.unit.github.cli.cli_runner import CliRunner
+from unittest.mock import MagicMock
+
 import pytest
 from _pytest.monkeypatch import MonkeyPatch
 
+import exasol.slc_ci.lib.get_build_runner as lib_get_build_runner
 from exasol.slc_ci.cli.commands.get_build_runner import get_build_runner
 from exasol.slc_ci.lib.github_access import GithubAccess
-from test.unit.github.cli.cli_runner import CliRunner
-from unittest.mock import MagicMock
-import exasol.slc_ci.lib.get_build_runner as lib_get_build_runner
 
 
 @pytest.fixture
@@ -19,12 +20,16 @@ def mock_get_build_runner(monkeypatch: MonkeyPatch) -> MagicMock:
     monkeypatch.setattr(lib_get_build_runner, "get_build_runner", mock_function_to_mock)
     return mock_function_to_mock
 
+
 def test_no_flavor(cli):
     assert cli.run().failed and "Missing option '--flavor'" in cli.output
 
 
 def test_no_github_var(cli):
-    assert cli.run('--flavor', "abc").failed and "Missing option '--github-var'" in cli.output
+    assert (
+        cli.run("--flavor", "abc").failed
+        and "Missing option '--github-var'" in cli.output
+    )
 
 
 def test_get_build_runner(cli, mock_get_build_runner):
@@ -35,5 +40,6 @@ def test_get_build_runner(cli, mock_get_build_runner):
     assert len(mock_get_build_runner.call_args.kwargs.keys()) == 2
 
     assert mock_get_build_runner.call_args.kwargs["flavor"] == "flavor_a"
-    assert isinstance(mock_get_build_runner.call_args.kwargs["github_access"], GithubAccess)
-
+    assert isinstance(
+        mock_get_build_runner.call_args.kwargs["github_access"], GithubAccess
+    )

@@ -1,10 +1,12 @@
-import click
 import os
 from unittest import mock
+
+import click
 from click.testing import CliRunner as ClickCli
 
+
 class CliRunner:
-    def __init__(self, command: click.Command, debug: bool = False, env = {}):
+    def __init__(self, command: click.Command, debug: bool = False, env={}):
         self._command = command
         self.debug = debug
         self.result = None
@@ -21,8 +23,8 @@ class CliRunner:
             cstr = " ".join(command_line())
             print(
                 f'Command "{cstr}"'
-                f'\n terminated with exit code {self.result.exit_code}'
-                f'\n output: >{self.result.output}<'
+                f"\n terminated with exit code {self.result.exit_code}"
+                f"\n output: >{self.result.output}<"
             )
         return self
 

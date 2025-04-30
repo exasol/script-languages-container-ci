@@ -5,6 +5,6 @@ github_options = [
         "--github-var",
         type=str,
         required=True,
-        help="Sets the github variable where the result of the operation will be stored."
+        help="Sets the github variable where the result of the operation will be stored.",
     )
 ]

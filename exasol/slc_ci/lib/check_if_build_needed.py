@@ -47,8 +47,13 @@ def _run_check_if_need_to_build(
     logging.debug(f"check_if_need_to_build: filtered files: {affected_files}")
     return len(affected_files) > 0
 
+
 def check_if_need_to_build(
-    branch_name: str, base_branch_name: str, flavor: str, github_access: GithubAccess, git_access: GitAccess
+    branch_name: str,
+    base_branch_name: str,
+    flavor: str,
+    github_access: GithubAccess,
+    git_access: GitAccess,
 ) -> None:
     res = _run_check_if_need_to_build(branch_name, base_branch_name, flavor, git_access)
     github_access.write_result("True" if res else "False")

@@ -19,4 +19,3 @@ class BuildConfig(BaseModel):
     docker_build_repository: str
     docker_release_repository: str
     test_container_folder: str
-

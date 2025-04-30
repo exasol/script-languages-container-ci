@@ -1,10 +1,11 @@
-from exasol.slc_ci.cli.cli import cli
-from exasol.slc_ci.cli.options.flavor_options import flavor_options
-from exasol.slc_ci.cli.options.github_options import github_options
 from exasol_integration_test_docker_environment.lib.utils.cli_function_decorators import (
     add_options,
 )
+
 import exasol.slc_ci.lib.get_build_runner as lib_get_build_runner
+from exasol.slc_ci.cli.cli import cli
+from exasol.slc_ci.cli.options.flavor_options import flavor_options
+from exasol.slc_ci.cli.options.github_options import github_options
 from exasol.slc_ci.lib.github_access import GithubAccess
 
 

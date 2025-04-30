@@ -15,4 +15,3 @@ def get_flavors(github_access: GithubAccess) -> None:
             flavors.append(p.name)
 
     github_access.write_result(json.dumps(flavors))
-

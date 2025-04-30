@@ -1,13 +1,14 @@
+from test.unit.github.cli.cli_runner import CliRunner
 from unittest import mock
+from unittest.mock import MagicMock, patch
 
 import pytest
 from _pytest.monkeypatch import MonkeyPatch
 
-from exasol.slc_ci.lib.github_access import GithubAccess
-from test.unit.github.cli.cli_runner import CliRunner
-from exasol.slc_ci.cli.commands.get_flavors import get_flavors
-from unittest.mock import patch, MagicMock
 import exasol.slc_ci.lib.get_flavors as lib_get_flavors
+from exasol.slc_ci.cli.commands.get_flavors import get_flavors
+from exasol.slc_ci.lib.github_access import GithubAccess
+
 
 @pytest.fixture
 def cli():
@@ -20,6 +21,7 @@ def mock_get_flavors(monkeypatch: MonkeyPatch) -> MagicMock:
     monkeypatch.setattr(lib_get_flavors, "get_flavors", mock_function_to_mock)
     return mock_function_to_mock
 
+
 def test_no_github_var(cli):
     assert cli.run().failed and "Missing option '--github-var'" in cli.output
 
@@ -31,4 +33,3 @@ def test_get_flavors(cli, mock_get_flavors):
     assert len(mock_get_flavors.call_args.args) == 0
     assert len(mock_get_flavors.call_args.kwargs) == 1
     assert isinstance(mock_get_flavors.call_args.kwargs["github_access"], GithubAccess)
-

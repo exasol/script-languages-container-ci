@@ -1,17 +1,19 @@
 import pytest
 
-
 from exasol.slc_ci.model.build_config_model import BuildConfig
 from exasol.slc_ci.model.flavor_ci_model import FlavorCiConfig, TestConfig, TestSet
 
 
 @pytest.fixture
 def build_config():
-    return BuildConfig(base_branch="master",
-                       ignore_paths=["doc", "githooks"],
-                       docker_build_repository="test/script-languages-build-cache",
-                       docker_release_repository="test/script-language-container",
-                       test_container_folder="test_container",)
+    return BuildConfig(
+        base_branch="master",
+        ignore_paths=["doc", "githooks"],
+        docker_build_repository="test/script-languages-build-cache",
+        docker_release_repository="test/script-language-container",
+        test_container_folder="test_container",
+    )
+
 
 @pytest.fixture
 def build_config_environment(tmp_test_dir, build_config):
@@ -22,11 +24,22 @@ def build_config_environment(tmp_test_dir, build_config):
 
 @pytest.fixture
 def test_flavor_config():
-    return FlavorCiConfig(build_runner="some_runner",test_config=TestConfig(test_runner="some_test_runner",test_sets=[TestSet(name="all", folders=["python3/all"]), TestSet(name="pandas", folders=["python3/pandas"])]))
+    return FlavorCiConfig(
+        build_runner="some_runner",
+        test_config=TestConfig(
+            test_runner="some_test_runner",
+            test_sets=[
+                TestSet(name="all", folders=["python3/all"]),
+                TestSet(name="pandas", folders=["python3/pandas"]),
+            ],
+        ),
+    )
 
 
 @pytest.fixture
-def build_config_with_flavor_environment(build_config_environment: BuildConfig, test_flavor_config):
+def build_config_with_flavor_environment(
+    build_config_environment: BuildConfig, test_flavor_config
+):
     build_config_environment.flavors_path.mkdir(exist_ok=False)
     flavor_path = build_config_environment.flavors_path / "flavor_a"
     flavor_path.mkdir(exist_ok=False)

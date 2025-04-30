@@ -155,6 +155,4 @@ def test_ignore_folder_should_run_ci(
         branch_name, "master", TEST_FLAVOR, github_output_mock, GitAccess()
     )
 
-    assert (
-        github_output_mock.write_result.call_args.args[0] == expected_result
-    )
+    assert github_output_mock.write_result.call_args.args[0] == expected_result
