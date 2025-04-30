@@ -75,7 +75,7 @@ testdata_ci = [
 
 
 @pytest.mark.parametrize("branch,expected_calls", testdata_ci)
-def test_branches(branch, git_access_mock, expected_calls, build_config):
+def test_branches(branch, git_access_mock, expected_calls, aws_build_config):
     """
     Test that on for specific branches the correct steps are executed:
      1. Build Image (force_rebuild = true/false)
@@ -95,7 +95,7 @@ def test_branches(branch, git_access_mock, expected_calls, build_config):
         docker_build_repository=test_env.docker_build_repo,
         docker_release_repository=test_env.docker_release_repo,
         commit_sha=test_env.commit_sha,
-        build_config=build_config,
+        build_config=aws_build_config,
         git_access=git_access_mock,
         ci_build=ci_commands_mock,
         ci_push=ci_commands_mock,

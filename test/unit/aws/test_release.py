@@ -40,7 +40,7 @@ testdata_ci = [
 
 
 @pytest.mark.parametrize("is_dry_run,expected_calls", testdata_ci)
-def test(is_dry_run: bool, expected_calls, build_config: Config):
+def test(is_dry_run: bool, expected_calls, aws_build_config: Config):
     """
     Test that the correct steps are executed for the release:
      1. Build Image (force_rebuild = true/false)
@@ -58,7 +58,7 @@ def test(is_dry_run: bool, expected_calls, build_config: Config):
         docker_password=test_env.docker_pwd,
         docker_release_repository=test_env.docker_release_repo,
         source_repo_url="https://github.com/test_source_repo_url",
-        build_config=build_config,
+        build_config=aws_build_config,
         release_id=123,
         is_dry_run=is_dry_run,
         release_uploader=ci_commands_mock,  # type: ignore

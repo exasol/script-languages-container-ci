@@ -154,7 +154,7 @@ def test_ignore_folder_should_run_ci(
     test_name: str,
     branch_name: str,
     tmp_test_dir,
-    build_config: Config,
+    aws_build_config: Config,
     files_to_commit,
     commit_message: str,
     expected_result: bool,
@@ -167,6 +167,6 @@ def test_ignore_folder_should_run_ci(
     tmp_repo = git.Repo.init(repo_path)
     commit_files(branch_name, tmp_repo, repo_path, files_to_commit, commit_message)
     assert (
-        check_if_need_to_build(branch_name, build_config, TEST_FLAVOR, GitAccess())
+        check_if_need_to_build(branch_name, aws_build_config, TEST_FLAVOR, GitAccess())
         == expected_result
     )

@@ -11,7 +11,7 @@ from exasol_script_languages_container_ci.lib.config.config_data_model import (
 
 
 @pytest.fixture
-def build_config() -> Config:
+def aws_build_config() -> Config:
     return Config(
         build=Build(ignore=Ignore(paths=["doc"]), base_branch="master"),
         release=Release(timeout_in_minutes=1),
