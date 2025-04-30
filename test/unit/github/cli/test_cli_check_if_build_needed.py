@@ -7,7 +7,7 @@ from _pytest.monkeypatch import MonkeyPatch
 import exasol.slc_ci.lib.check_if_build_needed as lib_check_if_build_needed
 from exasol.slc_ci.cli.commands.check_if_build_needed import check_if_build_needed
 from exasol.slc_ci.lib.github_access import GithubAccess
-from exasol_script_languages_container_ci.lib.git_access import GitAccess
+from exasol.slc_ci.lib.git_access import GitAccess
 
 
 @pytest.fixture
@@ -24,25 +24,25 @@ def mock_check_if_build_needed(monkeypatch: MonkeyPatch) -> MagicMock:
     return mock_function_to_mock
 
 
-def test_no_flavor(cli):
+def test_check_if_build_needed_no_flavor(cli):
     assert cli.run().failed and "Missing option '--flavor'" in cli.output
 
 
-def test_no_branch_name(cli):
+def test_check_if_build_needed_no_branch_name(cli):
     assert (
         cli.run("--flavor", "abc").failed
         and "Missing option '--branch-name'" in cli.output
     )
 
 
-def test_no_base_branch_name(cli):
+def test_check_if_build_needed_no_base_branch_name(cli):
     assert (
         cli.run("--flavor", "abc", "--branch-name", "feature/abc").failed
         and "Missing option '--base-branch-name'" in cli.output
     )
 
 
-def test_no_github_var(cli):
+def test_check_if_build_needed_no_github_var(cli):
     assert (
         cli.run(
             "--flavor",

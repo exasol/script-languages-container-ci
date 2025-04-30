@@ -22,7 +22,7 @@ def mock_get_flavors(monkeypatch: MonkeyPatch) -> MagicMock:
     return mock_function_to_mock
 
 
-def test_no_github_var(cli):
+def test_get_flavors_no_github_var(cli):
     assert cli.run().failed and "Missing option '--github-var'" in cli.output
 
 
