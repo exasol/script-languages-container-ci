@@ -12,11 +12,11 @@ def test_get_flavors(build_config_environment):
     (build_config_environment.flavors_path / "flavor_b").mkdir(exist_ok=False)
 
     lib_get_flavors(github_access=github_output_mock)
-    res = github_output_mock.write_result.call_args[0][0]
+    res = github_output_mock.write_result.call_args.args[0]
     res = set(json.loads(res))
     assert res == {"flavor_a", "flavor_b"}
 
-def test_get_flavors_ignore_files(build_config_environment, github_output_reader):
+def test_get_flavors_ignore_files(build_config_environment):
     github_output_mock = MagicMock()
     build_config_environment.flavors_path.mkdir(exist_ok=False)
     (build_config_environment.flavors_path / "flavor_a").mkdir(exist_ok=False)
@@ -27,6 +27,6 @@ def test_get_flavors_ignore_files(build_config_environment, github_output_reader
         f.write("some content")
 
     lib_get_flavors(github_access=github_output_mock)
-    res = github_output_mock.write_result.call_args[0][0]
+    res = github_output_mock.write_result.call_args.args[0]
     res = set(json.loads(res))
     assert res == {"flavor_a", "flavor_b"}

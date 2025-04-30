@@ -156,5 +156,5 @@ def test_ignore_folder_should_run_ci(
     )
 
     assert (
-        github_output_mock.write_result.call_args[0][0] == expected_result
+        github_output_mock.write_result.call_args.args[0] == expected_result
     )
