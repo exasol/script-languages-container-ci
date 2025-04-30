@@ -18,14 +18,14 @@ def get_all_affected_files(git_access: GitAccess, base_branch: str) -> Set[str]:
 
 
 def _run_check_if_need_to_build(
-    branch_name: str, flavor: str, git_access: GitAccess
+    branch_name: str, base_branch_name: str, flavor: str, git_access: GitAccess
 ) -> bool:
     build_config = get_build_config_model()
     if BranchConfig.build_always(branch_name):
         return True
     if "[rebuild]" in git_access.get_last_commit_message():
         return True
-    affected_files = list(get_all_affected_files(git_access, build_config.base_branch))
+    affected_files = list(get_all_affected_files(git_access, base_branch_name))
     logging.debug(
         f"check_if_need_to_build: Found files of last commits: {affected_files}"
     )
@@ -48,7 +48,7 @@ def _run_check_if_need_to_build(
     return len(affected_files) > 0
 
 def check_if_need_to_build(
-    branch_name: str, flavor: str, github_access: GithubAccess, git_access: GitAccess
+    branch_name: str, base_branch_name: str, flavor: str, github_access: GithubAccess, git_access: GitAccess
 ) -> None:
-    res = _run_check_if_need_to_build(branch_name, flavor, git_access)
+    res = _run_check_if_need_to_build(branch_name, base_branch_name, flavor, git_access)
     github_access.write_result("True" if res else "False")

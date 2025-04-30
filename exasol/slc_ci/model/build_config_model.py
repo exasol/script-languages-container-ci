@@ -14,7 +14,6 @@ class BuildConfig(BaseModel):
     def flavors_path(self):
         return self.root_path / "flavors"
 
-    base_branch: str
     ignore_paths: List[str]
 
     docker_build_repository: str
