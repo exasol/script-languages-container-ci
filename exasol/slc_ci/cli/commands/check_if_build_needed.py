@@ -9,7 +9,7 @@ from exasol.slc_ci.cli.options.branch_options import branch_options
 from exasol.slc_ci.cli.options.flavor_options import flavor_options
 from exasol.slc_ci.cli.options.github_options import github_options
 from exasol.slc_ci.lib.github_access import GithubAccess
-from exasol_script_languages_container_ci.lib.git_access import GitAccess
+from exasol.slc_ci.lib.git_access import GitAccess
 
 
 @cli.command()
