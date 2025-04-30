@@ -1,5 +1,6 @@
 from pathlib import Path
 from typing import List
+from unittest.mock import MagicMock
 
 import git
 import pytest
@@ -134,7 +135,6 @@ TEST_DATA = [
     "test_name, branch_name, files_to_commit,commit_message, expected_result", TEST_DATA
 )
 def test_ignore_folder_should_run_ci(
-    github_output_reader,
     build_config_environment,
     test_name: str,
     branch_name: str,
@@ -147,13 +147,14 @@ def test_ignore_folder_should_run_ci(
     This test creates a temporary git repository, commits the given file list (files_for_commit), then runs
     ci.check_if_need_to_build() and checks if it returned the expected result
     """
+    github_output_mock = MagicMock()
     repo_path = Path(tmp_test_dir)
     tmp_repo = git.Repo.init(repo_path)
     commit_files(branch_name, tmp_repo, repo_path, files_to_commit, commit_message)
     check_if_need_to_build(
-        branch_name, TEST_FLAVOR, "result", GitAccess()
+        branch_name, TEST_FLAVOR, github_output_mock, GitAccess()
     )
 
     assert (
-        github_output_reader("result") == expected_result
+        github_output_mock.write_result.call_args[0][0] == expected_result
     )

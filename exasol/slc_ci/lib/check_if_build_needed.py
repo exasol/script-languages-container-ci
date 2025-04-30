@@ -4,8 +4,7 @@ from typing import Set
 from exasol.slc_ci.lib.branch_config import BranchConfig
 from exasol.slc_ci.lib.get_build_config_model import get_build_config_model
 from exasol.slc_ci.lib.git_access import GitAccess
-from exasol.slc_ci.lib.write_github_var import write_github_var
-from exasol.slc_ci.model.build_config_model import BuildConfig
+from exasol.slc_ci.lib.github_access import GithubAccess
 
 
 def get_all_affected_files(git_access: GitAccess, base_branch: str) -> Set[str]:
@@ -49,7 +48,7 @@ def _run_check_if_need_to_build(
     return len(affected_files) > 0
 
 def check_if_need_to_build(
-    branch_name: str, flavor: str, github_var: str, git_access: GitAccess
+    branch_name: str, flavor: str, github_access: GithubAccess, git_access: GitAccess
 ) -> None:
     res = _run_check_if_need_to_build(branch_name, flavor, git_access)
-    write_github_var(github_var, "True" if res else "False")
+    github_access.write_result("True" if res else "False")

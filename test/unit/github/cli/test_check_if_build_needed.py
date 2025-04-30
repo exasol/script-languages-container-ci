@@ -2,6 +2,7 @@ import pytest
 from _pytest.monkeypatch import MonkeyPatch
 
 from exasol.slc_ci.cli.commands.check_if_build_needed import check_if_build_needed
+from exasol.slc_ci.lib.github_access import GithubAccess
 from exasol_script_languages_container_ci.lib.git_access import GitAccess
 from test.unit.github.cli.cli_runner import CliRunner
 from unittest.mock import MagicMock
@@ -32,9 +33,11 @@ def test_check_if_build_needed(cli, mock_check_if_build_needed):
     cli.run('--flavor', 'flavor_a', '--branch-name', 'feature/abc', "--github-var", "abc")
     assert cli.succeeded
     assert mock_check_if_build_needed.call_count == 1
+    assert len(mock_check_if_build_needed.call_args.args) == 0
+    assert len(mock_check_if_build_needed.call_args.kwargs) == 4
     assert mock_check_if_build_needed.call_args.kwargs["branch_name"] == "feature/abc"
     assert mock_check_if_build_needed.call_args.kwargs["flavor"] == "flavor_a"
-    assert mock_check_if_build_needed.call_args.kwargs["github_var"] == "abc"
+    assert isinstance(mock_check_if_build_needed.call_args.kwargs["github_access"], GithubAccess)
     assert isinstance(
         mock_check_if_build_needed.call_args.kwargs["git_access"], GitAccess
     )

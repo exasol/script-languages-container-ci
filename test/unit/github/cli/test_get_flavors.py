@@ -3,6 +3,7 @@ from unittest import mock
 import pytest
 from _pytest.monkeypatch import MonkeyPatch
 
+from exasol.slc_ci.lib.github_access import GithubAccess
 from test.unit.github.cli.cli_runner import CliRunner
 from exasol.slc_ci.cli.commands.get_flavors import get_flavors
 from unittest.mock import patch, MagicMock
@@ -27,5 +28,7 @@ def test_get_flavors(cli, mock_get_flavors):
     cli.run("--github-var", "abc")
     assert cli.succeeded
     assert mock_get_flavors.call_count == 1
-    assert mock_get_flavors.call_args == mock.call("abc")
+    assert len(mock_get_flavors.call_args.args) == 0
+    assert len(mock_get_flavors.call_args.kwargs) == 1
+    assert isinstance(mock_get_flavors.call_args.kwargs["github_access"], GithubAccess)
 
