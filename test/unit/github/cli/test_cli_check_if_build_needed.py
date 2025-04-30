@@ -6,8 +6,8 @@ from _pytest.monkeypatch import MonkeyPatch
 
 import exasol.slc_ci.lib.check_if_build_needed as lib_check_if_build_needed
 from exasol.slc_ci.cli.commands.check_if_build_needed import check_if_build_needed
-from exasol.slc_ci.lib.github_access import GithubAccess
 from exasol.slc_ci.lib.git_access import GitAccess
+from exasol.slc_ci.lib.github_access import GithubAccess
 
 
 @pytest.fixture
