@@ -1,3 +1,4 @@
+import pathlib
 from pathlib import Path
 from typing import List
 
@@ -12,9 +13,9 @@ class BuildConfig(BaseModel):
 
     @property
     def flavors_path(self):
-        return self.root_path / "flavors"
+        return Path("flavors")
 
-    ignore_paths: List[str]
+    ignore_paths: List[pathlib.Path]
 
     docker_build_repository: str
     docker_release_repository: str

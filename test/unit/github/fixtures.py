@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import pytest
 
 from exasol.slc_ci.model.build_config_model import BuildConfig
@@ -7,8 +9,7 @@ from exasol.slc_ci.model.flavor_ci_model import FlavorCiConfig, TestConfig, Test
 @pytest.fixture
 def build_config():
     return BuildConfig(
-        base_branch="master",
-        ignore_paths=["doc", "githooks"],
+        ignore_paths=[Path("doc"), Path("githooks")],
         docker_build_repository="test/script-languages-build-cache",
         docker_release_repository="test/script-language-container",
         test_container_folder="test_container",
