@@ -30,8 +30,14 @@ def test_flavor_config():
         test_config=TestConfig(
             test_runner="some_test_runner",
             test_sets=[
-                TestSet(name="all", folders=["python3/all"]),
-                TestSet(name="pandas", folders=["python3/pandas"]),
+                TestSet(
+                    name="all", folders=["python3/all"], test_languages=["python3"]
+                ),
+                TestSet(
+                    name="pandas",
+                    folders=["python3/pandas"],
+                    test_languages=["python3"],
+                ),
             ],
         ),
     )
