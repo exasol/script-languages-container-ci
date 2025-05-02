@@ -8,8 +8,8 @@ from exasol.slc_ci.lib.git_access import GitAccess
 from exasol.slc_ci.lib.github_access import GithubAccess
 
 
-def get_all_affected_files(git_access: GitAccess, base_branch: str) -> List[Path]:
-    base_last_commit_sha = git_access.get_head_commit_sha_of_branch(base_branch)
+def get_all_affected_files(git_access: GitAccess, base_ref: str) -> List[Path]:
+    base_last_commit_sha = git_access.get_head_commit_sha_of_branch(base_ref)
     changed_files = set()  # type: ignore
     for commit in git_access.get_last_commits():
         if commit == base_last_commit_sha:
@@ -19,14 +19,14 @@ def get_all_affected_files(git_access: GitAccess, base_branch: str) -> List[Path
 
 
 def _run_check_if_need_to_build(
-    branch_name: str, base_branch_name: str, flavor: str, git_access: GitAccess
+    branch_name: str, base_ref: str, flavor: str, git_access: GitAccess
 ) -> bool:
     build_config = get_build_config_model()
     if build_always(branch_name):
         return True
     if "[rebuild]" in git_access.get_last_commit_message():
         return True
-    affected_files = list(get_all_affected_files(git_access, base_branch_name))
+    affected_files = list(get_all_affected_files(git_access, base_ref))
     logging.debug(
         f"check_if_need_to_build: Found files of last commits: {affected_files}"
     )
@@ -58,10 +58,10 @@ def _run_check_if_need_to_build(
 
 def check_if_need_to_build(
     branch_name: str,
-    base_branch_name: str,
+    base_ref: str,
     flavor: str,
     github_access: GithubAccess,
     git_access: GitAccess,
 ) -> None:
-    res = _run_check_if_need_to_build(branch_name, base_branch_name, flavor, git_access)
+    res = _run_check_if_need_to_build(branch_name, base_ref, flavor, git_access)
     github_access.write_result("True" if res else "False")

@@ -15,8 +15,8 @@ def github_output(monkeypatch: MonkeyPatch, tmp_path):
 
 @pytest.fixture
 def github_output_reader(github_output):
-    def reader(github_var: str):
-        pattern = f"{github_var}=(.+)"
+    def reader(github_output_var: str):
+        pattern = f"{github_output_var}=(.+)"
         match = re.search(pattern, github_output.read_text())
         assert match
         return match.group(1)

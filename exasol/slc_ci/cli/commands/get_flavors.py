@@ -11,10 +11,10 @@ from exasol.slc_ci.lib.github_access import GithubAccess
 @cli.command()
 @add_options(github_options)
 def get_flavors(
-    github_var: str,
+    github_output_var: str,
 ):
     """
     Searches for all available flavors and writes result as JSON array to Github variable <github-var>.
     """
-    github_access: GithubAccess = GithubAccess(github_var=github_var)
+    github_access: GithubAccess = GithubAccess(github_output_var=github_output_var)
     lib_get_flavors.get_flavors(github_access=github_access)

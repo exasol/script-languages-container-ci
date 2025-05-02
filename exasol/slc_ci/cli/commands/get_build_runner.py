@@ -12,6 +12,6 @@ from exasol.slc_ci.lib.github_access import GithubAccess
 @cli.command()
 @add_options(flavor_options)
 @add_options(github_options)
-def get_build_runner(flavor: str, github_var: str):
-    github_access = GithubAccess(github_var)
+def get_build_runner(flavor: str, github_output_var: str):
+    github_access = GithubAccess(github_output_var)
     lib_get_build_runner.get_build_runner(flavor=flavor, github_access=github_access)

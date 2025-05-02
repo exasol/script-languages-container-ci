@@ -10,7 +10,7 @@ authors = [
 ]
 
 [project.scripts]
-exaslc_ci = 'exasol.slc_ci.cli.main:main'
+exaslc-ci = 'exasol.slc_ci.cli.main:main'
 
 [tool.poetry]
 requires-poetry = ">=2.1.0"

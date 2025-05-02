@@ -8,10 +8,10 @@ branch_option = click.option(
 )
 
 base_branch_option = click.option(
-    "--base-branch-name",
+    "--base-ref",
     type=str,
     required=True,
-    help="In case of a PR, the target branch of the PR.",
+    help="In case of a PR, the target ref of the PR.",
 )
 
 branch_options = [branch_option, base_branch_option]

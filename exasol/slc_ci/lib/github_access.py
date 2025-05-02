@@ -3,8 +3,8 @@ from pathlib import Path
 
 
 class GithubAccess:
-    def __init__(self, github_var: str):
-        self.github_var = github_var
+    def __init__(self, github_output_var: str):
+        self.github_output_var = github_output_var
 
     @property
     def _get_github_output_file(self):
@@ -13,4 +13,4 @@ class GithubAccess:
 
     def write_result(self, value: str):
         with open(self._get_github_output_file, "a") as f:
-            f.write(f"{self.github_var}={value}\n")
+            f.write(f"{self.github_output_var}={value}\n")

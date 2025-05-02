@@ -12,10 +12,10 @@ def cli():
 
         Print this help message:
 
-            $ exaslci --help
+            $ exaslc-ci --help
 
         Get the list of available flavors and write to $GITHUB_OUT:
 
-            $ exaslct get-flavors --github-var flavors
+            $ exaslc-ci get-flavors --github-output-var flavors
     """
     pass

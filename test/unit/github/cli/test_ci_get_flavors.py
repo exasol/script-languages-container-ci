@@ -1,6 +1,6 @@
 from test.unit.github.cli.cli_runner import CliRunner
 from unittest import mock
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock, patch, call
 
 import pytest
 from _pytest.monkeypatch import MonkeyPatch
@@ -8,6 +8,7 @@ from _pytest.monkeypatch import MonkeyPatch
 import exasol.slc_ci.lib.get_flavors as lib_get_flavors
 from exasol.slc_ci.cli.commands.get_flavors import get_flavors
 from exasol.slc_ci.lib.github_access import GithubAccess
+from test.unit.github.cli.is_instance_matcher import IsInstance
 
 
 @pytest.fixture
@@ -23,13 +24,11 @@ def mock_get_flavors(monkeypatch: MonkeyPatch) -> MagicMock:
 
 
 def test_get_flavors_no_github_var(cli):
-    assert cli.run().failed and "Missing option '--github-var'" in cli.output
+    assert cli.run().failed and "Missing option '--github-output-var'" in cli.output
 
 
 def test_get_flavors(cli, mock_get_flavors):
-    cli.run("--github-var", "abc")
+    cli.run("--github-output-var", "abc")
     assert cli.succeeded
-    assert mock_get_flavors.call_count == 1
-    assert len(mock_get_flavors.call_args.args) == 0
-    assert len(mock_get_flavors.call_args.kwargs) == 1
-    assert isinstance(mock_get_flavors.call_args.kwargs["github_access"], GithubAccess)
+    expected_call = call(github_access=IsInstance(GithubAccess))
+    assert mock_get_flavors.mock_calls == [expected_call]
