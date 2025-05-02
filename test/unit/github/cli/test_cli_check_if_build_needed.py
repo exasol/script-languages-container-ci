@@ -1,4 +1,5 @@
 from test.unit.github.cli.cli_runner import CliRunner
+from test.unit.github.cli.is_instance_matcher import IsInstance
 from unittest.mock import MagicMock, call
 
 import pytest
@@ -8,7 +9,6 @@ import exasol.slc_ci.lib.check_if_build_needed as lib_check_if_build_needed
 from exasol.slc_ci.cli.commands.check_if_build_needed import check_if_build_needed
 from exasol.slc_ci.lib.git_access import GitAccess
 from exasol.slc_ci.lib.github_access import GithubAccess
-from test.unit.github.cli.is_instance_matcher import IsInstance
 
 
 @pytest.fixture

@@ -1,4 +1,5 @@
 from test.unit.github.cli.cli_runner import CliRunner
+from test.unit.github.cli.is_instance_matcher import IsInstance
 from unittest.mock import MagicMock, call
 
 import pytest
@@ -7,7 +8,6 @@ from _pytest.monkeypatch import MonkeyPatch
 import exasol.slc_ci.lib.get_build_runner as lib_get_build_runner
 from exasol.slc_ci.cli.commands.get_build_runner import get_build_runner
 from exasol.slc_ci.lib.github_access import GithubAccess
-from test.unit.github.cli.is_instance_matcher import IsInstance
 
 
 @pytest.fixture

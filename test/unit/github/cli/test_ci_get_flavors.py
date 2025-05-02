@@ -1,6 +1,7 @@
 from test.unit.github.cli.cli_runner import CliRunner
+from test.unit.github.cli.is_instance_matcher import IsInstance
 from unittest import mock
-from unittest.mock import MagicMock, patch, call
+from unittest.mock import MagicMock, call, patch
 
 import pytest
 from _pytest.monkeypatch import MonkeyPatch
@@ -8,7 +9,6 @@ from _pytest.monkeypatch import MonkeyPatch
 import exasol.slc_ci.lib.get_flavors as lib_get_flavors
 from exasol.slc_ci.cli.commands.get_flavors import get_flavors
 from exasol.slc_ci.lib.github_access import GithubAccess
-from test.unit.github.cli.is_instance_matcher import IsInstance
 
 
 @pytest.fixture
