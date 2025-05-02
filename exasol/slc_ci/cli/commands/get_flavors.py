@@ -14,7 +14,7 @@ def get_flavors(
     github_output_var: str,
 ):
     """
-    Searches for all available flavors and writes result as JSON array to Github variable <github-var>.
+    Searches for all available flavors and writes result as JSON array to Github variable <github-output-var>.
     """
     github_access: GithubAccess = GithubAccess(github_output_var=github_output_var)
     lib_get_flavors.get_flavors(github_access=github_access)
