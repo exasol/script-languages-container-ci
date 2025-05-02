@@ -36,9 +36,6 @@ def test_get_build_runner_no_github_var(cli):
 def test_get_build_runner(cli, mock_get_build_runner):
     cli.run("--flavor", "flavor_a", "--github-output-var", "abc")
     assert cli.succeeded
-    assert mock_get_build_runner.call_count == 1
-    assert len(mock_get_build_runner.call_args.args) == 0
-    assert len(mock_get_build_runner.call_args.kwargs.keys()) == 2
 
     # Validate the exact call using mock_calls and IsInstance matcher
     expected_call = call(flavor="flavor_a", github_access=IsInstance(GithubAccess))
