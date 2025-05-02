@@ -8,10 +8,6 @@ from pydantic import BaseModel
 class BuildConfig(BaseModel):
 
     @property
-    def root_path(self) -> Path:
-        return Path.cwd()
-
-    @property
     def flavors_path(self):
         return Path("flavors")
 
