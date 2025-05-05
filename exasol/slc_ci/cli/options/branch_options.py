@@ -14,4 +14,9 @@ base_branch_option = click.option(
     help="In case of a PR, the target ref of the PR.",
 )
 
-branch_options = [branch_option, base_branch_option]
+commit_sha_option = click.option(
+    "--commit-sha",
+    type=str,
+    required=True,
+    help="Commit sha that trigger the GH event",
+)
