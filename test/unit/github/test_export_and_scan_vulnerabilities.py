@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+from test.unit.github.test_env import test_env
 from typing import Union
 from unittest.mock import MagicMock, Mock, call
 
@@ -7,8 +8,9 @@ from exasol.slc_ci.lib.ci_build import CIBuild
 from exasol.slc_ci.lib.ci_prepare import CIPrepare
 from exasol.slc_ci.lib.ci_push import CIPush
 from exasol.slc_ci.lib.ci_security_scan import CISecurityScan
-from exasol.slc_ci.lib.export_and_scan_vulnerabilities import export_and_scan_vulnerabilities as lib_export_and_scan_vulnerabilities
-from test.unit.github.test_env import test_env
+from exasol.slc_ci.lib.export_and_scan_vulnerabilities import (
+    export_and_scan_vulnerabilities as lib_export_and_scan_vulnerabilities,
+)
 
 TEST_FLAVOR = "flavor_xyz"
 
@@ -19,7 +21,6 @@ def test_export_and_scan_vulnerabilities(build_config_environment, git_access_mo
     github_output_mock = MagicMock()
     ci_export_mock.export = MagicMock(return_value=res_slc_path)
     ci_commands_mock: Union[CISecurityScan, CIPush, CIBuild, CIPrepare, Mock] = Mock()
-
 
     lib_export_and_scan_vulnerabilities(
         flavor=TEST_FLAVOR,
@@ -64,7 +65,18 @@ def test_export_and_scan_vulnerabilities(build_config_environment, git_access_mo
         ),
     ]
     assert ci_export_mock.mock_calls == [
-        call.export(flavor_path=(expected_flavor_path,),goal="release", output_directory=".build_output_release"),
-        call.export(flavor_path=(expected_flavor_path,), goal="base_test_build_run", output_directory=".build_output_test"),
+        call.export(
+            flavor_path=(expected_flavor_path,),
+            goal="release",
+            output_directory=".build_output_release",
+        ),
+        call.export(
+            flavor_path=(expected_flavor_path,),
+            goal="base_test_build_run",
+            output_directory=".build_output_test",
+        ),
     ]
-    assert json.loads(github_output_mock.write_result.call_args.args[0]) == {"slc_release" : "/some_path/slc.tar.gz", "slc_test": "/some_path/slc.tar.gz"}
+    assert json.loads(github_output_mock.write_result.call_args.args[0]) == {
+        "slc_release": "/some_path/slc.tar.gz",
+        "slc_test": "/some_path/slc.tar.gz",
+    }

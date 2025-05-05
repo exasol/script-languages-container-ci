@@ -64,7 +64,15 @@ def export_and_scan_vulnerabilities(
         docker_password=docker_password,
     )
     release_output = ".build_output_release"
-    slc_release = ci_export.export(flavor_path=flavor_path, goal="release", output_directory=release_output)
+    slc_release = ci_export.export(
+        flavor_path=flavor_path, goal="release", output_directory=release_output
+    )
     test_output = ".build_output_test"
-    slc_test = ci_export.export(flavor_path=flavor_path, goal="base_test_build_run", output_directory=test_output)
-    github_access.write_result(json.dumps({"slc_release": str(slc_release), "slc_test": str(slc_test)}))
+    slc_test = ci_export.export(
+        flavor_path=flavor_path,
+        goal="base_test_build_run",
+        output_directory=test_output,
+    )
+    github_access.write_result(
+        json.dumps({"slc_release": str(slc_release), "slc_test": str(slc_test)})
+    )

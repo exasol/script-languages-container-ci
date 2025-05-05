@@ -10,11 +10,11 @@ from exasol.slc_ci.cli.options.flavor_options import flavor_options
 from exasol.slc_ci.cli.options.github_options import github_options
 from exasol.slc_ci.lib.ci_build import CIBuild
 from exasol.slc_ci.lib.ci_export import CIExport
+from exasol.slc_ci.lib.ci_prepare import CIPrepare
 from exasol.slc_ci.lib.ci_push import CIPush
+from exasol.slc_ci.lib.ci_security_scan import CISecurityScan
 from exasol.slc_ci.lib.git_access import GitAccess
 from exasol.slc_ci.lib.github_access import GithubAccess
-from exasol.slc_ci.lib.ci_prepare import CIPrepare
-from exasol.slc_ci.lib.ci_security_scan import CISecurityScan
 
 
 @cli.command()
@@ -23,7 +23,12 @@ from exasol.slc_ci.lib.ci_security_scan import CISecurityScan
 @add_options(docker_options)
 @add_options(github_options)
 def export_and_scan_vulnerabilities(
-    flavor: str, branch_name: str, docker_user: str, docker_password: str, commit_sha: str , github_output_var: str
+    flavor: str,
+    branch_name: str,
+    docker_user: str,
+    docker_password: str,
+    commit_sha: str,
+    github_output_var: str,
 ) -> None:
     git_access: GitAccess = GitAccess()
     github_access: GithubAccess = GithubAccess(github_output_var)
@@ -41,9 +46,9 @@ def export_and_scan_vulnerabilities(
         commit_sha=commit_sha,
         git_access=git_access,
         github_access=github_access,
-        ci_build = ci_build,
-        ci_security_scan = ci_security_scan,
-        ci_prepare = ci_prepare,
-        ci_export = ci_export,
-        ci_push = ci_push,
+        ci_build=ci_build,
+        ci_security_scan=ci_security_scan,
+        ci_prepare=ci_prepare,
+        ci_export=ci_export,
+        ci_push=ci_push,
     )

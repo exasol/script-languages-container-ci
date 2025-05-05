@@ -5,7 +5,7 @@ from exasol_integration_test_docker_environment.lib.utils.cli_function_decorator
 
 import exasol.slc_ci.lib.check_if_build_needed as lib_check_if_build_needed
 from exasol.slc_ci.cli.cli import cli
-from exasol.slc_ci.cli.options.branch_options import branch_option, base_branch_option
+from exasol.slc_ci.cli.options.branch_options import base_branch_option, branch_option
 from exasol.slc_ci.cli.options.flavor_options import flavor_options
 from exasol.slc_ci.cli.options.github_options import github_options
 from exasol.slc_ci.lib.git_access import GitAccess

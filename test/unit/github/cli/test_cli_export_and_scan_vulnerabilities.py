@@ -1,9 +1,3 @@
-from exasol.slc_ci.lib import github_access
-from exasol.slc_ci.lib.ci_build import CIBuild
-from exasol.slc_ci.lib.ci_export import CIExport
-from exasol.slc_ci.lib.ci_prepare import CIPrepare
-from exasol.slc_ci.lib.ci_push import CIPush
-from exasol.slc_ci.lib.ci_security_scan import CISecurityScan
 from test.unit.github.cli.cli_runner import CliRunner
 from test.unit.github.cli.is_instance_matcher import IsInstance
 from unittest.mock import MagicMock, call
@@ -12,7 +6,15 @@ import pytest
 from _pytest.monkeypatch import MonkeyPatch
 
 import exasol.slc_ci.lib.export_and_scan_vulnerabilities as lib_export_and_scan_vulnerabilities
-from exasol.slc_ci.cli.commands.export_and_scan_vulnerabilities import export_and_scan_vulnerabilities
+from exasol.slc_ci.cli.commands.export_and_scan_vulnerabilities import (
+    export_and_scan_vulnerabilities,
+)
+from exasol.slc_ci.lib import github_access
+from exasol.slc_ci.lib.ci_build import CIBuild
+from exasol.slc_ci.lib.ci_export import CIExport
+from exasol.slc_ci.lib.ci_prepare import CIPrepare
+from exasol.slc_ci.lib.ci_push import CIPush
+from exasol.slc_ci.lib.ci_security_scan import CISecurityScan
 from exasol.slc_ci.lib.git_access import GitAccess
 from exasol.slc_ci.lib.github_access import GithubAccess
 
@@ -26,7 +28,9 @@ def cli():
 def mock_export_and_scan_vulnerabilities(monkeypatch: MonkeyPatch) -> MagicMock:
     mock_function_to_mock = MagicMock()
     monkeypatch.setattr(
-        lib_export_and_scan_vulnerabilities, "export_and_scan_vulnerabilities", mock_function_to_mock
+        lib_export_and_scan_vulnerabilities,
+        "export_and_scan_vulnerabilities",
+        mock_function_to_mock,
     )
     return mock_function_to_mock
 
@@ -79,7 +83,9 @@ def test_export_and_scan_vulnerabilities_no_docker_pwd(cli):
     )
 
 
-def test_export_and_scan_vulnerabilities_no_github_output_var(cli, mock_export_and_scan_vulnerabilities):
+def test_export_and_scan_vulnerabilities_no_github_output_var(
+    cli, mock_export_and_scan_vulnerabilities
+):
     assert (
         cli.run(
             "--flavor",
@@ -97,7 +103,9 @@ def test_export_and_scan_vulnerabilities_no_github_output_var(cli, mock_export_a
     )
 
 
-def test_export_and_scan_vulnerabilities_no_github_output(cli, mock_export_and_scan_vulnerabilities):
+def test_export_and_scan_vulnerabilities_no_github_output(
+    cli, mock_export_and_scan_vulnerabilities
+):
     cli.run(
         "--flavor",
         "flavor_a",
@@ -110,7 +118,7 @@ def test_export_and_scan_vulnerabilities_no_github_output(cli, mock_export_and_s
         "--docker-password",
         "secret",
         "--github-output-var",
-        "some_var"
+        "some_var",
     )
     assert cli.succeeded
 
@@ -123,10 +131,10 @@ def test_export_and_scan_vulnerabilities_no_github_output(cli, mock_export_and_s
         commit_sha="12345",
         git_access=IsInstance(GitAccess),
         github_access=IsInstance(GithubAccess),
-        ci_build = IsInstance(CIBuild),
-        ci_security_scan = IsInstance(CISecurityScan),
-        ci_prepare = IsInstance(CIPrepare),
-        ci_export = IsInstance(CIExport),
-        ci_push = IsInstance(CIPush)
+        ci_build=IsInstance(CIBuild),
+        ci_security_scan=IsInstance(CISecurityScan),
+        ci_prepare=IsInstance(CIPrepare),
+        ci_export=IsInstance(CIExport),
+        ci_push=IsInstance(CIPush),
     )
     assert mock_export_and_scan_vulnerabilities.mock_calls == [expected_call]
