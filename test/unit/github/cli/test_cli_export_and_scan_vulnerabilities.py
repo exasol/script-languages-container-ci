@@ -9,7 +9,6 @@ import exasol.slc_ci.lib.export_and_scan_vulnerabilities as lib_export_and_scan_
 from exasol.slc_ci.cli.commands.export_and_scan_vulnerabilities import (
     export_and_scan_vulnerabilities,
 )
-
 from exasol.slc_ci.lib.ci_build import CIBuild
 from exasol.slc_ci.lib.ci_export import CIExport
 from exasol.slc_ci.lib.ci_prepare import CIPrepare
@@ -103,9 +102,7 @@ def test_export_and_scan_vulnerabilities_no_github_output_var(
     )
 
 
-def test_export_and_scan_vulnerabilities(
-    cli, mock_export_and_scan_vulnerabilities
-):
+def test_export_and_scan_vulnerabilities(cli, mock_export_and_scan_vulnerabilities):
     cli.run(
         "--flavor",
         "flavor_a",
