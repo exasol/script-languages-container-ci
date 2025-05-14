@@ -31,24 +31,29 @@ def test_flavor_config():
             test_runner="some_test_runner",
             test_sets=[
                 TestSet(
-                    name="all", folders=["python3/all"], test_languages=["python3"]
+                    name="all", folders=["python3/all"], test_languages=["python3"], goal="release",
                 ),
                 TestSet(
                     name="pandas",
                     folders=["python3/pandas"],
                     test_languages=["python3"],
+                    goal="release",
                 ),
             ],
         ),
     )
 
+@pytest.fixture
+def flavor_name():
+    return "flavor_a"
+
 
 @pytest.fixture
 def build_config_with_flavor_environment(
-    build_config_environment: BuildConfig, test_flavor_config
+    build_config_environment: BuildConfig, test_flavor_config, flavor_name
 ):
     build_config_environment.flavors_path.mkdir(exist_ok=False)
-    flavor_path = build_config_environment.flavors_path / "flavor_a"
+    flavor_path = build_config_environment.flavors_path / flavor_name
     flavor_path.mkdir(exist_ok=False)
 
     config_file_path = flavor_path / "ci.json"

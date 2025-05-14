@@ -1,0 +1,55 @@
+from pathlib import Path
+from typing import Union
+from unittest.mock import Mock, call
+
+import pytest
+
+from exasol.slc_ci.lib.ci_prepare import CIPrepare
+from exasol.slc_ci.lib.run_tests import run_tests
+from exasol.slc_ci.lib.ci_test import CIExecuteTest
+from test.unit.github.test_env import test_env
+import os
+
+
+@pytest.fixture
+def slc_directory(tmp_path: Path, flavor_name) -> Path:
+    with open(str(tmp_path / f"{flavor_name}-dummy_slc.tar.gz"), "w") as f:
+        f.write("nothing")
+    return tmp_path
+
+
+def run_db_test_call(slc_path: Path, goal: str, test_folder: str, test_container_folder: str, flavor_path: str):
+    return call.execute_tests(
+        flavor_path=(flavor_path,),
+        slc_path=slc_path,
+        test_folder=test_folder,
+        docker_user=test_env.docker_user,
+        docker_password=test_env.docker_pwd,
+        test_container_folder=test_container_folder,
+        goal=goal,
+    )
+
+
+def test_run_tests(slc_directory, build_config_with_flavor_environment, test_flavor_config, flavor_name):
+    ci_commands_mock: Union[CIExecuteTest, CIPrepare, Mock] = Mock()
+
+    c = os.getcwd()
+    run_tests(
+        flavor=flavor_name,
+        slc_directory=str(slc_directory),
+        test_set_name="all",
+        docker_user=test_env.docker_user,
+        docker_password=test_env.docker_pwd,
+        ci_prepare=ci_commands_mock,
+        ci_test=ci_commands_mock,
+    )
+    assert ci_commands_mock.mock_calls == [
+        call.prepare(),
+        run_db_test_call(
+            slc_path=slc_directory / f"{flavor_name}-dummy_slc.tar.gz",
+            goal="release",
+            test_folder="python3/all",
+            test_container_folder=build_config_with_flavor_environment.test_container_folder,
+            flavor_path= str(build_config_with_flavor_environment.flavors_path / flavor_name),
+        ),
+    ]
