@@ -24,7 +24,6 @@ class CIBuild:
         commit_sha: str,
         docker_user: str,
         docker_password: str,
-        test_container_folder: str,
     ):
         """
         Build the script-language container for given flavor.
