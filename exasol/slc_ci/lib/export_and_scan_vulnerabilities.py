@@ -46,7 +46,6 @@ def export_and_scan_vulnerabilities(
         commit_sha=commit_sha,
         docker_user=docker_user,
         docker_password=docker_password,
-        test_container_folder=test_container_folder,
     )
     ci_security_scan.run_security_scan(flavor_path=flavor_path)
     ci_push.push(

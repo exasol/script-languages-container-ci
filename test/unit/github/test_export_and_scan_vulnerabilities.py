@@ -46,7 +46,6 @@ def test_export_and_scan_vulnerabilities(build_config_environment, git_access_mo
             commit_sha=test_env.commit_sha,
             docker_user=test_env.docker_user,
             docker_password=test_env.docker_pwd,
-            test_container_folder=build_config_environment.test_container_folder,
         ),
         call.run_security_scan(flavor_path=(expected_flavor_path,)),
         call.push(
