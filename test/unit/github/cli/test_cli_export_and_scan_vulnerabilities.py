@@ -103,7 +103,7 @@ def test_export_and_scan_vulnerabilities_no_github_output_var(
     )
 
 
-def test_export_and_scan_vulnerabilities_no_github_output(
+def test_export_and_scan_vulnerabilities(
     cli, mock_export_and_scan_vulnerabilities
 ):
     cli.run(
