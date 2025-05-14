@@ -3,3 +3,4 @@ from .export_and_scan_vulnerabilities import export_and_scan_vulnerabilities
 from .get_build_runner import get_build_runner
 from .get_flavors import get_flavors
 from .run_tests import run_tests
+from .prepare_test_container import prepare_test_container
