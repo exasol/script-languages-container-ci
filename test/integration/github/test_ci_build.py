@@ -9,7 +9,7 @@ testdata = [
         "test_docker_build_repository",
         "test_docker_build_repository",
     ),
-    (None, "", "exasol/script-language-container", ""),
+    (None, "exasol/script-language-container"),
 ]
 
 
