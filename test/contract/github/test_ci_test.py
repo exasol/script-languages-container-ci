@@ -1,5 +1,6 @@
 import pytest
 
+from exasol.slc_ci.lib.ci_export import CIExport
 from exasol.slc_ci.lib.ci_test import DBTestRunnerProtocol
 
 
@@ -13,6 +14,18 @@ class SuccessfulFlavorContract:
     def test_container(self, test_containers_folder):
         return str(test_containers_folder / "successful")
 
+    @pytest.fixture()
+    def existing_container(self, flavor_path, tmp_path):
+        export_path = tmp_path / "successful"
+        export_path.mkdir(parents=True, exist_ok=False)
+        ci_export = CIExport()
+        slc = ci_export.export(
+            flavor_path=(flavor_path,),
+            goal="release",
+            output_directory=str(export_path),
+        )
+        return slc
+
 
 class SuccessfulFlavorDBTestsContract(SuccessfulFlavorContract):
 
@@ -20,7 +33,7 @@ class SuccessfulFlavorDBTestsContract(SuccessfulFlavorContract):
     def db_test_runner(self) -> DBTestRunnerProtocol:
         raise NotImplementedError()
 
-    def test(self, db_test_runner, test_container, flavor_path):
+    def test(self, db_test_runner, test_container, flavor_path, existing_container):
         result = db_test_runner.run(
             flavor_path=(flavor_path,),
             test_folder=(),
@@ -29,25 +42,7 @@ class SuccessfulFlavorDBTestsContract(SuccessfulFlavorContract):
             docker_username=None,
             docker_password=None,
             test_container_folder=test_container,
-        )
-        assert result.tests_are_ok and result.command_line_output_path.exists()
-
-
-class SuccessfulFlavorLinkerNamespaceTestsContract(SuccessfulFlavorContract):
-
-    @pytest.fixture
-    def db_test_runner(self) -> DBTestRunnerProtocol:
-        raise NotImplementedError()
-
-    def test(self, db_test_runner, test_container, flavor_path):
-        result = db_test_runner.run(
-            flavor_path=(flavor_path,),
-            workers=7,
-            test_folder=("test/linker_namespace_sanity",),
-            release_goal=("base_test_build_run",),
-            docker_username=None,
-            docker_password=None,
-            test_container_folder=test_container,
+            use_existing_container=existing_container,
         )
         assert result.tests_are_ok and result.command_line_output_path.exists()
 
@@ -62,6 +57,18 @@ class FailingRunDBTestFlavorContract:
     def test_container(self, test_containers_folder):
         return str(test_containers_folder / "failing")
 
+    @pytest.fixture()
+    def existing_container(self, flavor_path, tmp_path):
+        export_path = tmp_path / "failure"
+        export_path.mkdir(parents=True, exist_ok=False)
+        ci_export = CIExport()
+        slc = ci_export.export(
+            flavor_path=(flavor_path,),
+            goal="release",
+            output_directory=str(export_path),
+        )
+        return slc
+
 
 class FailingRunDBTestFlavorDBTestsContract(FailingRunDBTestFlavorContract):
 
@@ -69,7 +76,7 @@ class FailingRunDBTestFlavorDBTestsContract(FailingRunDBTestFlavorContract):
     def db_test_runner(self) -> DBTestRunnerProtocol:
         raise NotImplementedError()
 
-    def test(self, db_test_runner, test_container, flavor_path):
+    def test(self, db_test_runner, test_container, flavor_path, existing_container):
         result = db_test_runner.run(
             flavor_path=(flavor_path,),
             test_folder=(),
@@ -78,26 +85,6 @@ class FailingRunDBTestFlavorDBTestsContract(FailingRunDBTestFlavorContract):
             docker_username=None,
             docker_password=None,
             test_container_folder=test_container,
-        )
-        assert not result.tests_are_ok and result.command_line_output_path.exists()
-
-
-class FailingRunDBTestFlavorLinkerNamespaceTestsContract(
-    FailingRunDBTestFlavorContract
-):
-
-    @pytest.fixture
-    def db_test_runner(self) -> DBTestRunnerProtocol:
-        raise NotImplementedError()
-
-    def test(self, db_test_runner, test_container, flavor_path):
-        result = db_test_runner.run(
-            flavor_path=(flavor_path,),
-            workers=7,
-            test_folder=("linker_namespace_sanity",),
-            release_goal=("base_test_build_run",),
-            docker_username=None,
-            docker_password=None,
-            test_container_folder=test_container,
+            use_existing_container=existing_container,
         )
         assert not result.tests_are_ok and result.command_line_output_path.exists()
