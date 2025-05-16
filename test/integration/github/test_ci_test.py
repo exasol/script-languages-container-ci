@@ -1,4 +1,4 @@
-from test.contract.test_ci_test import (
+from test.contract.github.test_ci_test import (
     FailingRunDBTestFlavorDBTestsContract,
     SuccessfulFlavorDBTestsContract,
 )
