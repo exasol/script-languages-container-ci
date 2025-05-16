@@ -7,23 +7,19 @@ from exasol.slc_ci.lib.ci_build import CIBuild
 testdata = [
     (
         "test_docker_build_repository",
-        "test_commit_sha",
         "test_docker_build_repository",
-        "test_commit_sha_",
     ),
     (None, "", "exasol/script-language-container", ""),
 ]
 
 
 @pytest.mark.parametrize(
-    "input_docker_build_repository,input_commit_sha,expected_docker_build_repository,expected_source_tag_prefix",
+    "input_docker_build_repository,expected_docker_build_repository",
     testdata,
 )
 def test(
     input_docker_build_repository,
-    input_commit_sha,
     expected_docker_build_repository,
-    expected_source_tag_prefix,
     flavors_path,
 ):
     test_type = "successful"
@@ -32,7 +28,6 @@ def test(
         CIBuild().build(
             flavor_path=(flavor_path,),
             rebuild=True,
-            commit_sha=input_commit_sha,
             build_docker_repository=input_docker_build_repository,
             docker_user=None,
             docker_password=None,

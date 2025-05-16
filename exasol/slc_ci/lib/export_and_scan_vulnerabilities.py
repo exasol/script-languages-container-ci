@@ -43,7 +43,6 @@ def export_and_scan_vulnerabilities(
         flavor_path=flavor_path,
         rebuild=rebuild,
         build_docker_repository=build_config.docker_build_repository,
-        commit_sha=commit_sha,
         docker_user=docker_user,
         docker_password=docker_password,
     )

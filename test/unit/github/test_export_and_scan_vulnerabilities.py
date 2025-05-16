@@ -43,7 +43,6 @@ def test_export_and_scan_vulnerabilities(build_config_environment, git_access_mo
             flavor_path=(expected_flavor_path,),
             rebuild=False,
             build_docker_repository=build_config_environment.docker_build_repository,
-            commit_sha=test_env.commit_sha,
             docker_user=test_env.docker_user,
             docker_password=test_env.docker_pwd,
         ),

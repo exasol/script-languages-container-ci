@@ -21,7 +21,6 @@ class CIBuild:
         flavor_path: Tuple[str, ...],
         rebuild: bool,
         build_docker_repository: Optional[str],
-        commit_sha: str,
         docker_user: str,
         docker_password: str,
     ):
@@ -34,7 +33,6 @@ class CIBuild:
             slc_image_infos = build(
                 flavor_path=flavor_path,
                 force_rebuild=rebuild,
-                source_docker_tag_prefix=commit_sha,
                 source_docker_username=docker_user,
                 source_docker_password=docker_password,
                 shortcut_build=False,
@@ -47,7 +45,6 @@ class CIBuild:
                 flavor_path=flavor_path,
                 force_rebuild=rebuild,
                 source_docker_repository_name=build_docker_repository,
-                source_docker_tag_prefix=commit_sha,
                 source_docker_username=docker_user,
                 source_docker_password=docker_password,
                 shortcut_build=False,
