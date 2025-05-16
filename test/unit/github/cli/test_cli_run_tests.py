@@ -1,5 +1,3 @@
-from exasol.slc_ci.lib.ci_prepare import CIPrepare
-from exasol.slc_ci.lib.ci_test import CIExecuteTest
 from test.unit.github.cli.cli_runner import CliRunner
 from test.unit.github.cli.is_instance_matcher import IsInstance
 from unittest.mock import MagicMock, call
@@ -9,6 +7,8 @@ from _pytest.monkeypatch import MonkeyPatch
 
 import exasol.slc_ci.lib.run_tests as lib_run_tests
 from exasol.slc_ci.cli.commands import run_tests
+from exasol.slc_ci.lib.ci_prepare import CIPrepare
+from exasol.slc_ci.lib.ci_test import CIExecuteTest
 
 
 @pytest.fixture
@@ -75,9 +75,7 @@ def test_run_tests_no_docker_pwd(cli):
     )
 
 
-def test_run_tests(
-    cli, mock_run_tests
-):
+def test_run_tests(cli, mock_run_tests):
     cli.run(
         "--flavor",
         "flavor_a",
@@ -88,7 +86,7 @@ def test_run_tests(
         "--docker-user",
         "user",
         "--docker-password",
-        "secret"
+        "secret",
     )
     assert cli.succeeded
 
@@ -100,6 +98,6 @@ def test_run_tests(
         docker_user="user",
         docker_password="secret",
         ci_prepare=IsInstance(CIPrepare),
-        ci_test=IsInstance(CIExecuteTest)
+        ci_test=IsInstance(CIExecuteTest),
     )
     assert mock_run_tests.mock_calls == [expected_call]

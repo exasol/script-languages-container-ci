@@ -1,7 +1,7 @@
+from test.unit.github.test_env import test_env
 from unittest.mock import MagicMock
 
 from exasol.slc_ci.lib.get_build_runner import get_build_runner as lib_get_build_runner
-from test.unit.github.test_env import test_env
 
 
 def test_get_build_runner(build_config_with_flavor_environment):

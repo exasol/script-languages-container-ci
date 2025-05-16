@@ -1,10 +1,10 @@
 import json
+from test.unit.github.test_env import test_env
 
 import pytest
 from pydantic import ValidationError
 
 from exasol.slc_ci.lib.get_build_config_model import get_build_config_model
-from test.unit.github.test_env import test_env
 
 
 def test_get_build_config_model(build_config_environment):

@@ -13,20 +13,21 @@ from exasol.slc_ci.lib.ci_test import CIExecuteTest
 
 @cli.command()
 @add_options(flavor_options)
-@add_options([
-click.option(
-    "--slc-directory",
-    type=str,
-    required=True,
-    help="Name of the test-set to execute",
-),
-click.option(
-    "--test-set-name",
-    type=str,
-    required=True,
-    help="Name of the test-set to execute",
-),
-]
+@add_options(
+    [
+        click.option(
+            "--slc-directory",
+            type=str,
+            required=True,
+            help="Name of the test-set to execute",
+        ),
+        click.option(
+            "--test-set-name",
+            type=str,
+            required=True,
+            help="Name of the test-set to execute",
+        ),
+    ]
 )
 @add_options(docker_options)
 def run_tests(

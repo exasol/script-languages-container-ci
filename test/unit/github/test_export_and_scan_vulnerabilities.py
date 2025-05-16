@@ -34,7 +34,9 @@ def test_export_and_scan_vulnerabilities(build_config_environment, git_access_mo
         ci_export=ci_export_mock,
         ci_push=ci_commands_mock,
     )
-    expected_flavor_path = str(build_config_environment.flavors_path / test_env.flavor_name)
+    expected_flavor_path = str(
+        build_config_environment.flavors_path / test_env.flavor_name
+    )
     assert ci_commands_mock.mock_calls == [
         call.prepare(),
         call.build(

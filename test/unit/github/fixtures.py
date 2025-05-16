@@ -1,10 +1,10 @@
 from pathlib import Path
+from test.unit.github.test_env import test_env
 
 import pytest
 
 from exasol.slc_ci.model.build_config_model import BuildConfig
 from exasol.slc_ci.model.flavor_ci_model import FlavorCiConfig, TestConfig, TestSet
-from test.unit.github.test_env import test_env
 
 
 @pytest.fixture
@@ -15,9 +15,7 @@ def build_config_environment(tmp_test_dir):
 
 
 @pytest.fixture
-def build_config_with_flavor_environment(
-    build_config_environment: BuildConfig
-):
+def build_config_with_flavor_environment(build_config_environment: BuildConfig):
     build_config_environment.flavors_path.mkdir(exist_ok=False)
     flavor_path = build_config_environment.flavors_path / test_env.flavor_name
     flavor_path.mkdir(exist_ok=False)

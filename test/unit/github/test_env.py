@@ -23,7 +23,10 @@ class TestEnv:
             test_runner="some_test_runner",
             test_sets=[
                 TestSet(
-                    name="all", folders=["python3/all"], test_languages=["python3"], goal="release",
+                    name="all",
+                    folders=["python3/all"],
+                    test_languages=["python3"],
+                    goal="release",
                 ),
                 TestSet(
                     name="pandas",
