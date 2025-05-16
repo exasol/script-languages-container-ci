@@ -12,8 +12,8 @@ import os
 
 
 @pytest.fixture
-def slc_directory(tmp_path: Path, flavor_name) -> Path:
-    with open(str(tmp_path / f"{flavor_name}-dummy_slc.tar.gz"), "w") as f:
+def slc_directory(tmp_path: Path) -> Path:
+    with open(str(tmp_path / f"{test_env.flavor_name}-dummy_slc.tar.gz"), "w") as f:
         f.write("nothing")
     return tmp_path
 
@@ -30,12 +30,12 @@ def run_db_test_call(slc_path: Path, goal: str, test_folder: str, test_container
     )
 
 
-def test_run_tests(slc_directory, build_config_with_flavor_environment, test_flavor_config, flavor_name):
+def test_run_tests(slc_directory, build_config_with_flavor_environment):
     ci_commands_mock: Union[CIExecuteTest, CIPrepare, Mock] = Mock()
 
     c = os.getcwd()
     run_tests(
-        flavor=flavor_name,
+        flavor=test_env.flavor_name,
         slc_directory=str(slc_directory),
         test_set_name="all",
         docker_user=test_env.docker_user,
@@ -46,10 +46,10 @@ def test_run_tests(slc_directory, build_config_with_flavor_environment, test_fla
     assert ci_commands_mock.mock_calls == [
         call.prepare(),
         run_db_test_call(
-            slc_path=slc_directory / f"{flavor_name}-dummy_slc.tar.gz",
+            slc_path=slc_directory / f"{test_env.flavor_name}-dummy_slc.tar.gz",
             goal="release",
             test_folder="python3/all",
             test_container_folder=build_config_with_flavor_environment.test_container_folder,
-            flavor_path= str(build_config_with_flavor_environment.flavors_path / flavor_name),
+            flavor_path= str(build_config_with_flavor_environment.flavors_path / test_env.flavor_name),
         ),
     ]
