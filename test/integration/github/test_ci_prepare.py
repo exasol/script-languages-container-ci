@@ -14,7 +14,6 @@ def test(flavors_path, mock_settings_env_vars):
     CIBuild().build(
         flavor_path=(flavor_path,),
         rebuild=False,
-        commit_sha="COMMIT_SHA",
         build_docker_repository="input_docker_build_repository",
         docker_user=None,
         docker_password=None,
