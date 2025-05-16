@@ -3,7 +3,8 @@ class IsInstance:
         self.cls = cls
 
     def __eq__(self, other):
-        return isinstance(other, self.cls)
+        is_eq = isinstance(other, self.cls)
+        return is_eq
 
     def __repr__(self):
         return f"IsInstance({self.cls.__name__})"

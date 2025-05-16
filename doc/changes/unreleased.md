@@ -7,6 +7,7 @@
 ## Features
 
  - #75: Implemented CI for Github workflows - check if build needed
+ - #82: Implement CI for Github workflows - build-and-export
 
 ## Bugs
 
