@@ -28,6 +28,7 @@ def run_tests(
         raise ValueError(f"Invalid test set name: {test_set_name}")
     test_set_folders = [folder for folder in matched_test_set[0].folders]
     goal = matched_test_set[0].goal
+    generic_language_tests = matched_test_set[0].generic_language_tests
     slc_path = Path(slc_directory)
     if not slc_path.exists():
         raise ValueError(f"{slc_path} does not exist")
@@ -48,6 +49,19 @@ def run_tests(
             slc_path=slc_file_path,
             goal=goal,
             test_folder=test_folder,
+            generic_language_tests=tuple(),
+            test_container_folder=test_container_folder,
+            docker_user=docker_user,
+            docker_password=docker_password,
+        )
+
+    if generic_language_tests:
+        ci_test.execute_tests(
+            flavor_path=flavor_path,
+            slc_path=slc_file_path,
+            goal=goal,
+            test_folder="",
+            generic_language_tests=tuple(generic_language_tests),
             test_container_folder=test_container_folder,
             docker_user=docker_user,
             docker_password=docker_password,

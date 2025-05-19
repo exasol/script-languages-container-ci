@@ -8,6 +8,7 @@ class TestSet(BaseModel):
     folders: List[str]
     goal: str
     test_languages: List[str]
+    generic_language_tests: List[str]
 
 
 class TestConfig(BaseModel):

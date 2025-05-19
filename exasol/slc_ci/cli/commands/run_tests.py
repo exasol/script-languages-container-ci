@@ -19,7 +19,7 @@ from exasol.slc_ci.lib.ci_test import CIExecuteTest
             "--slc-directory",
             type=str,
             required=True,
-            help="Name of the test-set to execute",
+            help="Directory where existing SLC file is stored.",
         ),
         click.option(
             "--test-set-name",
