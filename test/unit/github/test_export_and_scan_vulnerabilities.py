@@ -12,8 +12,6 @@ from exasol.slc_ci.lib.export_and_scan_vulnerabilities import (
     export_and_scan_vulnerabilities as lib_export_and_scan_vulnerabilities,
 )
 
-TEST_FLAVOR = "flavor_xyz"
-
 
 def test_export_and_scan_vulnerabilities(build_config_environment, git_access_mock):
     res_slc_path = Path("/some_path/slc.tar.gz")
@@ -23,7 +21,7 @@ def test_export_and_scan_vulnerabilities(build_config_environment, git_access_mo
     ci_commands_mock: Union[CISecurityScan, CIPush, CIBuild, CIPrepare, Mock] = Mock()
 
     lib_export_and_scan_vulnerabilities(
-        flavor=TEST_FLAVOR,
+        flavor=test_env.flavor_name,
         branch_name=test_env.branch_name,
         docker_user=test_env.docker_user,
         docker_password=test_env.docker_pwd,
@@ -36,7 +34,9 @@ def test_export_and_scan_vulnerabilities(build_config_environment, git_access_mo
         ci_export=ci_export_mock,
         ci_push=ci_commands_mock,
     )
-    expected_flavor_path = str(build_config_environment.flavors_path / TEST_FLAVOR)
+    expected_flavor_path = str(
+        build_config_environment.flavors_path / test_env.flavor_name
+    )
     assert ci_commands_mock.mock_calls == [
         call.prepare(),
         call.build(

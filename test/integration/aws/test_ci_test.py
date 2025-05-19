@@ -1,4 +1,4 @@
-from test.contract.test_ci_test import (
+from test.contract.aws.test_ci_test import (
     FailingRunDBTestFlavorDBTestsContract,
     FailingRunDBTestFlavorLinkerNamespaceTestsContract,
     SuccessfulFlavorDBTestsContract,
