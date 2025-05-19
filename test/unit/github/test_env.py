@@ -25,21 +25,18 @@ class TestEnv:
                 TestSet(
                     name="all",
                     folders=["python3/all"],
-                    test_languages=["python3"],
                     goal="release",
                     generic_language_tests=[],
                 ),
                 TestSet(
                     name="pandas",
                     folders=["python3/pandas"],
-                    test_languages=["python3"],
                     goal="release",
                     generic_language_tests=[],
                 ),
                 TestSet(
                     name="generic",
                     folders=[],
-                    test_languages=["python3"],
                     goal="release",
                     generic_language_tests=["python3"],
                 ),

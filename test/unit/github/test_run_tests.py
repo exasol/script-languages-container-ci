@@ -41,16 +41,13 @@ def run_db_test_call(
 TEST_DATA = [t.dict().values() for t in test_env.flavor_ci_config.test_config.test_sets]
 
 
-@pytest.mark.parametrize(
-    "name, folders, goal, test_languages, generic_language_tests", TEST_DATA
-)
+@pytest.mark.parametrize("name, folders, goal, generic_language_tests", TEST_DATA)
 def test_run_tests(
     slc_directory,
     build_config_with_flavor_environment,
     name,
     folders,
     goal,
-    test_languages,
     generic_language_tests,
 ):
     ci_commands_mock: Union[CIExecuteTest, CIPrepare, Mock] = Mock()
