@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 from test.unit.github.test_env import test_env
-from typing import Union, Tuple
+from typing import Tuple, Union
 from unittest.mock import Mock, call
 
 import pytest
@@ -37,11 +37,22 @@ def run_db_test_call(
         generic_language_tests=generic_language_tests,
     )
 
+
 TEST_DATA = [t.dict().values() for t in test_env.flavor_ci_config.test_config.test_sets]
+
+
 @pytest.mark.parametrize(
     "name, folders, goal, test_languages, generic_language_tests", TEST_DATA
 )
-def test_run_tests(slc_directory, build_config_with_flavor_environment, name, folders, goal, test_languages, generic_language_tests):
+def test_run_tests(
+    slc_directory,
+    build_config_with_flavor_environment,
+    name,
+    folders,
+    goal,
+    test_languages,
+    generic_language_tests,
+):
     ci_commands_mock: Union[CIExecuteTest, CIPrepare, Mock] = Mock()
 
     c = os.getcwd()
