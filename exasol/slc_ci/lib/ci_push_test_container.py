@@ -1,13 +1,10 @@
 import logging
-from typing import Optional, Tuple
+from typing import Optional
 
 from exasol.slc.internal.tasks.test.test_container_content import (
     build_test_container_content,
 )
 from exasol_integration_test_docker_environment.lib.api import push_test_container
-from exasol_integration_test_docker_environment.lib.api.build_test_container import (
-    build_test_container,
-)
 
 from exasol.slc_ci.lib.ci_step_output_printer import (
     CIStepOutputPrinter,
