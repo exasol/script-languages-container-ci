@@ -7,7 +7,6 @@ from _pytest.monkeypatch import MonkeyPatch
 
 import exasol.slc_ci.lib.prepare_test_container as lib_prepare_test_container
 from exasol.slc_ci.cli.commands.prepare_test_container import prepare_test_container
-from exasol.slc_ci.lib.ci_build_test_container import CIBuildTestContainer
 from exasol.slc_ci.lib.ci_prepare import CIPrepare
 from exasol.slc_ci.lib.ci_push_test_container import CIPushTestContainer
 
@@ -70,7 +69,6 @@ def test_prepare_test_container(cli, mock_prepare_test_container):
         commit_sha="12345",
         docker_user="user",
         docker_password="secret",
-        ci_build_test_container=IsInstance(CIBuildTestContainer),
         ci_push_test_container=IsInstance(CIPushTestContainer),
         ci_prepare=IsInstance(CIPrepare),
     )
