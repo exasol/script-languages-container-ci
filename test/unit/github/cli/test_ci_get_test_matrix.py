@@ -38,7 +38,5 @@ def test_get_test_matrix(cli, mock_get_test_matrix):
     assert cli.succeeded
 
     # Validate the exact call using mock_calls and IsInstance matcher
-    expected_call = call(
-        flavor="flavor_a", github_access=IsInstance(GithubAccess)
-    )
+    expected_call = call(flavor="flavor_a", github_access=IsInstance(GithubAccess))
     assert mock_get_test_matrix.mock_calls == [expected_call]

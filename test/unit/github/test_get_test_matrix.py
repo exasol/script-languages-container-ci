@@ -7,23 +7,23 @@ from exasol.slc_ci.lib.get_test_matrix import get_test_matrix as lib_get_test_ma
 EXPECTED_VALUES = {
     "include": [
         {
-            "test_set_name": "all",
-            "test_runner": "some_test_runner",
+            "test-set-name": "all",
+            "test-runner": "some_test-runner",
             "goal": "release",
         },
         {
-            "test_set_name": "pandas",
-            "test_runner": "some_test_runner",
+            "test-set-name": "pandas",
+            "test-runner": "some_test-runner",
             "goal": "release",
         },
         {
-            "test_set_name": "generic",
-            "test_runner": "some_test_runner",
+            "test-set-name": "generic",
+            "test-runner": "some_test-runner",
             "goal": "release",
         },
         {
-            "test_set_name": "gpu",
-            "test_runner": "gpu_runner",
+            "test-set-name": "gpu",
+            "test-runner": "gpu_runner",
             "goal": "release",
         },
     ]
