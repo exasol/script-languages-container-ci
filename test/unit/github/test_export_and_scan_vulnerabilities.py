@@ -75,6 +75,5 @@ def test_export_and_scan_vulnerabilities(build_config_environment, git_access_mo
         ),
     ]
     assert json.loads(github_output_mock.write_result.call_args.args[0]) == {
-        "slc_release": "/some_path/slc.tar.gz",
-        "slc_test": "/some_path/slc.tar.gz",
-    }
+        'slc_release': {'goal': 'release', 'path': '/some_path/slc.tar.gz'},
+        'slc_test': {'goal': 'base_test_build_run', 'path': '/some_path/slc.tar.gz'}}

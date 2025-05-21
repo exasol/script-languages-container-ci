@@ -72,5 +72,10 @@ def export_and_scan_vulnerabilities(
         output_directory=test_output,
     )
     github_access.write_result(
-        json.dumps({"slc_release": str(slc_release), "slc_test": str(slc_test)})
+        json.dumps(
+            {
+                "slc_release": {"path": str(slc_release), "goal": "release"},
+                "slc_test": {"path": str(slc_test), "goal": "base_test_build_run"},
+            }
+        )
     )
