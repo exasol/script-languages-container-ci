@@ -42,7 +42,6 @@ def test_check_if_build_needed_no_base_branch_name(cli):
         and "Missing option '--base-ref'" in cli.output
     )
 
-
 def test_check_if_build_needed_no_github_var(cli):
     assert (
         cli.run(
@@ -67,6 +66,9 @@ def test_check_if_build_needed(cli, mock_check_if_build_needed):
         "master",
         "--github-output-var",
         "abc",
+        "--remote",
+        "some_remote",
+
     )
     assert cli.succeeded
 
@@ -75,6 +77,7 @@ def test_check_if_build_needed(cli, mock_check_if_build_needed):
         flavor="flavor_a",
         branch_name="feature/abc",
         base_ref="master",
+        remote="some_remote",
         github_access=IsInstance(GithubAccess),
         git_access=IsInstance(GitAccess),
     )

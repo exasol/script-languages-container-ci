@@ -20,3 +20,11 @@ commit_sha_option = click.option(
     required=True,
     help="Commit sha that trigger the GH event",
 )
+
+remote_option = click.option(
+    "--remote",
+    type=str,
+    default="origin",
+    required=False,
+    help="The remote Git repository of the base branch",
+)
