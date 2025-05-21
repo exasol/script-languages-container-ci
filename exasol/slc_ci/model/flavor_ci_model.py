@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from pydantic import BaseModel
 
@@ -8,10 +8,11 @@ class TestSet(BaseModel):
     folders: List[str]
     goal: str
     generic_language_tests: List[str]
+    test_runner: Optional[str] = None
 
 
 class TestConfig(BaseModel):
-    test_runner: str
+    default_test_runner: str
     test_sets: List[TestSet]
 
 
