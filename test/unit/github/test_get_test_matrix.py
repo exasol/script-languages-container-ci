@@ -8,17 +8,17 @@ EXPECTED_VALUES = {
     "include": [
         {
             "test-set-name": "all",
-            "test-runner": "some_test-runner",
+            "test-runner": "some_test_runner",
             "goal": "release",
         },
         {
             "test-set-name": "pandas",
-            "test-runner": "some_test-runner",
+            "test-runner": "some_test_runner",
             "goal": "release",
         },
         {
             "test-set-name": "generic",
-            "test-runner": "some_test-runner",
+            "test-runner": "some_test_runner",
             "goal": "release",
         },
         {
