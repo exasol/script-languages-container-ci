@@ -75,6 +75,7 @@ def test_check_if_build_needed(cli, mock_check_if_build_needed):
         flavor="flavor_a",
         branch_name="feature/abc",
         base_ref="master",
+        remote="origin",
         github_access=IsInstance(GithubAccess),
         git_access=IsInstance(GitAccess),
     )
