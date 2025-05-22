@@ -20,7 +20,7 @@ class TestEnv:
     flavor_ci_config = FlavorCiConfig(
         build_runner="some_runner",
         test_config=TestConfig(
-            test_runner="some_test_runner",
+            default_test_runner="some_test_runner",
             test_sets=[
                 TestSet(
                     name="all",
@@ -39,6 +39,13 @@ class TestEnv:
                     folders=[],
                     goal="release",
                     generic_language_tests=["python3"],
+                ),
+                TestSet(
+                    name="gpu",
+                    folders=["gpu"],
+                    goal="release",
+                    generic_language_tests=[],
+                    test_runner="gpu_runner",
                 ),
             ],
         ),

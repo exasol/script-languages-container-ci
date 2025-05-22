@@ -7,6 +7,7 @@ import exasol.slc_ci.lib.run_tests as lib_run_tests
 from exasol.slc_ci.cli.cli import cli
 from exasol.slc_ci.cli.options.docker_options import docker_options
 from exasol.slc_ci.cli.options.flavor_options import flavor_options
+from exasol.slc_ci.cli.options.test_options import test_set_options
 from exasol.slc_ci.lib.ci_prepare import CIPrepare
 from exasol.slc_ci.lib.ci_test import CIExecuteTest
 
@@ -21,14 +22,9 @@ from exasol.slc_ci.lib.ci_test import CIExecuteTest
             required=True,
             help="Directory where existing SLC file is stored.",
         ),
-        click.option(
-            "--test-set-name",
-            type=str,
-            required=True,
-            help="Name of the test-set to execute",
-        ),
     ]
 )
+@add_options(test_set_options)
 @add_options(docker_options)
 def run_tests(
     flavor: str,

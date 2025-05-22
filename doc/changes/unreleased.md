@@ -10,6 +10,7 @@
  - #82: Implement CI for Github workflows - build-and-export
  - #83: Implement CI for Github workflows - run-tests
  - #87: Use remote part for base ref option
+ - #89: Implement CI for Github workflows - get-test-matrix
 
 
 ## Bugs
