@@ -1,4 +1,5 @@
 import pytest
+from exasol.slc.models.accelerator import Accelerator
 
 from exasol.slc_ci.lib.ci_export import CIExport
 from exasol.slc_ci.lib.ci_test import DBTestRunnerProtocol
@@ -39,6 +40,7 @@ class SuccessfulFlavorDBTestsContract(SuccessfulFlavorContract):
             test_folder=(),
             release_goal=("release",),
             generic_language_tests=tuple(),
+            accelerator=Accelerator.NONE,
             workers=7,
             docker_username=None,
             docker_password=None,
@@ -83,6 +85,7 @@ class FailingRunDBTestFlavorDBTestsContract(FailingRunDBTestFlavorContract):
             test_folder=(),
             release_goal=("release",),
             generic_language_tests=tuple(),
+            accelerator=Accelerator.NONE,
             workers=7,
             docker_username=None,
             docker_password=None,
