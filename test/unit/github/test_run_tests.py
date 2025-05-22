@@ -1,13 +1,11 @@
 import os
 from pathlib import Path
-
-from exasol.slc.models.accelerator import Accelerator
-
 from test.unit.github.test_env import test_env
 from typing import Tuple, Union
 from unittest.mock import Mock, call
 
 import pytest
+from exasol.slc.models.accelerator import Accelerator
 
 from exasol.slc_ci.lib.ci_prepare import CIPrepare
 from exasol.slc_ci.lib.ci_test import CIExecuteTest
@@ -57,7 +55,7 @@ def test_run_tests(
     goal,
     generic_language_tests,
     test_runner,
-    accelerator
+    accelerator,
 ):
     ci_commands_mock: Union[CIExecuteTest, CIPrepare, Mock] = Mock()
 

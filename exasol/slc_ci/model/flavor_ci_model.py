@@ -1,7 +1,8 @@
 from typing import List, Optional
 
-from pydantic import BaseModel
 from exasol.slc.models.accelerator import Accelerator
+from pydantic import BaseModel
+
 
 class TestSet(BaseModel):
     name: str

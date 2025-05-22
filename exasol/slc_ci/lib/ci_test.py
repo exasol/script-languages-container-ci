@@ -3,8 +3,8 @@ from pathlib import Path
 from typing import Optional, Protocol, Tuple
 
 from exasol.slc.api.run_db_tests import run_db_test
-from exasol.slc.models.test_result import AllTestsResult
 from exasol.slc.models.accelerator import Accelerator
+from exasol.slc.models.test_result import AllTestsResult
 
 from exasol.slc_ci.lib.ci_step_output_printer import (
     CIStepOutputPrinter,

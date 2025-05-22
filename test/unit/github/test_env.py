@@ -48,7 +48,7 @@ class TestEnv:
                     goal="release",
                     generic_language_tests=[],
                     test_runner="gpu_runner",
-                    accelerator=Accelerator.NVIDA
+                    accelerator=Accelerator.NVIDA,
                 ),
             ],
         ),
