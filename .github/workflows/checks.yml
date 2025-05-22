@@ -20,7 +20,7 @@ jobs:
 
       - name: Check Version(s)
         run: |
-          poetry run -- version:check exasol_script_languages_container_ci/version.py
+          poetry run -- nox -s version:check exasol_script_languages_container_ci/version.py
 
 
   build-matrix:
