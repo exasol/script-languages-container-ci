@@ -1,5 +1,8 @@
 import os
 from pathlib import Path
+
+from exasol.slc.models.accelerator import Accelerator
+
 from test.unit.github.test_env import test_env
 from typing import Tuple, Union
 from unittest.mock import Mock, call
@@ -25,6 +28,7 @@ def run_db_test_call(
     test_container_folder: str,
     flavor_path: str,
     generic_language_tests: Tuple[str, ...],
+    accelerator: Accelerator,
 ):
     return call.execute_tests(
         flavor_path=(flavor_path,),
@@ -35,6 +39,7 @@ def run_db_test_call(
         test_container_folder=test_container_folder,
         goal=goal,
         generic_language_tests=generic_language_tests,
+        accelerator=accelerator,
     )
 
 
@@ -42,7 +47,7 @@ TEST_DATA = [t.dict().values() for t in test_env.flavor_ci_config.test_config.te
 
 
 @pytest.mark.parametrize(
-    "name, folders, goal, generic_language_tests, test_runner", TEST_DATA
+    "name, folders, goal, generic_language_tests, test_runner, accelerator", TEST_DATA
 )
 def test_run_tests(
     slc_directory,
@@ -52,6 +57,7 @@ def test_run_tests(
     goal,
     generic_language_tests,
     test_runner,
+    accelerator
 ):
     ci_commands_mock: Union[CIExecuteTest, CIPrepare, Mock] = Mock()
 
@@ -76,5 +82,6 @@ def test_run_tests(
                 build_config_with_flavor_environment.flavors_path / test_env.flavor_name
             ),
             generic_language_tests=tuple(generic_language_tests),
+            accelerator=accelerator,
         ),
     ]

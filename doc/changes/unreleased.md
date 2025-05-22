@@ -11,6 +11,7 @@
  - #83: Implement CI for Github workflows - run-tests
  - #87: Use remote part for base ref option
  - #89: Implement CI for Github workflows - get-test-matrix
+ - #91: Add accelerator to test configuration
 
 
 ## Bugs
