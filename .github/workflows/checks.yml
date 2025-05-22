@@ -20,7 +20,7 @@ jobs:
 
       - name: Check Version(s)
         run: |
-          poetry run -- nox -s version:check exasol/slc_ci/version.py
+          poetry run -- nox -s version:check -- exasol/slc_ci/version.py
 
 
   build-matrix:
