@@ -3,10 +3,21 @@ name = "exasol-script-languages-container-ci"
 version = "1.8.0"
 description = "Implements CI builds for script-language-container."
 
+requires-python = ">=3.10, <4.0"
+
 license = "MIT"
 
 authors = [
     { name="Thomas Uebensee", email="Thomas Uebensee <ext.thomas.uebensee@exasol.com>" }
+]
+
+dependencies = [
+"click (>=8.1.7, <9.0.0)",
+"GitPython (>=3.1.0, <4.0.0)",
+"exasol-script-languages-container-tool (>=3.2.0, <4.0.0)",
+"PyGithub (>=2.3.0, <3.0.0)",
+"setuptools (>=80.0.0)",
+"datamodel-code-generator (>=0.25.5, <0.30.0)"
 ]
 
 [project.scripts]
@@ -21,15 +32,6 @@ packages = [
     {include = "exasol"},
 ]
 
-[tool.poetry.dependencies]
-python = ">=3.10.0,<4.0"
-click = "^8.1.7"
-GitPython = ">=3.1.0"
-exasol-script-languages-container-tool = "^3.0.0"
-exasol-integration-test-docker-environment = "4.0.1"
-PyGithub = "^2.3.0"
-setuptools = "^78.0.0"
-datamodel-code-generator = ">=0.25.5 <0.30.0"
 
 [build-system]
 requires = ["poetry_core>=2.1.0"]
@@ -59,7 +61,7 @@ testpaths = [
 ]
 
 [[tool.mypy.overrides]]
-module = ["exasol_integration_test_docker_environment.*", "docker.*", "toml"]
+module = ["docker.*", "toml"]
 ignore_missing_imports = true
 
 

@@ -29,6 +29,7 @@ def run_tests(
     test_set_folders = [folder for folder in matched_test_set[0].folders]
     goal = matched_test_set[0].goal
     generic_language_tests = matched_test_set[0].generic_language_tests
+    accelerator = matched_test_set[0].accelerator
     slc_path = Path(slc_directory)
     if not slc_path.exists():
         raise ValueError(f"{slc_path} does not exist")
@@ -50,6 +51,7 @@ def run_tests(
             goal=goal,
             test_folder=test_folder,
             generic_language_tests=tuple(),
+            accelerator=accelerator,
             test_container_folder=test_container_folder,
             docker_user=docker_user,
             docker_password=docker_password,
@@ -62,6 +64,7 @@ def run_tests(
             goal=goal,
             test_folder="",
             generic_language_tests=tuple(generic_language_tests),
+            accelerator=accelerator,
             test_container_folder=test_container_folder,
             docker_user=docker_user,
             docker_password=docker_password,

@@ -3,6 +3,7 @@ from pathlib import Path
 from typing import Optional, Protocol, Tuple
 
 from exasol.slc.api.run_db_tests import run_db_test
+from exasol.slc.models.accelerator import Accelerator
 from exasol.slc.models.test_result import AllTestsResult
 
 from exasol.slc_ci.lib.ci_step_output_printer import (
@@ -19,6 +20,7 @@ class DBTestRunnerProtocol(Protocol):
         test_folder: Tuple[str, ...],
         test_container_folder: str,
         generic_language_tests: Tuple[str, ...],
+        accelerator: Accelerator,
         workers: int,
         docker_username: Optional[str],
         docker_password: Optional[str],
@@ -35,6 +37,7 @@ class DBTestRunner(DBTestRunnerProtocol):
         test_folder: Tuple[str, ...],
         test_container_folder: str,
         generic_language_tests: Tuple[str, ...],
+        accelerator: Accelerator,
         workers: int,
         docker_username: Optional[str],
         docker_password: Optional[str],
@@ -46,6 +49,7 @@ class DBTestRunner(DBTestRunnerProtocol):
             test_folder=test_folder,
             test_container_folder=test_container_folder,
             generic_language_test=generic_language_tests,
+            accelerator=accelerator,
             workers=workers,
             source_docker_username=docker_username,
             source_docker_password=docker_password,
@@ -72,6 +76,7 @@ class CIExecuteTest:
         goal: str,
         test_folder: str,
         generic_language_tests: Tuple[str, ...],
+        accelerator: Accelerator,
         docker_user: str,
         docker_password: str,
         test_container_folder: str,
@@ -85,6 +90,7 @@ class CIExecuteTest:
             slc_path=slc_path,
             test_folder=test_folder,
             generic_language_tests=generic_language_tests,
+            accelerator=accelerator,
             docker_user=docker_user,
             docker_password=docker_password,
             test_container_folder=test_container_folder,
@@ -100,6 +106,7 @@ class CIExecuteTest:
         goal: str,
         test_folder: str,
         generic_language_tests: Tuple[str, ...],
+        accelerator: Accelerator,
         docker_user: str,
         docker_password: str,
         test_container_folder: str,
@@ -110,6 +117,7 @@ class CIExecuteTest:
             test_folder=(test_folder,),
             release_goal=(goal,),
             generic_language_tests=generic_language_tests,
+            accelerator=accelerator,
             workers=7,
             docker_username=docker_user,
             docker_password=docker_password,
