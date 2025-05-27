@@ -38,7 +38,7 @@ def export_and_scan_vulnerabilities(
     flavor_path = (f"{build_config.flavors_path}/{flavor}",)
     test_container_folder = build_config.test_container_folder
     rebuild = branch_config.rebuild(branch_name)
-    ci_prepare.prepare()
+    ci_prepare.prepare(commit_sha=commit_sha)
     ci_build.build(
         flavor_path=flavor_path,
         rebuild=rebuild,

@@ -21,7 +21,7 @@ def test_prepare_test_container(build_config_environment):
     )
 
     assert ci_commands_mock.mock_calls == [
-        call.prepare(),
+        call.prepare(commit_sha=test_env.commit_sha),
         call.push_test_container(
             build_docker_repository=build_config_environment.docker_build_repository,
             force=True,

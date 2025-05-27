@@ -11,7 +11,7 @@ def prepare_test_container(
     ci_push_test_container: CIPushTestContainer,
 ) -> None:
     build_config = get_build_config_model()
-    ci_prepare.prepare()
+    ci_prepare.prepare(commit_sha=commit_sha)
 
     ci_push_test_container.push_test_container(
         build_docker_repository=build_config.docker_build_repository,

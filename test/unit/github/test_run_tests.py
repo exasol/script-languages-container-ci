@@ -74,7 +74,7 @@ def test_run_tests(
         commit_sha=test_env.commit_sha,
     )
     assert ci_commands_mock.mock_calls == [
-        call.prepare(),
+        call.prepare(commit_sha=test_env.commit_sha),
         run_db_test_call(
             slc_path=slc_directory / f"{test_env.flavor_name}-dummy_slc.tar.gz",
             goal=goal,
