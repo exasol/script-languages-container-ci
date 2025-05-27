@@ -4,6 +4,11 @@ title Script-Languages-Container CI/CD Overview
 
 actor Developer
 
+rectangle "exaslc-ci-setup CLI" {
+  note "This is repository\nhttps://github.com/exasol/script-languages-container-ci-setup" as n3
+  (exaslc-ci-setup deploy-ci-build)
+}
+
 rectangle "Script-Languages-Container Repo" {
   note "This is the repository where the flavors are stored, \ne.g. https://github.com/exasol/script-languages-release" as n1
   Developer --> (Run exaslc_ci_setup)
@@ -30,17 +35,19 @@ rectangle "GitHub Workflows" {
 }
 }
 
+(Run exaslc_ci_setup) -d-> (exaslc-ci-setup deploy-ci-build)
+(exaslc-ci-setup deploy-ci-build) --> "GitHub Workflows" : Generates
 
-(Run exaslc_ci_setup) -d-> "GitHub Workflows" : Generates
 
 rectangle "exaslc-ci CLI" #99FF99 {
-  (exaslc-ci check-if-build-needed)
+  note "This is the current repository\nhttps://github.com/exasol/script-languages-container-ci" as n2
   (exaslc-ci export-and-scan-vulnerabilities)
   (exaslc-ci prepare-test-container)
   (exaslc-ci run-tests)
   (exaslc-ci get-flavors)
   (exaslc-ci get-test-matrix)
   (exaslc-ci get-build-runner)
+  (exaslc-ci check-if-build-needed)
 }
 
 slc_ci.yml ..> slc_ci_prepare_test_container.yml
