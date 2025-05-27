@@ -77,7 +77,7 @@ In order to trigger a release a new tag must be pushed to GitHub:
 3. Fix the issue(s) which led to the failing checks  
 4. Start the release process from the beginning  
 
-### One of the release steps failed (Partial Release)
+### One of the Release Steps Failed (Partial Release)
 
 1. Check the GitHub action/workflow to see which steps failed  
 2. Finish or redo the failed release steps manually  
