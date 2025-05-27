@@ -44,7 +44,7 @@ def run_tests(
     flavor_path = (f"{build_config.flavors_path}/{flavor}",)
     test_container_folder = build_config.test_container_folder
 
-    ci_prepare.prepare()
+    ci_prepare.prepare(commit_sha=commit_sha)
     for test_folder in test_set_folders:
         ci_test.execute_tests(
             flavor_path=flavor_path,
