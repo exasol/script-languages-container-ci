@@ -24,67 +24,7 @@ orchestrate your CI pipeline steps.
 The following diagram shows how this project is used within the Script-Languages-Container CI/CD pipeline.  
 The auto-generated GitHub workflows call the CLI commands of this project to construct build matrices or to trigger the single build steps.
 
-```plantuml
-
-@startuml
-title Script-Languages-Container CI/CD Overview
-
-actor Developer
-
-rectangle "Script-Languages-Container Repo" {
-  Developer --> (Run exaslc_ci_setup)
-  (Run exaslc_ci_setup) --> "GitHub Workflows\n(.github/workflows)"
-}
-
-rectangle "GitHub Workflows" {
-    rectangle "slc_ci.yml" {
-        [workflow: Get Flavors]
-    }
-    rectangle "slc_ci_build_slc.yml" {
-        [workflow: Detect Runner]
-        [workflow: Build]
-    }
-    rectangle "slc_ci_check_for_build.yml" {
-        [workflow: Check for Build]
-    }
-    rectangle "slc_ci_flavor.yml" {
-    }
-    rectangle "slc_ci_prepare_test_container.yml" {
-        [workflow: Prepare Test Container]
-    }
-    rectangle "slc_ci_test_slc.yml" {
-        [workflow: Detect Test Matrix]
-        [workflow: Run Tests]
-    }
-}
-
-rectangle "exaslc-ci CLI" #99FF99 {
-  (exaslc-ci check-if-build-needed)
-  (exaslc-ci export-and-scan-vulnerabilities)
-  (exaslc-ci prepare-test-container)
-  (exaslc-ci run-tests)
-  (exaslc-ci get-flavors)
-  (exaslc-ci get-test-matrix)
-  (exaslc-ci get-build-runner)
-}
-
-slc_ci.yml ..> slc_ci_prepare_test_container.yml
-slc_ci.yml ..> slc_ci_flavor.yml
-slc_ci_flavor.yml ..> slc_ci_check_for_build.yml
-slc_ci_flavor.yml ..> slc_ci_build_slc.yml : "if Check For Build returned true"
-slc_ci_flavor.yml ..> slc_ci_test_slc.yml : "if Check For Build returned true"
-
-[workflow: Get Flavors] --> (exaslc-ci get-flavors)
-[workflow: Prepare Test Container] --> (exaslc-ci prepare-test-container)
-[workflow: Run Tests]            --> (exaslc-ci run-tests)
-[workflow: Detect Test Matrix]    --> (exaslc-ci get-test-matrix)
-[workflow: Check for Build]        --> (exaslc-ci check-if-build-needed)
-[workflow: Build]        --> (exaslc-ci export-and-scan-vulnerabilities)
-[workflow: Detect Runner]     --> (exaslc-ci get-build-runner)
-
-@endum
-
-```
+![SLC CI](./img/slc_ci.png)
 
 ---
 
@@ -110,18 +50,18 @@ Run `exaslc-ci COMMAND --help` for detailed options per command.
 Searches for all available container “flavors” (e.g. `standard-EXASOL-all-python-3.10`, `template-Exasol-all-r-4`)  
 and writes the result as a JSON array to a GitHub Actions output variable.
 
-<u> Usage </u>
+**Usage**
 
 ```shell
 exaslc-ci get-flavors --github-output-var FLAVOR_LIST
 ```
 
-<u> Options </u>
+**Options**
 
 - `--github-output-var TEXT`  
   Name of the GitHub Actions output variable to store the resulting JSON array. **(Required)**
 
-#### Example (GitHub Actions)
+**Example (GitHub Actions)**
 
 ```yaml
 - name: Get available flavors
@@ -136,20 +76,20 @@ exaslc-ci get-flavors --github-output-var FLAVOR_LIST
 
 Generates a test matrix for a given flavor and writes it into a GitHub Actions output variable.
 
-<u> Usage </u>
+**Usage**
 
 ```shell
 exaslc-ci get-test-matrix --flavor standard-EXASOL-all-python-3.10 --github-output-var MATRIX
 ```
 
-<u> Options </u>
+**Options**
 
 - `--flavor TEXT`  
   The container flavor to generate the test matrix for. **(Required)**
 - `--github-output-var TEXT`  
   GitHub Actions output variable name. **(Required)**
 
-#### Example
+**Example**
 
 ```yaml
 - name: Generate test matrix
@@ -164,13 +104,13 @@ exaslc-ci get-test-matrix --flavor standard-EXASOL-all-python-3.10 --github-outp
 
 Resolves which GitHub runner labels (e.g. `ubuntu-latest`/`windows-latest`) should be used to build a given flavor.
 
-<u> Usage </u>
+**Usage**
 
 ```shell
 exaslc-ci get-build-runner --flavor standard-EXASOL-all-python-3.10 --github-output-var RUNNER_LABELS
 ```
 
-<u> Options </u>
+**Options**
 
 - `--flavor TEXT`  
   Flavor identifier. **(Required)**
@@ -184,7 +124,7 @@ exaslc-ci get-build-runner --flavor standard-EXASOL-all-python-3.10 --github-out
 Checks whether a new build is needed by comparing the current branch vs. a base branch.  
 Outputs a boolean (`true`/`false`) to a GitHub variable.
 
-<u> Usage </u>
+**Usage**
 
 ```shell
 exaslc-ci check-if-build-needed \
@@ -195,7 +135,7 @@ exaslc-ci check-if-build-needed \
   --github-output-var NEED_BUILD
 ```
 
-<u> Options </u>
+**Options**
 
 - `--flavor TEXT`
 - `--branch TEXT`
@@ -209,7 +149,7 @@ exaslc-ci check-if-build-needed \
 
 Performs a full CI pipeline step: builds the container, exports it, scans for vulnerabilities, and pushes results to the Docker Hub build cache.
 
-<u> Usage </u>
+**Usage**
 
 ```shell
 exaslc-ci export-and-scan-vulnerabilities \
@@ -221,7 +161,7 @@ exaslc-ci export-and-scan-vulnerabilities \
   --github-output-var VULN_SCAN_RESULT
 ```
 
-<u> Options </u>
+**Options**
 
 - `--flavor TEXT`
 - `--branch TEXT`
@@ -244,7 +184,7 @@ exaslc-ci export-and-scan-vulnerabilities \
 Builds a test container image from a given commit, then pushes it to your registry.  
 The test container must contain its own build description (Dockerfile), the test SQL data and the UDF tests.
 
-<u> Usage </u>
+**Usage**
 
 ```shell
 exaslc-ci prepare-test-container \
@@ -253,7 +193,7 @@ exaslc-ci prepare-test-container \
   --docker-password ${{ secrets.DOCKER_PASS }}
 ```
 
-<u> Options </u>
+**Options**
 
 - `--commit-sha TEXT`
 - `--docker-user TEXT`
@@ -265,7 +205,7 @@ exaslc-ci prepare-test-container \
 
 Runs integration tests inside a previously built/test container.
 
-<u> Usage </u>
+**Usage**
 
 ```shell
 exaslc-ci run-tests \
@@ -276,7 +216,7 @@ exaslc-ci run-tests \
   --docker-password ${{ secrets.DOCKER_PASS }}
 ```
 
-<u> Options </u>
+**Options**
 
 - `--flavor TEXT`
 - `--slc-directory PATH`  

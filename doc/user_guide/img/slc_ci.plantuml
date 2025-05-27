@@ -1,0 +1,61 @@
+@startuml
+
+title Script-Languages-Container CI/CD Overview
+
+actor Developer
+
+rectangle "Script-Languages-Container Repo" {
+  note "This is the repository where the flavors are stored, \ne.g. https://github.com/exasol/script-languages-release" as n1
+  Developer --> (Run exaslc_ci_setup)
+rectangle "GitHub Workflows" {
+    rectangle "slc_ci.yml" {
+        [workflow: Get Flavors]
+    }
+    rectangle "slc_ci_build_slc.yml" {
+        [workflow: Detect Runner]
+        [workflow: Build]
+    }
+    rectangle "slc_ci_check_for_build.yml" {
+        [workflow: Check for Build]
+    }
+    rectangle "slc_ci_flavor.yml" {
+    }
+    rectangle "slc_ci_prepare_test_container.yml" {
+        [workflow: Prepare Test Container]
+    }
+    rectangle "slc_ci_test_slc.yml" {
+        [workflow: Detect Test Matrix]
+        [workflow: Run Tests]
+    }
+}
+}
+
+
+(Run exaslc_ci_setup) -d-> "GitHub Workflows" : Generates
+
+rectangle "exaslc-ci CLI" #99FF99 {
+  (exaslc-ci check-if-build-needed)
+  (exaslc-ci export-and-scan-vulnerabilities)
+  (exaslc-ci prepare-test-container)
+  (exaslc-ci run-tests)
+  (exaslc-ci get-flavors)
+  (exaslc-ci get-test-matrix)
+  (exaslc-ci get-build-runner)
+}
+
+slc_ci.yml ..> slc_ci_prepare_test_container.yml
+slc_ci.yml ..> slc_ci_flavor.yml
+slc_ci_flavor.yml ..> slc_ci_check_for_build.yml
+slc_ci_flavor.yml ..> slc_ci_build_slc.yml : "if Check For Build returned true"
+slc_ci_flavor.yml ..> slc_ci_test_slc.yml : "if Check For Build returned true"
+
+[workflow: Get Flavors] --> (exaslc-ci get-flavors)
+[workflow: Prepare Test Container] --> (exaslc-ci prepare-test-container)
+[workflow: Run Tests]            --> (exaslc-ci run-tests)
+[workflow: Detect Test Matrix]    --> (exaslc-ci get-test-matrix)
+[workflow: Check for Build]        --> (exaslc-ci check-if-build-needed)
+[workflow: Build]        --> (exaslc-ci export-and-scan-vulnerabilities)
+[workflow: Detect Runner]     --> (exaslc-ci get-build-runner)
+
+
+@enduml
