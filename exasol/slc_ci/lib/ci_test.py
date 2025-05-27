@@ -21,6 +21,8 @@ class DBTestRunnerProtocol(Protocol):
         test_container_folder: str,
         generic_language_tests: Tuple[str, ...],
         accelerator: Accelerator,
+        source_docker_tag_prefix: str,
+        source_docker_repository_name: str,
         workers: int,
         docker_username: Optional[str],
         docker_password: Optional[str],
@@ -38,6 +40,8 @@ class DBTestRunner(DBTestRunnerProtocol):
         test_container_folder: str,
         generic_language_tests: Tuple[str, ...],
         accelerator: Accelerator,
+        source_docker_tag_prefix: str,
+        source_docker_repository_name: str,
         workers: int,
         docker_username: Optional[str],
         docker_password: Optional[str],
@@ -50,6 +54,8 @@ class DBTestRunner(DBTestRunnerProtocol):
             test_container_folder=test_container_folder,
             generic_language_test=generic_language_tests,
             accelerator=accelerator,
+            source_docker_tag_prefix=source_docker_tag_prefix,
+            source_docker_repository_name=source_docker_repository_name,
             workers=workers,
             source_docker_username=docker_username,
             source_docker_password=docker_password,
@@ -80,6 +86,8 @@ class CIExecuteTest:
         docker_user: str,
         docker_password: str,
         test_container_folder: str,
+        commit_sha: str,
+        build_docker_repository: str,
     ):
         """
         Run db tests
@@ -94,6 +102,8 @@ class CIExecuteTest:
             docker_user=docker_user,
             docker_password=docker_password,
             test_container_folder=test_container_folder,
+            commit_sha=commit_sha,
+            build_docker_repository=build_docker_repository,
         )
         self._printer.print_exasol_docker_images()
         if not db_tests_are_ok:
@@ -110,6 +120,8 @@ class CIExecuteTest:
         docker_user: str,
         docker_password: str,
         test_container_folder: str,
+        commit_sha: str,
+        build_docker_repository: str,
     ) -> bool:
         logging.info(f"Running command 'run_db_test' for flavor-path {flavor_path}")
         db_test_result = self._db_test_runner.run(
@@ -118,6 +130,8 @@ class CIExecuteTest:
             release_goal=(goal,),
             generic_language_tests=generic_language_tests,
             accelerator=accelerator,
+            source_docker_tag_prefix=commit_sha,
+            source_docker_repository_name=build_docker_repository,
             workers=7,
             docker_username=docker_user,
             docker_password=docker_password,

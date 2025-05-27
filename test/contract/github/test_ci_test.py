@@ -46,6 +46,8 @@ class SuccessfulFlavorDBTestsContract(SuccessfulFlavorContract):
             docker_password=None,
             test_container_folder=test_container,
             use_existing_container=existing_container,
+            source_docker_tag_prefix="123",
+            source_docker_repository_name="",
         )
         assert result.tests_are_ok and result.command_line_output_path.exists()
 
@@ -91,5 +93,7 @@ class FailingRunDBTestFlavorDBTestsContract(FailingRunDBTestFlavorContract):
             docker_password=None,
             test_container_folder=test_container,
             use_existing_container=existing_container,
+            source_docker_tag_prefix="123",
+            source_docker_repository_name="",
         )
         assert not result.tests_are_ok and result.command_line_output_path.exists()

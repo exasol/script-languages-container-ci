@@ -75,6 +75,24 @@ def test_run_tests_no_docker_pwd(cli):
     )
 
 
+def test_run_tests_no_commit_sha(cli):
+    assert (
+        cli.run(
+            "--flavor",
+            "abc",
+            "--slc-directory",
+            "some_dir",
+            "--test-set-name",
+            "all",
+            "--docker-user",
+            "user",
+            "--docker-password",
+            "secret",
+        ).failed
+        and "Missing option '--commit-sha'" in cli.output
+    )
+
+
 def test_run_tests(cli, mock_run_tests):
     cli.run(
         "--flavor",
@@ -87,6 +105,8 @@ def test_run_tests(cli, mock_run_tests):
         "user",
         "--docker-password",
         "secret",
+        "--commit-sha",
+        "123",
     )
     assert cli.succeeded
 
@@ -99,5 +119,6 @@ def test_run_tests(cli, mock_run_tests):
         docker_password="secret",
         ci_prepare=IsInstance(CIPrepare),
         ci_test=IsInstance(CIExecuteTest),
+        commit_sha="123",
     )
     assert mock_run_tests.mock_calls == [expected_call]
