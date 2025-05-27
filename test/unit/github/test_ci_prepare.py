@@ -1,5 +1,5 @@
-import os
 import datetime
+import os
 from pathlib import Path
 from unittest import mock
 
@@ -69,17 +69,20 @@ def test_ci_prepare_log_path_file_exists(mock_settings_env_vars, tmp_test_dir):
         actual_value == expected_value and actual_path == EXPECTED_LOG_FILE.absolute()
     )
 
+
 def test_ci_prepare_meta_data_dir_exists(mock_settings_env_vars, tmp_test_dir):
     CIPrepare().prepare(COMMIT_SHA)
     OUTPUT_PATH = Path(DEFAULT_OUTPUT_DIRECTORY)
     META_DATA_PATH = OUTPUT_PATH / "meta_data"
     assert META_DATA_PATH.exists() and META_DATA_PATH.is_dir()
 
+
 def test_ci_prepare_security_scan_dir_exists(mock_settings_env_vars, tmp_test_dir):
     CIPrepare().prepare(COMMIT_SHA)
     OUTPUT_PATH = Path(DEFAULT_OUTPUT_DIRECTORY)
     META_DATA_PATH = OUTPUT_PATH / "security_scan"
     assert META_DATA_PATH.exists() and META_DATA_PATH.is_dir()
+
 
 def test_ci_prepare_start_date(mock_settings_env_vars, tmp_test_dir):
     CIPrepare().prepare(COMMIT_SHA)
@@ -88,6 +91,7 @@ def test_ci_prepare_start_date(mock_settings_env_vars, tmp_test_dir):
     date = datetime.datetime.fromisoformat(date_path.read_text())
     delta = datetime.datetime.now() - date
     assert datetime.timedelta(0) <= delta < datetime.timedelta(minutes=5)
+
 
 def test_ci_prepare_commit_sha(mock_settings_env_vars, tmp_test_dir):
     CIPrepare().prepare(COMMIT_SHA)

@@ -2,7 +2,9 @@ import datetime
 import os
 from pathlib import Path
 
-from exasol_integration_test_docker_environment.cli.options.system_options import DEFAULT_OUTPUT_DIRECTORY
+from exasol_integration_test_docker_environment.cli.options.system_options import (
+    DEFAULT_OUTPUT_DIRECTORY,
+)
 from exasol_integration_test_docker_environment.lib.logging import luigi_log_config
 
 from exasol.slc_ci.lib.ci_build import CIBuild
