@@ -24,7 +24,7 @@ def test(flavors_path, mock_settings_env_vars):
 
     OUTPUT_PATH = Path(".build_output")
     META_DATA_PATH = OUTPUT_PATH / "meta_data"
-    date_path = META_DATA_PATH  / "start_date"
+    date_path = META_DATA_PATH / "start_date"
     date = datetime.datetime.fromisoformat(date_path.read_text())
     delta = datetime.datetime.now() - date
     assert datetime.timedelta(0) <= delta < datetime.timedelta(minutes=5)
