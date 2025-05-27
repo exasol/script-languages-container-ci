@@ -27,6 +27,7 @@ def run_db_test_call(
     flavor_path: str,
     generic_language_tests: Tuple[str, ...],
     accelerator: Accelerator,
+    build_docker_repository: str,
 ):
     return call.execute_tests(
         flavor_path=(flavor_path,),
@@ -38,6 +39,8 @@ def run_db_test_call(
         goal=goal,
         generic_language_tests=generic_language_tests,
         accelerator=accelerator,
+        commit_sha=test_env.commit_sha,
+        build_docker_repository=build_docker_repository,
     )
 
 
@@ -68,6 +71,7 @@ def test_run_tests(
         docker_password=test_env.docker_pwd,
         ci_prepare=ci_commands_mock,
         ci_test=ci_commands_mock,
+        commit_sha=test_env.commit_sha,
     )
     assert ci_commands_mock.mock_calls == [
         call.prepare(),
@@ -81,5 +85,6 @@ def test_run_tests(
             ),
             generic_language_tests=tuple(generic_language_tests),
             accelerator=accelerator,
+            build_docker_repository=build_config_with_flavor_environment.docker_build_repository,
         ),
     ]

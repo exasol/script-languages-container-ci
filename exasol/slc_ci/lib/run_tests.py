@@ -13,6 +13,7 @@ def run_tests(
     test_set_name: str,
     docker_user: str,
     docker_password: str,
+    commit_sha: str,
     ci_prepare: CIPrepare = CIPrepare(),
     ci_test: CIExecuteTest = CIExecuteTest(),
 ) -> None:
@@ -55,6 +56,8 @@ def run_tests(
             test_container_folder=test_container_folder,
             docker_user=docker_user,
             docker_password=docker_password,
+            commit_sha=commit_sha,
+            build_docker_repository=build_config.docker_build_repository,
         )
 
     if generic_language_tests:
@@ -68,4 +71,6 @@ def run_tests(
             test_container_folder=test_container_folder,
             docker_user=docker_user,
             docker_password=docker_password,
+            commit_sha=commit_sha,
+            build_docker_repository=build_config.docker_build_repository,
         )
