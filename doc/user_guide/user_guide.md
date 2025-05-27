@@ -2,10 +2,8 @@
 
 **EXASLC_CI** is a command-line tool to build, test, scan and deploy Exasol’s Script-Languages Containers  
 in a GitHub CI environment. See https://github.com/exasol/script-languages-release for more information about  
-Script-Languages-Container. Under the main entrypoint `exaslc-ci`, it exposes a set of commands to  
+Script-Languages-Containers. Under the main entrypoint `exaslc-ci`, it exposes a set of commands to  
 orchestrate your CI pipeline steps.
-
-
 ## Installation & Prerequisites
 
 1. Python 3.10+  
@@ -19,7 +17,7 @@ orchestrate your CI pipeline steps.
 
 ---
 
-## How it fits in the big picture
+## How it Fits in the Big Picture
 
 The following diagram shows how this project is used within the Script-Languages-Container CI/CD pipeline.  
 The auto-generated GitHub workflows call the CLI commands of this project to construct build matrices or to trigger the single build steps.

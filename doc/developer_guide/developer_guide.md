@@ -62,9 +62,9 @@ In order to trigger a release a new tag must be pushed to GitHub:
    git push origin x.y.z
    ```
 
-## What to do if the release failed?
+## What to do if the Release Failed?
 
-### The release failed during pre-release checks
+### The Release Failed During Pre-release Checks
 
 1. Delete the local tag  
    ```shell
