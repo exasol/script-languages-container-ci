@@ -102,7 +102,7 @@ def test_export_and_scan_vulnerabilities_no_github_output_var(
     )
 
 
-TEST_DATA = [(None, False), ("--no-release", False), ("--release", True)]
+TEST_DATA = [(None, False), ("--release", True)]
 
 
 @pytest.mark.parametrize("release_cli_option, expected_release_value", TEST_DATA)

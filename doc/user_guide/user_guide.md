@@ -1,8 +1,8 @@
 # exaslc-ci CLI — User Guide
 
-**EXASLC_CI** is a command-line tool to build, test, scan and deploy Exasol’s Script-Languages Containers  
+**EXASLC_CI** is a command-line tool to build, test, scan and deploy Exasol’s Script-Languages-Containers (SLCs)
 in a GitHub CI environment. See https://github.com/exasol/script-languages-release for more information about  
-Script-Languages-Containers. Under the main entrypoint `exaslc-ci`, it exposes a set of commands to  
+SLCs. Under the main entrypoint `exaslc-ci`, it exposes a set of commands to  
 orchestrate your CI pipeline steps.
 ## Installation & Prerequisites
 
@@ -38,7 +38,7 @@ File `build_config.json` contains build parameters, which are independent of the
 
 This file contains flavor-specific build information:
 
-- `build_runner`: The Github build runner to be used for building the Script-Languages-Container of the respective flavor
+- `build_runner`: The Github build runner to be used for building the SLC of the respective flavor
 - `test_config`: Test-specific build information:
   - `default_test_runner`: The Github runner to be used for running the tests
   - `test_sets`: A set of tests which should run within the same matrix build
@@ -89,7 +89,7 @@ Here is an example file:
 #### `build_config.json`
 
 This file contains flavor-independent information:
-- `ignore_paths`: A list of folders which will avoid building the Script-Languages-Container during CI
+- `ignore_paths`: The CI will skip building and testing the SLC if the changes of the PR / Push include only files in directories given by this parameter.
 - `docker_build_repository`: A Docker repository where slc-ci uploads the intermediate docker images to. This allows inspecting and reusing the Docker containers later.
 - `docker_release_repository`: A Docker repository where the final release docker images will be uploaded.
 - `test_container_folder`: Name of the folder containing the test container.
@@ -106,7 +106,7 @@ This file contains flavor-independent information:
 
 ## How it Fits in the Big Picture
 
-The following diagram shows how this project is used within the Script-Languages-Container CI/CD pipeline.  
+The following diagram shows how this project is used within the SLC CI/CD pipeline.  
 The auto-generated GitHub workflows call the CLI commands of this project to construct build matrices or to trigger the single build steps.
 
 ![SLC CI](./img/slc_ci.png)
@@ -232,7 +232,7 @@ exaslc-ci check-if-build-needed \
 
 ### export-and-scan-vulnerabilities
 
-Performs a full CI pipeline step: builds the container, exports it, scans for vulnerabilities, and pushes results to the Docker Hub build cache.
+Performs a full CI pipeline step: builds the container, exports it, scans for vulnerabilities, and pushes results to the Docker Hub build/release cache.
 
 **Usage**
 
@@ -244,7 +244,7 @@ exaslc-ci export-and-scan-vulnerabilities \
   --docker-user ${{ secrets.DOCKER_USER }} \
   --docker-password ${{ secrets.DOCKER_PASS }} \
   --github-output-var VULN_SCAN_RESULT \
-  --release/--no-release
+  --release
 ```
 
 **Options**
