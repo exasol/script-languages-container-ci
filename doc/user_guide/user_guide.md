@@ -32,22 +32,27 @@ The CLI commands expect to be called within a Script-Languages directory, which 
 ```
 
 There must exist at least one flavor directory (`flavor_a` in the example above) with the respective `ci.json` file.
-The `build_config.json` contains build parameter, which are independent of the flavors.
+File `build_config.json` contains build parameters, which are independent of the flavors.
 
 #### Flavor `ci.json`
 
-This file contains flavor specific build information:
+This file contains flavor-specific build information:
 
 - `build_runner`: The Github build runner to be used for building the Script-Languages-Container of the respective flavor
-- `test_config`: Test specific build information:
+- `test_config`: Test-specific build information:
   - `default_test_runner`: The Github runner to be used for running the tests
   - `test_sets`: A set of tests which should run within the same matrix build
     - `name`: The name of the test set
-    - `folders`: The list of folders with tests within the test container (usually `test_container/tests/test`) which will be executed. If not empty, the enty `generic_language_tests` should be empty.
-    - `goal`: The release goal, to be used for running the tests. The release goal is defined in the `build_steps.py`. The release goal needs to be exported during the command `export-and-scan-vulnerabilities`. Currently only two goals are exported and can be used for the tests: `release` and `base_test_build_run`. The reason the goal `base_test_build_run` is supported, are the linker namespace tests. 
-    - `generic_language_tests`: A list of generic language tests. If not empty, the entry `folders` should be empty.
-    - `test_runner`: The specific Github runner for the test set. If set, it overwrites the `default_test_runner`. It allows the usage of more expansive Github runner (for example GPU runner) for specific tests
-    - `accelerator`: This option is forwarded to `exaslct`'s `run-db-test` command. It allows starting the docker-db with an accelerator enabled.
+    - `folders`: The list of folders with tests within the test container (usually `test_container/tests/test`) which will be executed.
+    - `goal`: The release goal, to be used for running the tests, either `release` or `base_test_build_run`, see details below.
+    - `generic_language_tests`: A list of generic language tests.
+    - `test_runner`: The specific Github runner for the test set. If set, it overwrites the `default_test_runner` enabling to use different Github runners for running specific tests, e.g. for minimizing costs.
+    - `accelerator`: SLC-CI forwards this option to `exaslct` command [run-db-test](https://github.com/exasol/script-languages-container-tool/blob/main/doc/user_guide/user_guide.md#testing-with-an-accelerator), example value `nvidia`.
+
+Only one of either `folders` or `generic_language_tests` should have a non-empty value.
+
+Release goals are defined by the return values of method `get_build_step()` in file `build_steps.py` of each flavor. Currently SLC-CI command `export-and-scan-vulnerabilities` only exports two goals: `release` and `base_test_build_run`. The second goal is for running test regarding linker namespaces.
+
 Here is an example file:
 
 ```json
@@ -79,16 +84,15 @@ Here is an example file:
     ]
   }
 }
-
 ```
 
 #### `build_config.json`
 
-This file contains flavor independent information:
+This file contains flavor-independent information:
 - `ignore_paths`: A list of folders which will avoid building the Script-Languages-Container during CI
-- `docker_build_repository`: A Docker repository where the intermediate build docker images will be uploaded. This allows inspection of the Docker containers later, if needed.
-- `docker_release_repository`: A Docker repository where the release docker images will be uploaded.
-- `test_container_folder`: The folder name containing the test container.
+- `docker_build_repository`: A Docker repository where slc-ci uploads the intermediate docker images to. This allows inspecting and reusing the Docker containers later.
+- `docker_release_repository`: A Docker repository where the final release docker images will be uploaded.
+- `test_container_folder`: Name of the folder containing the test container.
 - 
 ```json
 {
@@ -239,7 +243,7 @@ exaslc-ci export-and-scan-vulnerabilities \
   --commit-sha abc123 \
   --docker-user ${{ secrets.DOCKER_USER }} \
   --docker-password ${{ secrets.DOCKER_PASS }} \
-  --github-output-var VULN_SCAN_RESULT
+  --github-output-var VULN_SCAN_RESULT \
   --release/--no-release
 ```
 
@@ -251,7 +255,7 @@ exaslc-ci export-and-scan-vulnerabilities \
 - `--docker-user TEXT`
 - `--docker-password TEXT`
 - `--github-output-var TEXT`
-- `--release/--no-release`: If True, the "docker_release_repository" entry of `build_config.json` will be used for uploading the Script-Languages container image. Otherwise, the "docker_release_repository" will be used.
+- `--release`: If specified, then run `export-and-scan-vulnerabilities` in mode _release_, always re-building all Docker images and publishing the images to "docker_release_repository". Otherwise only rebuild outdated Docker images and publish them to "docker_build_repository".
 
 #### Internals
 
