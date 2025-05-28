@@ -17,6 +17,89 @@ orchestrate your CI pipeline steps.
 
 ---
 
+### Required CI files
+
+The CLI commands expect to be called within a Script-Languages directory, which must contain the following directories and files:
+
+```
+├── flavors
+│   ├── flavor_a
+│   │   ├── flavor_base
+│   │   │   ├──...
+│   │   ├── ci.json
+│   │   ...
+├── build_config.json
+```
+
+There must exist at least one flavor directory (`flavor_a` in the example above) with the respective `ci.json` file.
+The `build_config.json` contains build parameter, which are independent of the flavors.
+
+#### Flavor `ci.json`
+
+This file contains flavor specific build information:
+
+- `build_runner`: The Github build runner to be used for building the Script-Languages-Container of the respective flavor
+- `test_config`: Test specific build information:
+  - `default_test_runner`: The Github runner to be used for running the tests
+  - `test_sets`: A set of tests which should run within the same matrix build
+    - `name`: The name of the test set
+    - `folders`: The list of folders with tests within the test container (usually `test_container/tests/test`) which will be executed. If not empty, the enty `generic_language_tests` should be empty.
+    - `goal`: The release goal, to be used for running the tests. The release goal is defined in the `build_steps.py`. The release goal needs to be exported during the command `export-and-scan-vulnerabilities`. Currently only two goals are exported and can be used for the tests: `release` and `base_test_build_run`. The reason the goal `base_test_build_run` is supported, are the linker namespace tests. 
+    - `generic_language_tests`: A list of generic language tests. If not empty, the entry `folders` should be empty.
+    - `test_runner`: The specific Github runner for the test set. If set, it overwrites the `default_test_runner`. It allows the usage of more expansive Github runner (for example GPU runner) for specific tests
+    - `accelerator`: This option is forwarded to `exaslct`'s `run-db-test` command. It allows starting the docker-db with an accelerator enabled.
+Here is an example file:
+
+```json
+{
+  "build_runner": "ubuntu-22.04",
+  "test_config": {
+    "default_test_runner": "ubuntu-22.04",
+    "test_sets": [
+      {
+        "name": "integration-test",
+        "folders": ["some_tests"],
+        "goal": "release",
+        "generic_language_tests": []
+      },
+      {
+        "name": "integration-test-for-base_test_build_run",
+        "folders": ["some_tests"],
+        "goal": "base_test_build_run",
+        "generic_language_tests": []
+      },
+      {
+        "name": "integration-test-gpu",
+        "folders": ["gpu_tests"],
+        "goal": "release",
+        "generic_language_tests": [],
+        "test_runner": "int-linux-x64-4core-gpu-t4-ubuntu24.04-1",
+        "accelerator": "nvidia"
+      }
+    ]
+  }
+}
+
+```
+
+#### `build_config.json`
+
+This file contains flavor independent information:
+- `ignore_paths`: A list of folders which will avoid building the Script-Languages-Container during CI
+- `docker_build_repository`: A Docker repository where the intermediate build docker images will be uploaded. This allows inspection of the Docker containers later, if needed.
+- `docker_release_repository`: A Docker repository where the release docker images will be uploaded.
+- `test_container_folder`: The folder name containing the test container.
+- 
+```json
+{
+    "ignore_paths": ["doc"],
+    "docker_build_repository": "exadockerci4/script-languages-build-cache",
+    "docker_release_repository": "exasol/script-languages",
+    "test_container_folder": "test_container"
+}
+
+```
+
 ## How it Fits in the Big Picture
 
 The following diagram shows how this project is used within the Script-Languages-Container CI/CD pipeline.  
@@ -157,6 +240,7 @@ exaslc-ci export-and-scan-vulnerabilities \
   --docker-user ${{ secrets.DOCKER_USER }} \
   --docker-password ${{ secrets.DOCKER_PASS }} \
   --github-output-var VULN_SCAN_RESULT
+  --release/--no-release
 ```
 
 **Options**
@@ -167,6 +251,7 @@ exaslc-ci export-and-scan-vulnerabilities \
 - `--docker-user TEXT`
 - `--docker-password TEXT`
 - `--github-output-var TEXT`
+- `--release/--no-release`: If True, the "docker_release_repository" entry of `build_config.json` will be used for uploading the Script-Languages container image. Otherwise, the "docker_release_repository" will be used.
 
 #### Internals
 
