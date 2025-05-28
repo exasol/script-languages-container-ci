@@ -51,7 +51,7 @@ This file contains flavor-specific build information:
 
 Only one of either `folders` or `generic_language_tests` should have a non-empty value.
 
-Release goals are defined by the return values of method `get_build_step()` in file `build_steps.py` of each flavor. Currently SLC-CI command `export-and-scan-vulnerabilities` only exports two goals: `release` and `base_test_build_run`. The second goal is for running test regarding linker namespaces.
+Release goals are defined by the return values of method `get_build_step()` in file `build_steps.py` of each flavor. Currently SLC-CI command `export-and-scan-vulnerabilities` only exports two goals: `release` and `base_test_build_run`. The second goal is for running tests regarding linker namespaces.
 
 Here is an example file:
 
@@ -89,11 +89,10 @@ Here is an example file:
 #### `build_config.json`
 
 This file contains flavor-independent information:
-- `ignore_paths`: The CI will skip building and testing the SLC if the changes of the PR / Push include only files in directories given by this parameter.
+- `ignore_paths`: Changes of the PR / Push in these directories will _not_ trigger building and testing the SLC.
 - `docker_build_repository`: A Docker repository where slc-ci uploads the intermediate docker images to. This allows inspecting and reusing the Docker containers later.
 - `docker_release_repository`: A Docker repository where the final release docker images will be uploaded.
 - `test_container_folder`: Name of the folder containing the test container.
-- 
 ```json
 {
     "ignore_paths": ["doc"],
@@ -107,7 +106,7 @@ This file contains flavor-independent information:
 ## How it Fits in the Big Picture
 
 The following diagram shows how this project is used within the SLC CI/CD pipeline.  
-The auto-generated GitHub workflows call the CLI commands of this project to construct build matrices or to trigger the single build steps.
+The auto-generated GitHub workflows call the CLI commands of this project to obtain build matrices or to trigger individual build steps.
 
 ![SLC CI](./img/slc_ci.png)
 
