@@ -102,8 +102,18 @@ def test_export_and_scan_vulnerabilities_no_github_output_var(
     )
 
 
-def test_export_and_scan_vulnerabilities(cli, mock_export_and_scan_vulnerabilities):
-    cli.run(
+TEST_DATA = [(None, False), ("--release", True)]
+
+
+@pytest.mark.parametrize("release_cli_option, expected_release_value", TEST_DATA)
+def test_export_and_scan_vulnerabilities(
+    cli,
+    mock_export_and_scan_vulnerabilities,
+    release_cli_option,
+    expected_release_value,
+):
+
+    args = [
         "--flavor",
         "flavor_a",
         "--branch-name",
@@ -116,11 +126,16 @@ def test_export_and_scan_vulnerabilities(cli, mock_export_and_scan_vulnerabiliti
         "secret",
         "--github-output-var",
         "some_var",
-    )
+    ]
+    if release_cli_option is not None:
+        args.append(release_cli_option)
+
+    cli.run(*args)
     assert cli.succeeded
 
     # Validate the exact call using mock_calls and IsInstance matcher
     expected_call = call(
+        release=expected_release_value,
         flavor="flavor_a",
         branch_name="feature/abc",
         docker_user="user",

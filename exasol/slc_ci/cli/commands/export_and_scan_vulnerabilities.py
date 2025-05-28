@@ -1,3 +1,4 @@
+import click
 from exasol_integration_test_docker_environment.lib.utils.cli_function_decorators import (
     add_options,
 )
@@ -22,6 +23,15 @@ from exasol.slc_ci.lib.github_access import GithubAccess
 @add_options([branch_option, commit_sha_option])
 @add_options(docker_options)
 @add_options(github_options)
+@add_options(
+    [
+        click.option(
+            "--release",
+            is_flag=True,
+            help="Activate release mode and push SLC to the release Docker repository.",
+        )
+    ]
+)
 def export_and_scan_vulnerabilities(
     flavor: str,
     branch_name: str,
@@ -29,6 +39,7 @@ def export_and_scan_vulnerabilities(
     docker_password: str,
     commit_sha: str,
     github_output_var: str,
+    release: bool,
 ) -> None:
     git_access: GitAccess = GitAccess()
     github_access: GithubAccess = GithubAccess(github_output_var)
@@ -39,6 +50,7 @@ def export_and_scan_vulnerabilities(
     ci_push = CIPush()
 
     lib_export_and_scan_vulnerabilities.export_and_scan_vulnerabilities(
+        release=release,
         flavor=flavor,
         branch_name=branch_name,
         docker_user=docker_user,
