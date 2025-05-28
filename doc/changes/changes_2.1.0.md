@@ -1,6 +1,6 @@
 # 2.1.0 - 2025-05-28
 
-This release provides an option for building and pushing Script-Languages-Container images, and includes a small improvement for preparing the output directory.
+This release provides an option for building and pushing Script-Languages-Container release images, and includes a small improvement for preparing the output directory.
 Additionally, it adds a user guide and fixes a small bug in the `run-tests` command.
 
 ## Doc
