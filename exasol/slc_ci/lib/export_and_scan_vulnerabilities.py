@@ -103,7 +103,7 @@ def _export_and_scan_vulnerabilities_cd(
     ci_push: CIPush = CIPush(),
 ) -> None:
     logging.info(
-        f"Running build image and scan vulnerabilities for release for parameters: {locals()}"
+        f"Running build image and scanning vulnerabilities for release for parameters: {locals()}"
     )
     build_config: BuildConfig = get_build_config_model()
 
