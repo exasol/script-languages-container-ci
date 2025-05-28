@@ -26,7 +26,8 @@ from exasol.slc_ci.lib.github_access import GithubAccess
 @add_options(
     [
         click.option(
-            "--release", is_flag=True,
+            "--release",
+            is_flag=True,
             help="Activate release mode and push SLC to the release Docker repository.",
         )
     ]
