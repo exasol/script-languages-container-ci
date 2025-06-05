@@ -2,44 +2,13 @@ import logging
 import os
 from tempfile import TemporaryDirectory
 from test.integration.fixtures import *
-from test.unit.aws.fixtures import *
-from test.unit.github.fixtures import *
+from test.unit.fixtures import *
 from unittest import mock
-from unittest.mock import MagicMock, patch
-
-from exasol_script_languages_container_ci.lib.config.data_model_generator import (
-    config_data_model_default_output_file,
-    regenerate_config_data_model,
-)
+from unittest.mock import MagicMock
 
 script_path = Path(__file__).absolute().parent
 
-DISABLE_PYDANTIC_MODEL_GENERATION = "--disable-pydantic-model-generation"
-
 logger = logging.getLogger(__name__)
-
-
-def pytest_addoption(parser):
-    parser.addoption(
-        DISABLE_PYDANTIC_MODEL_GENERATION,
-        action="store_true",
-        default=False,
-        help="Disables the generation of the pydantic models from the json schemas",
-    )
-
-
-def pytest_configure(config):
-    """
-    Some of our tests are based on the pydantic model. We need to make sure, the tests work with the newest
-    version. However, we also need to regenerate the file as early as possible, before other modules import it.
-    For that reason. we are triggering the regeneration in conftest.
-    """
-
-    if not config.getoption(DISABLE_PYDANTIC_MODEL_GENERATION):
-        output_file = config_data_model_default_output_file()
-        regenerate_config_data_model(output_file)
-    else:
-        logger.warning("Generation of pydantic models from json schema disabled")
 
 
 @pytest.fixture()

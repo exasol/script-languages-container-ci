@@ -18,7 +18,7 @@ class CIExport:
         self._printer = printer
 
     def export(
-        self, flavor_path: Tuple[str, ...], goal: str, output_directory: str
+        self, flavor_path: tuple[str, ...], goal: str, output_directory: str
     ) -> Path:
         """
         Export the flavor as tar.gz file.

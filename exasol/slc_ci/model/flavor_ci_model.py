@@ -6,16 +6,16 @@ from pydantic import BaseModel
 
 class TestSet(BaseModel):
     name: str
-    folders: List[str]
+    folders: list[str]
     goal: str
-    generic_language_tests: List[str]
+    generic_language_tests: list[str]
     test_runner: Optional[str] = None
     accelerator: Accelerator = Accelerator.NONE
 
 
 class TestConfig(BaseModel):
     default_test_runner: str
-    test_sets: List[TestSet]
+    test_sets: list[TestSet]
 
 
 class FlavorCiConfig(BaseModel):

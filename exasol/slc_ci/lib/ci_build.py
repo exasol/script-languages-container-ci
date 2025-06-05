@@ -18,7 +18,7 @@ class CIBuild:
 
     def build(
         self,
-        flavor_path: Tuple[str, ...],
+        flavor_path: tuple[str, ...],
         rebuild: bool,
         build_docker_repository: Optional[str],
         docker_user: str,

@@ -15,11 +15,11 @@ from exasol.slc_ci.lib.ci_step_output_printer import (
 class DBTestRunnerProtocol(Protocol):
     def run(
         self,
-        flavor_path: Tuple[str, ...],
-        release_goal: Tuple[str, ...],
-        test_folder: Tuple[str, ...],
+        flavor_path: tuple[str, ...],
+        release_goal: tuple[str, ...],
+        test_folder: tuple[str, ...],
         test_container_folder: str,
-        generic_language_tests: Tuple[str, ...],
+        generic_language_tests: tuple[str, ...],
         accelerator: Accelerator,
         source_docker_tag_prefix: str,
         source_docker_repository_name: str,
@@ -34,11 +34,11 @@ class DBTestRunnerProtocol(Protocol):
 class DBTestRunner(DBTestRunnerProtocol):
     def run(
         self,
-        flavor_path: Tuple[str, ...],
-        release_goal: Tuple[str, ...],
-        test_folder: Tuple[str, ...],
+        flavor_path: tuple[str, ...],
+        release_goal: tuple[str, ...],
+        test_folder: tuple[str, ...],
         test_container_folder: str,
-        generic_language_tests: Tuple[str, ...],
+        generic_language_tests: tuple[str, ...],
         accelerator: Accelerator,
         source_docker_tag_prefix: str,
         source_docker_repository_name: str,
@@ -77,11 +77,11 @@ class CIExecuteTest:
 
     def execute_tests(
         self,
-        flavor_path: Tuple[str, ...],
+        flavor_path: tuple[str, ...],
         slc_path: Path,
         goal: str,
         test_folder: str,
-        generic_language_tests: Tuple[str, ...],
+        generic_language_tests: tuple[str, ...],
         accelerator: Accelerator,
         docker_user: str,
         docker_password: str,
@@ -111,11 +111,11 @@ class CIExecuteTest:
 
     def _run_db_tests(
         self,
-        flavor_path: Tuple[str, ...],
+        flavor_path: tuple[str, ...],
         slc_path: Path,
         goal: str,
         test_folder: str,
-        generic_language_tests: Tuple[str, ...],
+        generic_language_tests: tuple[str, ...],
         accelerator: Accelerator,
         docker_user: str,
         docker_password: str,
