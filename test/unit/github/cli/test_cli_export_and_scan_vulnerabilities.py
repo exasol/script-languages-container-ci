@@ -82,7 +82,7 @@ def test_export_and_scan_vulnerabilities_no_docker_pwd(cli):
     )
 
 
-def test_export_and_scan_vulnerabilities_no_github_output_var(
+def test_export_and_scan_vulnerabilities_no_build_mode(
     cli, mock_export_and_scan_vulnerabilities
 ):
     assert (
@@ -98,19 +98,35 @@ def test_export_and_scan_vulnerabilities_no_github_output_var(
             "--docker-password",
             "secret",
         ).failed
+        and "Missing option '--build-mode'" in cli.output
+    )
+
+
+def test_export_and_scan_vulnerabilities_no_github_output_var(
+    cli, mock_export_and_scan_vulnerabilities
+):
+    assert (
+        cli.run(
+            "--flavor",
+            "abc",
+            "--branch-name",
+            "feature/abc",
+            "--commit-sha",
+            "12345",
+            "--docker-user",
+            "user",
+            "--docker-password",
+            "secret",
+            "--build-mode",
+            "normal",
+        ).failed
         and "Missing option '--github-output-var'" in cli.output
     )
 
 
-TEST_DATA = [(None, False), ("--release", True)]
-
-
-@pytest.mark.parametrize("release_cli_option, expected_release_value", TEST_DATA)
 def test_export_and_scan_vulnerabilities(
     cli,
     mock_export_and_scan_vulnerabilities,
-    release_cli_option,
-    expected_release_value,
 ):
 
     args = [
@@ -124,23 +140,23 @@ def test_export_and_scan_vulnerabilities(
         "user",
         "--docker-password",
         "secret",
+        "--build-mode",
+        "normal",
         "--github-output-var",
         "some_var",
     ]
-    if release_cli_option is not None:
-        args.append(release_cli_option)
 
     cli.run(*args)
     assert cli.succeeded
 
     # Validate the exact call using mock_calls and IsInstance matcher
     expected_call = call(
-        release=expected_release_value,
         flavor="flavor_a",
         branch_name="feature/abc",
         docker_user="user",
         docker_password="secret",
         commit_sha="12345",
+        build_mode="normal",
         git_access=IsInstance(GitAccess),
         github_access=IsInstance(GithubAccess),
         ci_build=IsInstance(CIBuild),

@@ -1,5 +1,7 @@
 import json
 from pathlib import Path
+
+from exasol.slc_ci.model.build_mode import BuildMode
 from test.unit.github.test_env import test_env
 from typing import Union
 from unittest.mock import MagicMock, Mock, call
@@ -13,7 +15,7 @@ from exasol.slc_ci.lib.export_and_scan_vulnerabilities import (
 )
 
 
-def test_export_and_scan_vulnerabilities_ci(build_config_environment, git_access_mock):
+def test_export_and_scan_vulnerabilities_ci_normal(build_config_environment, git_access_mock):
     res_slc_path = Path("/some_path/slc.tar.gz")
     ci_export_mock = MagicMock()
     github_output_mock = MagicMock()
@@ -21,7 +23,7 @@ def test_export_and_scan_vulnerabilities_ci(build_config_environment, git_access
     ci_commands_mock: Union[CISecurityScan, CIPush, CIBuild, CIPrepare, Mock] = Mock()
 
     lib_export_and_scan_vulnerabilities(
-        release=False,
+        build_mode=BuildMode.NORMAL,
         flavor=test_env.flavor_name,
         branch_name=test_env.branch_name,
         docker_user=test_env.docker_user,
@@ -81,6 +83,148 @@ def test_export_and_scan_vulnerabilities_ci(build_config_environment, git_access
     }
 
 
+def test_export_and_scan_vulnerabilities_ci_develop(build_config_environment, git_access_mock):
+    res_slc_path = Path("/some_path/slc.tar.gz")
+    ci_export_mock = MagicMock()
+    github_output_mock = MagicMock()
+    ci_export_mock.export = MagicMock(return_value=res_slc_path)
+    ci_commands_mock: Union[CISecurityScan, CIPush, CIBuild, CIPrepare, Mock] = Mock()
+
+    lib_export_and_scan_vulnerabilities(
+        build_mode=BuildMode.REBUILD,
+        flavor=test_env.flavor_name,
+        branch_name="refs/heads/develop",
+        docker_user=test_env.docker_user,
+        docker_password=test_env.docker_pwd,
+        commit_sha=test_env.commit_sha,
+        git_access=git_access_mock,
+        github_access=github_output_mock,
+        ci_build=ci_commands_mock,
+        ci_security_scan=ci_commands_mock,
+        ci_prepare=ci_commands_mock,
+        ci_export=ci_export_mock,
+        ci_push=ci_commands_mock,
+    )
+    expected_flavor_path = str(
+        build_config_environment.flavors_path / test_env.flavor_name
+    )
+    assert ci_commands_mock.mock_calls == [
+        call.prepare(commit_sha=test_env.commit_sha),
+        call.build(
+            flavor_path=(expected_flavor_path,),
+            rebuild=True,
+            build_docker_repository=build_config_environment.docker_build_repository,
+            docker_user=test_env.docker_user,
+            docker_password=test_env.docker_pwd,
+        ),
+        call.run_security_scan(flavor_path=(expected_flavor_path,)),
+        call.push(
+            flavor_path=(expected_flavor_path,),
+            target_docker_repository=build_config_environment.docker_build_repository,
+            target_docker_tag_prefix=test_env.commit_sha,
+            docker_user=test_env.docker_user,
+            docker_password=test_env.docker_pwd,
+        ),
+        call.push(
+            flavor_path=(expected_flavor_path,),
+            target_docker_repository=build_config_environment.docker_build_repository,
+            target_docker_tag_prefix="",
+            docker_user=test_env.docker_user,
+            docker_password=test_env.docker_pwd,
+        ),
+    ]
+    assert ci_export_mock.mock_calls == [
+        call.export(
+            flavor_path=(expected_flavor_path,),
+            goal="release",
+            output_directory=".build_output_release",
+        ),
+        call.export(
+            flavor_path=(expected_flavor_path,),
+            goal="base_test_build_run",
+            output_directory=".build_output_test",
+        ),
+    ]
+    assert json.loads(github_output_mock.write_result.call_args.args[0]) == {
+        "slc_release": {"goal": "release", "path": "/some_path/slc.tar.gz"},
+        "slc_test": {"goal": "base_test_build_run", "path": "/some_path/slc.tar.gz"},
+    }
+
+
+def test_export_and_scan_vulnerabilities_ci_main(build_config_environment, git_access_mock):
+    res_slc_path = Path("/some_path/slc.tar.gz")
+    ci_export_mock = MagicMock()
+    github_output_mock = MagicMock()
+    ci_export_mock.export = MagicMock(return_value=res_slc_path)
+    ci_commands_mock: Union[CISecurityScan, CIPush, CIBuild, CIPrepare, Mock] = Mock()
+
+    lib_export_and_scan_vulnerabilities(
+        build_mode=BuildMode.REBUILD,
+        flavor=test_env.flavor_name,
+        branch_name="refs/heads/main",
+        docker_user=test_env.docker_user,
+        docker_password=test_env.docker_pwd,
+        commit_sha=test_env.commit_sha,
+        git_access=git_access_mock,
+        github_access=github_output_mock,
+        ci_build=ci_commands_mock,
+        ci_security_scan=ci_commands_mock,
+        ci_prepare=ci_commands_mock,
+        ci_export=ci_export_mock,
+        ci_push=ci_commands_mock,
+    )
+    expected_flavor_path = str(
+        build_config_environment.flavors_path / test_env.flavor_name
+    )
+    assert ci_commands_mock.mock_calls == [
+        call.prepare(commit_sha=test_env.commit_sha),
+        call.build(
+            flavor_path=(expected_flavor_path,),
+            rebuild=True,
+            build_docker_repository=build_config_environment.docker_build_repository,
+            docker_user=test_env.docker_user,
+            docker_password=test_env.docker_pwd,
+        ),
+        call.run_security_scan(flavor_path=(expected_flavor_path,)),
+        call.push(
+            flavor_path=(expected_flavor_path,),
+            target_docker_repository=build_config_environment.docker_build_repository,
+            target_docker_tag_prefix=test_env.commit_sha,
+            docker_user=test_env.docker_user,
+            docker_password=test_env.docker_pwd,
+        ),
+        call.push(
+            flavor_path=(expected_flavor_path,),
+            target_docker_repository=build_config_environment.docker_build_repository,
+            target_docker_tag_prefix="",
+            docker_user=test_env.docker_user,
+            docker_password=test_env.docker_pwd,
+        ),
+        call.push(
+            flavor_path=(expected_flavor_path,),
+            target_docker_repository=build_config_environment.docker_release_repository,
+            target_docker_tag_prefix="",
+            docker_user=test_env.docker_user,
+            docker_password=test_env.docker_pwd,
+        ),
+    ]
+    assert ci_export_mock.mock_calls == [
+        call.export(
+            flavor_path=(expected_flavor_path,),
+            goal="release",
+            output_directory=".build_output_release",
+        ),
+        call.export(
+            flavor_path=(expected_flavor_path,),
+            goal="base_test_build_run",
+            output_directory=".build_output_test",
+        ),
+    ]
+    assert json.loads(github_output_mock.write_result.call_args.args[0]) == {
+        "slc_release": {"goal": "release", "path": "/some_path/slc.tar.gz"},
+        "slc_test": {"goal": "base_test_build_run", "path": "/some_path/slc.tar.gz"},
+    }
+
 def test_export_and_scan_vulnerabilities_cd(build_config_environment, git_access_mock):
     res_slc_path = Path("/some_path/slc.tar.gz")
     ci_export_mock = MagicMock()
@@ -89,7 +233,7 @@ def test_export_and_scan_vulnerabilities_cd(build_config_environment, git_access
     ci_commands_mock: Union[CISecurityScan, CIPush, CIBuild, CIPrepare, Mock] = Mock()
 
     lib_export_and_scan_vulnerabilities(
-        release=True,
+        build_mode=BuildMode.RELEASE,
         flavor=test_env.flavor_name,
         branch_name=test_env.branch_name,
         docker_user=test_env.docker_user,

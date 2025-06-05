@@ -2,7 +2,6 @@ import logging
 from pathlib import Path
 from typing import List
 
-from exasol.slc_ci.lib.branch_config import build_always
 from exasol.slc_ci.lib.get_build_config_model import get_build_config_model
 from exasol.slc_ci.lib.git_access import GitAccess
 from exasol.slc_ci.lib.github_access import GithubAccess
@@ -22,11 +21,9 @@ def get_all_affected_files(
 
 
 def _run_check_if_need_to_build(
-    branch_name: str, base_ref: str, remote: str, flavor: str, git_access: GitAccess
+    base_ref: str, remote: str, flavor: str, git_access: GitAccess
 ) -> bool:
     build_config = get_build_config_model()
-    if build_always(branch_name):
-        return True
     if "[rebuild]" in git_access.get_last_commit_message():
         return True
     affected_files = list(get_all_affected_files(git_access, base_ref, remote))
@@ -60,12 +57,11 @@ def _run_check_if_need_to_build(
 
 
 def check_if_need_to_build(
-    branch_name: str,
     base_ref: str,
     remote: str,
     flavor: str,
     github_access: GithubAccess,
     git_access: GitAccess,
 ) -> None:
-    res = _run_check_if_need_to_build(branch_name, base_ref, remote, flavor, git_access)
+    res = _run_check_if_need_to_build(base_ref, remote, flavor, git_access)
     github_access.write_result("True" if res else "False")

@@ -18,15 +18,14 @@ from exasol.slc_ci.lib.github_access import GithubAccess
 
 @cli.command()
 @add_options(flavor_options)
-@add_options([branch_option, base_branch_option, remote_option])
+@add_options([base_branch_option, remote_option])
 @add_options(github_options)
 def check_if_build_needed(
-    flavor: str, branch_name: str, base_ref: str, remote: str, github_output_var: str
+    flavor: str, base_ref: str, remote: str, github_output_var: str
 ) -> None:
     git_access: GitAccess = GitAccess()
     github_access: GithubAccess = GithubAccess(github_output_var)
     lib_check_if_build_needed.check_if_need_to_build(
-        branch_name=branch_name,
         base_ref=base_ref,
         remote=remote,
         flavor=flavor,

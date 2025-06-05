@@ -1,11 +1,8 @@
 import json
 import logging
-import shutil
-from pathlib import Path
 from typing import Tuple
 
-from exasol.slc_ci.lib import branch_config
-from exasol.slc_ci.lib.branch_config import BranchConfig
+from exasol.slc_ci.lib.branch_config import push_to_docker_release_repo
 from exasol.slc_ci.lib.ci_build import CIBuild
 from exasol.slc_ci.lib.ci_export import CIExport
 from exasol.slc_ci.lib.ci_prepare import CIPrepare
@@ -15,6 +12,7 @@ from exasol.slc_ci.lib.get_build_config_model import get_build_config_model
 from exasol.slc_ci.lib.git_access import GitAccess
 from exasol.slc_ci.lib.github_access import GithubAccess
 from exasol.slc_ci.model.build_config_model import BuildConfig
+from exasol.slc_ci.model.build_mode import BuildMode
 
 
 def _export_slc(
@@ -46,6 +44,7 @@ def _export_and_scan_vulnerabilities_ci(
     docker_user: str,
     docker_password: str,
     commit_sha: str,
+    rebuild: bool,
     git_access: GitAccess,
     github_access: GithubAccess,
     ci_build: CIBuild = CIBuild(),
@@ -61,7 +60,6 @@ def _export_and_scan_vulnerabilities_ci(
 
     flavor_path = (f"{build_config.flavors_path}/{flavor}",)
     test_container_folder = build_config.test_container_folder
-    rebuild = branch_config.rebuild(branch_name)
     ci_prepare.prepare(commit_sha=commit_sha)
     ci_build.build(
         flavor_path=flavor_path,
@@ -85,6 +83,15 @@ def _export_and_scan_vulnerabilities_ci(
         docker_user=docker_user,
         docker_password=docker_password,
     )
+    if push_to_docker_release_repo(branch_name):
+        ci_push.push(
+            flavor_path=flavor_path,
+            target_docker_repository=build_config.docker_release_repository,
+            target_docker_tag_prefix="",
+            docker_user=docker_user,
+            docker_password=docker_password,
+        )
+
     _export_slc(ci_export, github_access, flavor_path)
 
 
@@ -128,8 +135,11 @@ def _export_and_scan_vulnerabilities_cd(
     _export_slc(ci_export, github_access, flavor_path)
 
 
-def export_and_scan_vulnerabilities(release: bool = False, **kwargs) -> None:
-    if release:
+def export_and_scan_vulnerabilities(
+    build_mode: BuildMode = BuildMode.NORMAL, **kwargs
+) -> None:
+    if build_mode == BuildMode.RELEASE:
         _export_and_scan_vulnerabilities_cd(**kwargs)
     else:
-        _export_and_scan_vulnerabilities_ci(**kwargs)
+        rebuild = build_mode == BuildMode.REBUILD
+        _export_and_scan_vulnerabilities_ci(rebuild=rebuild, **kwargs)
