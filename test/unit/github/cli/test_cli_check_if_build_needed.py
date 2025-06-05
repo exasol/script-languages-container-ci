@@ -31,7 +31,7 @@ def test_check_if_build_needed_no_flavor(cli):
 
 def test_check_if_build_needed_no_base_branch_name(cli):
     assert (
-        cli.run("--flavor", "abc", "feature/abc").failed
+        cli.run("--flavor", "abc").failed
         and "Missing option '--base-ref'" in cli.output
     )
 
