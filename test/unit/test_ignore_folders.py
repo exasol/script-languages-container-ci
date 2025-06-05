@@ -26,7 +26,7 @@ def commit_files(
     branch_name: str,
     repo: git.Repo,
     repo_path: Path,
-    files_to_commit: List[List[str]],
+    files_to_commit: list[list[str]],
     commit_message: str,
 ) -> None:
     """

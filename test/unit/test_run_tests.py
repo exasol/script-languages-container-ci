@@ -25,7 +25,7 @@ def run_db_test_call(
     test_folder: str,
     test_container_folder: str,
     flavor_path: str,
-    generic_language_tests: Tuple[str, ...],
+    generic_language_tests: tuple[str, ...],
     accelerator: Accelerator,
     build_docker_repository: str,
 ):

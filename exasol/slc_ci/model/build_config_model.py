@@ -11,7 +11,7 @@ class BuildConfig(BaseModel):
     def flavors_path(self):
         return Path("flavors")
 
-    ignore_paths: List[pathlib.Path]
+    ignore_paths: list[pathlib.Path]
 
     docker_build_repository: str
     docker_release_repository: str

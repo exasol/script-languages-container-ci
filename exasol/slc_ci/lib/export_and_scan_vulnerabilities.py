@@ -18,7 +18,7 @@ from exasol.slc_ci.model.build_config_model import BuildConfig
 
 
 def _export_slc(
-    ci_export: CIExport, github_access: GithubAccess, flavor_path: Tuple[str, ...]
+    ci_export: CIExport, github_access: GithubAccess, flavor_path: tuple[str, ...]
 ) -> None:
     release_output = ".build_output_release"
     slc_release = ci_export.export(
