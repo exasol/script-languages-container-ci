@@ -16,11 +16,11 @@ jobs:
           fetch-depth: 0
 
       - name: Setup Python & Poetry Environment
-        uses: exasol/python-toolbox/.github/actions/python-environment@1.0.1
+        uses: exasol/python-toolbox/.github/actions/python-environment@1.2.0
 
       - name: Check Version(s)
         run: |
-          poetry run -- nox -s version:check -- exasol/slc_ci/version.py
+          poetry run -- nox -s version:check
 
 
   build-matrix:
@@ -37,7 +37,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup Python & Poetry Environment
-        uses: exasol/python-toolbox/.github/actions/python-environment@1.0.1
+        uses: exasol/python-toolbox/.github/actions/python-environment@1.2.0
 
       - name: Run changelog update check
         run: poetry run -- nox -s changelog:updated
@@ -55,7 +55,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup Python & Poetry Environment
-        uses: exasol/python-toolbox/.github/actions/python-environment@1.0.1
+        uses: exasol/python-toolbox/.github/actions/python-environment@1.2.0
         with:
           python-version: ${{ matrix.python-version }}
 
@@ -84,7 +84,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup Python & Poetry Environment
-        uses: exasol/python-toolbox/.github/actions/python-environment@1.0.1
+        uses: exasol/python-toolbox/.github/actions/python-environment@1.2.0
         with:
           python-version: ${{ matrix.python-version }}
 
@@ -104,7 +104,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup Python & Poetry Environment
-        uses: exasol/python-toolbox/.github/actions/python-environment@1.0.1
+        uses: exasol/python-toolbox/.github/actions/python-environment@1.2.0
         with:
           python-version: ${{ matrix.python-version }}
 
@@ -127,7 +127,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup Python & Poetry Environment
-        uses: exasol/python-toolbox/.github/actions/python-environment@1.0.1
+        uses: exasol/python-toolbox/.github/actions/python-environment@1.2.0
 
       - name: Run format check
         run: poetry run -- nox -s project:format
@@ -147,7 +147,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup Python & Poetry Environment
-        uses: exasol/python-toolbox/.github/actions/python-environment@1.0.1
+        uses: exasol/python-toolbox/.github/actions/python-environment@1.2.0
         with:
           python-version: ${{ matrix.python-version }}
 
@@ -160,28 +160,3 @@ jobs:
           name: coverage-python${{ matrix.python-version }}-fast
           path: .coverage
           include-hidden-files: true
-
-  Data-Model:
-    name: Unit-Tests (Python-${{ matrix.python-version }}, Exasol-${{ matrix.exasol-version}})
-    runs-on: ubuntu-24.04
-    steps:
-      - name: SCM Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Python & Poetry Environment
-        uses: exasol/python-toolbox/.github/actions/python-environment@1.0.1
-
-      - name: Run Update of EXAConf files
-        run: poetry run -- nox -s "regenerate-config-model"
-
-      - name: Show changes on working copy
-        run: git status --porcelain=v1 -uno
-
-      - name: Show diff on working copy
-        run: git diff --cached; git diff --cached --summary;
-
-      - name: Fail if git working tree is not clean
-        # If this check fails, you need to run `poetry run -- nox -s "regenerate-config-model"` before commiting
-        # or alternatively activate the commit hooks (see developer guide).
-        run: |
-          [ -z "$(git status --porcelain=v1 -uno 2>/dev/null)" ]
