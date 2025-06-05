@@ -17,7 +17,6 @@ dependencies = [
 "exasol-script-languages-container-tool (>=3.2.0, <4.0.0)",
 "PyGithub (>=2.3.0, <3.0.0)",
 "setuptools (>=80.0.0)",
-"datamodel-code-generator (>=0.25.5, <0.30.0)"
 ]
 
 [project.scripts]
