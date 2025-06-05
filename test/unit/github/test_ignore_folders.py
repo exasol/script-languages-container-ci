@@ -117,8 +117,6 @@ def test_ignore_folder_should_run_ci(
     repo_path = Path(tmp_test_dir)
     tmp_repo = git.Repo.init(repo_path)
     commit_files(tmp_repo, repo_path, files_to_commit, commit_message)
-    check_if_need_to_build(
-        "master", "", TEST_FLAVOR, github_output_mock, GitAccess()
-    )
+    check_if_need_to_build("master", "", TEST_FLAVOR, github_output_mock, GitAccess())
 
     assert github_output_mock.write_result.call_args.args[0] == expected_result

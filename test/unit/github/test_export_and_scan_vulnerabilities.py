@@ -1,7 +1,5 @@
 import json
 from pathlib import Path
-
-from exasol.slc_ci.model.build_mode import BuildMode
 from test.unit.github.test_env import test_env
 from typing import Union
 from unittest.mock import MagicMock, Mock, call
@@ -13,9 +11,12 @@ from exasol.slc_ci.lib.ci_security_scan import CISecurityScan
 from exasol.slc_ci.lib.export_and_scan_vulnerabilities import (
     export_and_scan_vulnerabilities as lib_export_and_scan_vulnerabilities,
 )
+from exasol.slc_ci.model.build_mode import BuildMode
 
 
-def test_export_and_scan_vulnerabilities_ci_normal(build_config_environment, git_access_mock):
+def test_export_and_scan_vulnerabilities_ci_normal(
+    build_config_environment, git_access_mock
+):
     res_slc_path = Path("/some_path/slc.tar.gz")
     ci_export_mock = MagicMock()
     github_output_mock = MagicMock()
@@ -83,7 +84,9 @@ def test_export_and_scan_vulnerabilities_ci_normal(build_config_environment, git
     }
 
 
-def test_export_and_scan_vulnerabilities_ci_develop(build_config_environment, git_access_mock):
+def test_export_and_scan_vulnerabilities_ci_develop(
+    build_config_environment, git_access_mock
+):
     res_slc_path = Path("/some_path/slc.tar.gz")
     ci_export_mock = MagicMock()
     github_output_mock = MagicMock()
@@ -151,7 +154,9 @@ def test_export_and_scan_vulnerabilities_ci_develop(build_config_environment, gi
     }
 
 
-def test_export_and_scan_vulnerabilities_ci_main(build_config_environment, git_access_mock):
+def test_export_and_scan_vulnerabilities_ci_main(
+    build_config_environment, git_access_mock
+):
     res_slc_path = Path("/some_path/slc.tar.gz")
     ci_export_mock = MagicMock()
     github_output_mock = MagicMock()
@@ -224,6 +229,7 @@ def test_export_and_scan_vulnerabilities_ci_main(build_config_environment, git_a
         "slc_release": {"goal": "release", "path": "/some_path/slc.tar.gz"},
         "slc_test": {"goal": "base_test_build_run", "path": "/some_path/slc.tar.gz"},
     }
+
 
 def test_export_and_scan_vulnerabilities_cd(build_config_environment, git_access_mock):
     res_slc_path = Path("/some_path/slc.tar.gz")
