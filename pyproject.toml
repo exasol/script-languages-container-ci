@@ -27,7 +27,6 @@ requires-poetry = ">=2.1.0"
 packages = [
     {include = "README.md"},
     {include = "LICENSE"},
-    {include = "exasol_script_languages_container_ci"},
     {include = "exasol"},
 ]
 
