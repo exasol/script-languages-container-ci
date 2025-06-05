@@ -9,7 +9,7 @@ from exasol.slc_ci.lib.github_access import GithubAccess
 
 def get_all_affected_files(
     git_access: GitAccess, base_ref: str, remote: str
-) -> List[Path]:
+) -> list[Path]:
     complete_base_ref = f"{remote}/{base_ref}" if remote else base_ref
     base_last_commit_sha = git_access.get_head_commit_sha_of_branch(complete_base_ref)
     changed_files = set()  # type: ignore

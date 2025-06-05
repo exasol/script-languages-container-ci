@@ -18,7 +18,7 @@ class CIPush:
 
     def push(
         self,
-        flavor_path: Tuple[str, ...],
+        flavor_path: tuple[str, ...],
         target_docker_repository: str,
         target_docker_tag_prefix: str,
         docker_user: str,

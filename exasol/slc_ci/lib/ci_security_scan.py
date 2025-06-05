@@ -17,7 +17,7 @@ class CISecurityScan:
     ):
         self._printer = printer
 
-    def run_security_scan(self, flavor_path: Tuple[str, ...]):
+    def run_security_scan(self, flavor_path: tuple[str, ...]):
         """
         Run security scan and print result
         """
