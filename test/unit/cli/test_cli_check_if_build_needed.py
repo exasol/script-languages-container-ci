@@ -29,16 +29,9 @@ def test_check_if_build_needed_no_flavor(cli):
     assert cli.run().failed and "Missing option '--flavor'" in cli.output
 
 
-def test_check_if_build_needed_no_branch_name(cli):
-    assert (
-        cli.run("--flavor", "abc").failed
-        and "Missing option '--branch-name'" in cli.output
-    )
-
-
 def test_check_if_build_needed_no_base_branch_name(cli):
     assert (
-        cli.run("--flavor", "abc", "--branch-name", "feature/abc").failed
+        cli.run("--flavor", "abc").failed
         and "Missing option '--base-ref'" in cli.output
     )
 
@@ -48,8 +41,6 @@ def test_check_if_build_needed_no_github_var(cli):
         cli.run(
             "--flavor",
             "abc",
-            "--branch-name",
-            "feature/abc",
             "--base-ref",
             "master",
         ).failed
@@ -61,8 +52,6 @@ def test_check_if_build_needed(cli, mock_check_if_build_needed):
     cli.run(
         "--flavor",
         "flavor_a",
-        "--branch-name",
-        "feature/abc",
         "--base-ref",
         "master",
         "--github-output-var",
@@ -73,7 +62,6 @@ def test_check_if_build_needed(cli, mock_check_if_build_needed):
     # Validate the exact call using mock_calls and IsInstance matcher
     expected_call = call(
         flavor="flavor_a",
-        branch_name="feature/abc",
         base_ref="master",
         remote="origin",
         github_access=IsInstance(GithubAccess),

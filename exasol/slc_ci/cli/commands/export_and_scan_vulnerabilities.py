@@ -16,30 +16,32 @@ from exasol.slc_ci.lib.ci_push import CIPush
 from exasol.slc_ci.lib.ci_security_scan import CISecurityScan
 from exasol.slc_ci.lib.git_access import GitAccess
 from exasol.slc_ci.lib.github_access import GithubAccess
+from exasol.slc_ci.model.build_mode import BuildMode, buildModeValues, defaultBuildMode
 
 
 @cli.command()
 @add_options(flavor_options)
 @add_options([branch_option, commit_sha_option])
 @add_options(docker_options)
-@add_options(github_options)
 @add_options(
     [
         click.option(
-            "--release",
-            is_flag=True,
-            help="Activate release mode and push SLC to the release Docker repository.",
+            "--build-mode",
+            type=click.Choice(buildModeValues()),
+            required=True,
+            help=f"""Build mode. Possible values: {buildModeValues()}""",
         )
     ]
 )
+@add_options(github_options)
 def export_and_scan_vulnerabilities(
     flavor: str,
     branch_name: str,
     docker_user: str,
     docker_password: str,
     commit_sha: str,
+    build_mode: BuildMode,
     github_output_var: str,
-    release: bool,
 ) -> None:
     git_access: GitAccess = GitAccess()
     github_access: GithubAccess = GithubAccess(github_output_var)
@@ -50,7 +52,7 @@ def export_and_scan_vulnerabilities(
     ci_push = CIPush()
 
     lib_export_and_scan_vulnerabilities.export_and_scan_vulnerabilities(
-        release=release,
+        build_mode=build_mode,
         flavor=flavor,
         branch_name=branch_name,
         docker_user=docker_user,
