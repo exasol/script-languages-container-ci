@@ -1,4 +1,4 @@
-# 3.0.0 - 2025-06-05
+# 3.0.0 - 2025-06-06
 
 This release removes support for the AWS Code build CI.
 Also, it adds the rebuild option to command `export_and_scan_vulnerabilities` and pushes the docker image to the docker release repository if the build is triggered on the main branch.
