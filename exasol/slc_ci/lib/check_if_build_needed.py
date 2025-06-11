@@ -66,6 +66,16 @@ def check_if_need_to_build(
     github_access: GithubAccess,
     git_access: GitAccess,
 ) -> None:
+    """
+    Checks which build type is required considering:
+    - Github Push event: => A complete rebuild is required.
+                         Push events are filtered for special branches (main/master/develop)
+                         by the Github workflows.
+    - Github Pull Request event:
+      - Compare the changed files of the PR if they affect the current flavor:
+         - If yes => a normal build (no force rebuild) is required.
+         - If no => no need to build and test the flavor.
+    """
     if github_event == GithubEvent.PULL_REQUEST:
         continue_ci = _run_check_if_need_to_build(base_ref, remote, flavor, git_access)
         github_access.write_result(
