@@ -9,6 +9,7 @@ import exasol.slc_ci.lib.check_if_build_needed as lib_check_if_build_needed
 from exasol.slc_ci.cli.commands.check_if_build_needed import check_if_build_needed
 from exasol.slc_ci.lib.git_access import GitAccess
 from exasol.slc_ci.lib.github_access import GithubAccess
+from exasol.slc_ci.model.github_event import GithubEvent
 
 
 @pytest.fixture
@@ -36,6 +37,18 @@ def test_check_if_build_needed_no_base_branch_name(cli):
     )
 
 
+def test_check_if_build_needed_no_github_event(cli):
+    assert (
+        cli.run(
+            "--flavor",
+            "abc",
+            "--base-ref",
+            "master",
+        ).failed
+        and "Missing option '--github-event'" in cli.output
+    )
+
+
 def test_check_if_build_needed_no_github_var(cli):
     assert (
         cli.run(
@@ -43,6 +56,8 @@ def test_check_if_build_needed_no_github_var(cli):
             "abc",
             "--base-ref",
             "master",
+            "--github-event",
+            GithubEvent.PULL_REQUEST.value,
         ).failed
         and "Missing option '--github-output-var'" in cli.output
     )
@@ -54,6 +69,8 @@ def test_check_if_build_needed(cli, mock_check_if_build_needed):
         "flavor_a",
         "--base-ref",
         "master",
+        "--github-event",
+        GithubEvent.PULL_REQUEST.value,
         "--github-output-var",
         "abc",
     )
@@ -64,6 +81,7 @@ def test_check_if_build_needed(cli, mock_check_if_build_needed):
         flavor="flavor_a",
         base_ref="master",
         remote="origin",
+        github_event="pull_request",
         github_access=IsInstance(GithubAccess),
         git_access=IsInstance(GitAccess),
     )

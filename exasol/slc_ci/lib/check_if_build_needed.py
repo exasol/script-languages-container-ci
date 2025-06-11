@@ -6,6 +6,7 @@ from exasol.slc_ci.lib.get_build_config_model import get_build_config_model
 from exasol.slc_ci.lib.git_access import GitAccess
 from exasol.slc_ci.lib.github_access import GithubAccess
 from exasol.slc_ci.model.build_mode import BuildMode
+from exasol.slc_ci.model.github_event import GithubEvent
 
 
 def get_all_affected_files(
@@ -61,16 +62,16 @@ def check_if_need_to_build(
     base_ref: str,
     remote: str,
     flavor: str,
-    github_event: str,
+    github_event: GithubEvent,
     github_access: GithubAccess,
     git_access: GitAccess,
 ) -> None:
-    if github_event == "pull_request":
+    if github_event == GithubEvent.PULL_REQUEST:
         continue_ci = _run_check_if_need_to_build(base_ref, remote, flavor, git_access)
         github_access.write_result(
             BuildMode.NORMAL.value if continue_ci else BuildMode.NO_BUILD_NEEDED.value
         )
-    elif github_event == "push":
+    elif github_event == GithubEvent.PUSH:
         github_access.write_result(BuildMode.REBUILD.value)
     else:
         raise ValueError("unknown github event")

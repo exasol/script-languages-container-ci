@@ -8,6 +8,7 @@ import pytest
 from exasol.slc_ci.lib.check_if_build_needed import check_if_need_to_build
 from exasol.slc_ci.lib.git_access import GitAccess
 from exasol.slc_ci.model.build_mode import BuildMode
+from exasol.slc_ci.model.github_event import GithubEvent
 
 
 def commit_base(repo: git.Repo, repo_path: Path) -> None:
@@ -52,7 +53,7 @@ TEST_DATA = [
         "last_commit_not_ignore_path_build_must_run",
         [["flavors/flavor_abc/build_steps.py", "doc/something", "src/udfclient.cpp"]],
         "message",
-        "pull_request",
+        GithubEvent.PULL_REQUEST,
         BuildMode.NORMAL.value,
     ),
     # If there are 2 commits, and the last only contains files in the ignore-list, but the first contains
@@ -64,7 +65,7 @@ TEST_DATA = [
             ["doc/something"],
         ],
         "message",
-        "pull_request",
+        GithubEvent.PULL_REQUEST,
         BuildMode.NORMAL.value,
     ),
     # If last commit(s) contain only files included in the ignore-path-list or another flavor the build must not run
@@ -72,7 +73,7 @@ TEST_DATA = [
         "last_commit_ignore_path_or_another_flavor_build_must_not_run",
         [["flavors/flavor_abc/build_steps.py", "doc/something"]],
         "message",
-        "pull_request",
+        GithubEvent.PULL_REQUEST,
         BuildMode.NO_BUILD_NEEDED.value,
     ),
     # If last commit message contains "[rebuild]" the build should always trigger
@@ -80,7 +81,7 @@ TEST_DATA = [
         "rebuild_in_last_commit_msg_build_must_run",
         [["flavors/flavor_abc/build_steps.py", "doc/something"]],
         "message [rebuild]",
-        "pull_request",
+        GithubEvent.PULL_REQUEST,
         BuildMode.NORMAL.value,
     ),
     # Affected files on current flavor should trigger a build
@@ -88,7 +89,7 @@ TEST_DATA = [
         "changes_in_current_flavor_build_must_run",
         [[f"flavors/{TEST_FLAVOR}/build_steps.py", "doc/something"]],
         "message",
-        "pull_request",
+        GithubEvent.PULL_REQUEST,
         BuildMode.NORMAL.value,
     ),
     # If there are 2 commits, and the last only contains files in the ignore-list, but the first contains
@@ -100,7 +101,7 @@ TEST_DATA = [
             ["flavors/flavor_abc/build_steps.py"],
         ],
         "message",
-        "pull_request",
+        GithubEvent.PULL_REQUEST,
         BuildMode.NORMAL.value,
     ),
     (
@@ -110,7 +111,7 @@ TEST_DATA = [
             ["flavors/flavor_abc/build_steps.py"],
         ],
         "message",
-        "push",
+        GithubEvent.PUSH,
         BuildMode.REBUILD.value,
     ),
 ]

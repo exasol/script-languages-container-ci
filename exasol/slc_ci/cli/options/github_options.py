@@ -1,5 +1,7 @@
 import click
 
+from exasol.slc_ci.model.github_event import githubEventValues
+
 github_options = [
     click.option(
         "--github-output-var",
@@ -12,7 +14,7 @@ github_options = [
 github_event_options = [
     click.option(
         "--github-event",
-        type=str,
+        type=click.Choice(githubEventValues()),
         required=True,
         help="Indicates the github event which triggered the call.",
     )
