@@ -27,7 +27,7 @@ def run_tests(
     ]
     if len(matched_test_set) != 1:
         raise ValueError(f"Invalid test set name: {test_set_name}")
-    test_set_folders = tuple(folder for folder in matched_test_set[0].folders)
+    test_set_folders = tuple(matched_test_set[0].folders)
     goal = matched_test_set[0].goal
     generic_language_tests = matched_test_set[0].generic_language_tests
     accelerator = matched_test_set[0].accelerator
