@@ -22,7 +22,7 @@ def slc_directory(tmp_path: Path) -> Path:
 def run_db_test_call(
     slc_path: Path,
     goal: str,
-    test_folder: str,
+    test_folders: tuple[str, ...],
     test_container_folder: str,
     flavor_path: str,
     generic_language_tests: tuple[str, ...],
@@ -32,7 +32,7 @@ def run_db_test_call(
     return call.execute_tests(
         flavor_path=(flavor_path,),
         slc_path=slc_path,
-        test_folder=test_folder,
+        test_folders=test_folders,
         docker_user=test_env.docker_user,
         docker_password=test_env.docker_pwd,
         test_container_folder=test_container_folder,
@@ -78,7 +78,7 @@ def test_run_tests(
         run_db_test_call(
             slc_path=slc_directory / f"{test_env.flavor_name}-dummy_slc.tar.gz",
             goal=goal,
-            test_folder=folders[0] if folders else "",
+            test_folders=tuple(folders) if folders else tuple(),
             test_container_folder=build_config_with_flavor_environment.test_container_folder,
             flavor_path=str(
                 build_config_with_flavor_environment.flavors_path / test_env.flavor_name
