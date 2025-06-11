@@ -6,6 +6,7 @@ class BuildMode(Enum):
     This enum serves as a definition of values for possible build modes.
     """
 
+    NO_BUILD_NEEDED = "NO_BUILD_NEEDED"
     NORMAL = "normal"
     REBUILD = "rebuild"
     RELEASE = "release"

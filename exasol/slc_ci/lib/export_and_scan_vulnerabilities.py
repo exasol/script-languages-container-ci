@@ -138,8 +138,16 @@ def _export_and_scan_vulnerabilities_cd(
 def export_and_scan_vulnerabilities(
     build_mode: BuildMode = BuildMode.NORMAL, **kwargs
 ) -> None:
-    if build_mode == BuildMode.RELEASE:
+    if build_mode == BuildMode.NO_BUILD_NEEDED:
+        logging.warning(
+            "export_and_scan_vulnerabilities called with build_mode=NO_BUILD_NEEDED"
+        )
+        return
+    elif build_mode == BuildMode.RELEASE:
         _export_and_scan_vulnerabilities_cd(**kwargs)
+    elif build_mode == BuildMode.NORMAL:
+        _export_and_scan_vulnerabilities_ci(rebuild=False, **kwargs)
+    elif build_mode == BuildMode.REBUILD:
+        _export_and_scan_vulnerabilities_ci(rebuild=True, **kwargs)
     else:
-        rebuild = build_mode == BuildMode.REBUILD
-        _export_and_scan_vulnerabilities_ci(rebuild=rebuild, **kwargs)
+        raise ValueError(f"Invalid build mode: {build_mode}")

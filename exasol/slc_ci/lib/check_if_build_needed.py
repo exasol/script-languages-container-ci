@@ -5,6 +5,7 @@ from typing import List
 from exasol.slc_ci.lib.get_build_config_model import get_build_config_model
 from exasol.slc_ci.lib.git_access import GitAccess
 from exasol.slc_ci.lib.github_access import GithubAccess
+from exasol.slc_ci.model.build_mode import BuildMode
 
 
 def get_all_affected_files(
@@ -60,8 +61,16 @@ def check_if_need_to_build(
     base_ref: str,
     remote: str,
     flavor: str,
+    github_event: str,
     github_access: GithubAccess,
     git_access: GitAccess,
 ) -> None:
-    res = _run_check_if_need_to_build(base_ref, remote, flavor, git_access)
-    github_access.write_result("True" if res else "False")
+    if github_event == "pull_request":
+        continue_ci = _run_check_if_need_to_build(base_ref, remote, flavor, git_access)
+        github_access.write_result(
+            BuildMode.NORMAL.value if continue_ci else BuildMode.NO_BUILD_NEEDED.value
+        )
+    elif github_event == "push":
+        github_access.write_result(BuildMode.REBUILD.value)
+    else:
+        raise ValueError("unknown github event")
