@@ -40,7 +40,7 @@ def export_and_scan_vulnerabilities(
     docker_user: str,
     docker_password: str,
     commit_sha: str,
-    build_mode: BuildMode,
+    build_mode: str,
     github_output_var: str,
 ) -> None:
     git_access: GitAccess = GitAccess()
@@ -52,7 +52,7 @@ def export_and_scan_vulnerabilities(
     ci_push = CIPush()
 
     lib_export_and_scan_vulnerabilities.export_and_scan_vulnerabilities(
-        build_mode=build_mode,
+        build_mode=BuildMode[build_mode.upper()],
         flavor=flavor,
         branch_name=branch_name,
         docker_user=docker_user,

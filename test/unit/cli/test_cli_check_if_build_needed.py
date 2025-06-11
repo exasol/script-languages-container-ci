@@ -81,7 +81,7 @@ def test_check_if_build_needed(cli, mock_check_if_build_needed):
         flavor="flavor_a",
         base_ref="master",
         remote="origin",
-        github_event="pull_request",
+        github_event=GithubEvent.PULL_REQUEST,
         github_access=IsInstance(GithubAccess),
         git_access=IsInstance(GitAccess),
     )

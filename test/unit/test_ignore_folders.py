@@ -127,7 +127,7 @@ def test_ignore_folder_should_run_ci(
     tmp_test_dir,
     files_to_commit,
     commit_message: str,
-    github_event: str,
+    github_event: GithubEvent,
     expected_result: str,
 ):
     """

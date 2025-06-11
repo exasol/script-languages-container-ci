@@ -29,7 +29,7 @@ def check_if_build_needed(
     flavor: str,
     base_ref: str,
     remote: str,
-    github_event: GithubEvent,
+    github_event: str,
     github_output_var: str,
 ) -> None:
     git_access: GitAccess = GitAccess()
@@ -38,7 +38,7 @@ def check_if_build_needed(
         base_ref=base_ref,
         remote=remote,
         flavor=flavor,
-        github_event=github_event,
+        github_event=GithubEvent[github_event.upper()],
         github_access=github_access,
         git_access=git_access,
     )

@@ -16,6 +16,7 @@ from exasol.slc_ci.lib.ci_push import CIPush
 from exasol.slc_ci.lib.ci_security_scan import CISecurityScan
 from exasol.slc_ci.lib.git_access import GitAccess
 from exasol.slc_ci.lib.github_access import GithubAccess
+from exasol.slc_ci.model.build_mode import BuildMode
 
 
 @pytest.fixture
@@ -118,7 +119,7 @@ def test_export_and_scan_vulnerabilities_no_github_output_var(
             "--docker-password",
             "secret",
             "--build-mode",
-            "normal",
+            BuildMode.NORMAL.value,
         ).failed
         and "Missing option '--github-output-var'" in cli.output
     )
@@ -141,7 +142,7 @@ def test_export_and_scan_vulnerabilities(
         "--docker-password",
         "secret",
         "--build-mode",
-        "normal",
+        BuildMode.NORMAL.value,
         "--github-output-var",
         "some_var",
     ]
@@ -156,7 +157,7 @@ def test_export_and_scan_vulnerabilities(
         docker_user="user",
         docker_password="secret",
         commit_sha="12345",
-        build_mode="normal",
+        build_mode=BuildMode.NORMAL,
         git_access=IsInstance(GitAccess),
         github_access=IsInstance(GithubAccess),
         ci_build=IsInstance(CIBuild),
