@@ -5,6 +5,8 @@ from typing import List
 from exasol.slc_ci.lib.get_build_config_model import get_build_config_model
 from exasol.slc_ci.lib.git_access import GitAccess
 from exasol.slc_ci.lib.github_access import GithubAccess
+from exasol.slc_ci.model.build_mode import BuildMode
+from exasol.slc_ci.model.github_event import GithubEvent
 
 
 def get_all_affected_files(
@@ -60,8 +62,26 @@ def check_if_need_to_build(
     base_ref: str,
     remote: str,
     flavor: str,
+    github_event: GithubEvent,
     github_access: GithubAccess,
     git_access: GitAccess,
 ) -> None:
-    res = _run_check_if_need_to_build(base_ref, remote, flavor, git_access)
-    github_access.write_result("True" if res else "False")
+    """
+    Checks which build type is required considering:
+    - Github Push event: => A complete rebuild is required.
+                         Push events are filtered for special branches (main/master/develop)
+                         by the Github workflows.
+    - Github Pull Request event:
+      - Compare the changed files of the PR if they affect the current flavor:
+         - If yes => a normal build (no force rebuild) is required.
+         - If no => no need to build and test the flavor.
+    """
+    if github_event == GithubEvent.PULL_REQUEST:
+        continue_ci = _run_check_if_need_to_build(base_ref, remote, flavor, git_access)
+        github_access.write_result(
+            BuildMode.NORMAL.value if continue_ci else BuildMode.NO_BUILD_NEEDED.value
+        )
+    elif github_event == GithubEvent.PUSH:
+        github_access.write_result(BuildMode.REBUILD.value)
+    else:
+        raise ValueError("unknown github event")
