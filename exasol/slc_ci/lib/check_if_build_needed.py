@@ -26,7 +26,10 @@ def _run_check_if_need_to_build(
     base_ref: str, remote: str, flavor: str, git_access: GitAccess
 ) -> bool:
     build_config = get_build_config_model()
-    if "[rebuild]" in git_access.get_last_commit_message():
+    last_commit_msg = git_access.get_last_commit_message()
+    logging.warning(f"Last log: {last_commit_msg}")
+    if "[rebuild]" in last_commit_msg:
+        logging.warning("Found a rebuild, returning True")
         return True
     affected_files = list(get_all_affected_files(git_access, base_ref, remote))
     logging.debug(
