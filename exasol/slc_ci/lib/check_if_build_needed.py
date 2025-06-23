@@ -24,10 +24,10 @@ def get_all_affected_files(
 
 def _run_check_if_need_to_build(
     base_ref: str, remote: str, flavor: str, git_access: GitAccess
-) -> bool:
+) -> BuildMode:
     build_config = get_build_config_model()
     if "[rebuild]" in git_access.get_last_commit_message():
-        return True
+        return BuildMode.REBUILD
     affected_files = list(get_all_affected_files(git_access, base_ref, remote))
     logging.debug(
         f"check_if_need_to_build: Found files of last commits: {affected_files}"
@@ -55,7 +55,7 @@ def _run_check_if_need_to_build(
             )
         ]
     logging.debug(f"check_if_need_to_build: filtered files: {affected_files}")
-    return len(affected_files) > 0
+    return BuildMode.NORMAL if len(affected_files) > 0 else BuildMode.NO_BUILD_NEEDED
 
 
 def check_if_need_to_build(
@@ -77,10 +77,8 @@ def check_if_need_to_build(
          - If no => no need to build and test the flavor.
     """
     if github_event == GithubEvent.PULL_REQUEST:
-        continue_ci = _run_check_if_need_to_build(base_ref, remote, flavor, git_access)
-        github_access.write_result(
-            BuildMode.NORMAL.value if continue_ci else BuildMode.NO_BUILD_NEEDED.value
-        )
+        mode = _run_check_if_need_to_build(base_ref, remote, flavor, git_access)
+        github_access.write_result(mode.value)
     elif github_event == GithubEvent.PUSH:
         github_access.write_result(BuildMode.REBUILD.value)
     else:
