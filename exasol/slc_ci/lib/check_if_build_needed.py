@@ -23,10 +23,10 @@ def get_all_affected_files(
 
 
 def _run_check_if_need_to_build(
-    base_ref: str, sha: str, remote: str, flavor: str, git_access: GitAccess
+    base_ref: str, commit_sha: str, remote: str, flavor: str, git_access: GitAccess
 ) -> bool:
     build_config = get_build_config_model()
-    last_commit_msg = git_access.get_commit_message(sha)
+    last_commit_msg = git_access.get_commit_message(commit_sha)
     logging.warning(f"Last log: {last_commit_msg}")
     if "[rebuild]" in last_commit_msg:
         logging.warning("Found a rebuild, returning True")
@@ -63,7 +63,7 @@ def _run_check_if_need_to_build(
 
 def check_if_need_to_build(
     base_ref: str,
-    sha:str,
+    commit_sha:str,
     remote: str,
     flavor: str,
     github_event: GithubEvent,
@@ -81,7 +81,7 @@ def check_if_need_to_build(
          - If no => no need to build and test the flavor.
     """
     if github_event == GithubEvent.PULL_REQUEST:
-        continue_ci = _run_check_if_need_to_build(base_ref, sha, remote, flavor, git_access)
+        continue_ci = _run_check_if_need_to_build(base_ref, commit_sha, remote, flavor, git_access)
         github_access.write_result(
             BuildMode.NORMAL.value if continue_ci else BuildMode.NO_BUILD_NEEDED.value
         )

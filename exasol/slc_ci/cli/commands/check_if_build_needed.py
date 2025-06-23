@@ -8,7 +8,7 @@ from exasol.slc_ci.cli.cli import cli
 from exasol.slc_ci.cli.options.branch_options import (
     base_branch_option,
     branch_option,
-    remote_option,
+    remote_option, commit_sha_option,
 )
 from exasol.slc_ci.cli.options.flavor_options import flavor_options
 from exasol.slc_ci.cli.options.github_options import (
@@ -22,13 +22,13 @@ from exasol.slc_ci.model.github_event import GithubEvent
 
 @cli.command()
 @add_options(flavor_options)
-@add_options([base_branch_option, remote_option])
+@add_options([base_branch_option, commit_sha_option, remote_option])
 @add_options(github_event_options)
 @add_options(github_options)
 def check_if_build_needed(
     flavor: str,
     base_ref: str,
-    sha: str,
+    commit_sha: str,
     remote: str,
     github_event: str,
     github_output_var: str,
@@ -37,7 +37,7 @@ def check_if_build_needed(
     github_access: GithubAccess = GithubAccess(github_output_var)
     lib_check_if_build_needed.check_if_need_to_build(
         base_ref=base_ref,
-        sha=sha,
+        commit_sha=commit_sha,
         remote=remote,
         flavor=flavor,
         github_event=GithubEvent[github_event.upper()],
