@@ -10,7 +10,7 @@ class GitAccess:
         Assumes that PWD belongs to a GIT repository. Get's the last commit message which belongs to the sha and returns it as string
         :return: Last commit message of given sha in current working directory GIT repository.
         """
-        return Repo().commit(sha).commit.message
+        return Repo().commit(sha).message
 
     def get_head_commit_sha_of_branch(self, branch_name) -> str:
         """
