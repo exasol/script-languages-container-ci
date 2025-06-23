@@ -82,7 +82,7 @@ TEST_DATA = [
         [["flavors/flavor_abc/build_steps.py", "doc/something"]],
         "message [rebuild]",
         GithubEvent.PULL_REQUEST,
-        BuildMode.NORMAL.value,
+        BuildMode.REBUILD.value,
     ),
     # Affected files on current flavor should trigger a build
     (
