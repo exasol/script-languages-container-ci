@@ -5,12 +5,12 @@ from git import Repo
 
 class GitAccess:
 
-    def get_last_commit_message(self):
+    def get_commit_message(self, sha: str):
         """
-        Assumes that PWD belongs to a GIT repository. Get's the last commit message of this repo and returns it as string
-        :return: Last commit message of current working directory GIT repository.
+        Assumes that PWD belongs to a GIT repository. Get's the last commit message which belongs to the sha and returns it as string
+        :return: Last commit message of given sha in current working directory GIT repository.
         """
-        return Repo().head.commit.message
+        return Repo().commit(sha).commit.message
 
     def get_head_commit_sha_of_branch(self, branch_name) -> str:
         """

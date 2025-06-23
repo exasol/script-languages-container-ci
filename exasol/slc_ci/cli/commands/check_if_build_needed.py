@@ -28,6 +28,7 @@ from exasol.slc_ci.model.github_event import GithubEvent
 def check_if_build_needed(
     flavor: str,
     base_ref: str,
+    sha: str,
     remote: str,
     github_event: str,
     github_output_var: str,
@@ -36,6 +37,7 @@ def check_if_build_needed(
     github_access: GithubAccess = GithubAccess(github_output_var)
     lib_check_if_build_needed.check_if_need_to_build(
         base_ref=base_ref,
+        sha=sha,
         remote=remote,
         flavor=flavor,
         github_event=GithubEvent[github_event.upper()],
