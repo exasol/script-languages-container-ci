@@ -69,7 +69,7 @@ disable = """
     W,R,C,
 """
 [tool.sonar]
-projectKey = "com.exasol:script-languages-container-tool"
+projectKey = "com.exasol:script-languages-container-ci"
 hostUrl = "https://sonarcloud.io"
 organization = "exasol"
 
