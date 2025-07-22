@@ -50,7 +50,8 @@ TEST_DATA = [t.dict().values() for t in test_env.flavor_ci_config.test_config.te
 
 
 @pytest.mark.parametrize(
-    "name, files, folders, goal, generic_language_tests, test_runner, accelerator", TEST_DATA
+    "name, files, folders, goal, generic_language_tests, test_runner, accelerator",
+    TEST_DATA,
 )
 def test_run_tests(
     slc_directory,

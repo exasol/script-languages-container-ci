@@ -29,9 +29,9 @@ def run_tests(
         raise ValueError(f"Invalid test set name: {test_set_name}")
     test_set_files = tuple(matched_test_set[0].files)
     test_set_folders = tuple(matched_test_set[0].folders)
-    is_files_or_folders = bool(test_set_files) ^ bool(test_set_folders)
+    is_files_or_folders = bool(test_set_files) & bool(test_set_folders)
     if not is_files_or_folders:
-        raise ValueError(f"Either test_files or test_folders shall be valid, but not both")
+        raise ValueError(f"Both test_files and test_folders shall not be there")
     goal = matched_test_set[0].goal
     generic_language_tests = matched_test_set[0].generic_language_tests
     accelerator = matched_test_set[0].accelerator
@@ -55,6 +55,7 @@ def run_tests(
             slc_path=slc_file_path,
             goal=goal,
             test_files=test_set_files,
+            test_folders=tuple(),
             generic_language_tests=tuple(),
             accelerator=accelerator,
             test_container_folder=test_container_folder,
@@ -68,6 +69,7 @@ def run_tests(
             flavor_path=flavor_path,
             slc_path=slc_file_path,
             goal=goal,
+            test_files=tuple(),
             test_folders=test_set_folders,
             generic_language_tests=tuple(),
             accelerator=accelerator,
@@ -83,6 +85,7 @@ def run_tests(
             flavor_path=flavor_path,
             slc_path=slc_file_path,
             goal=goal,
+            test_files=tuple(),
             test_folders=tuple(),
             generic_language_tests=tuple(generic_language_tests),
             accelerator=accelerator,
