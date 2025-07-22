@@ -26,24 +26,42 @@ class TestEnv:
             test_sets=[
                 TestSet(
                     name="all",
-                    folders=["python3/all"],
+                    files=[],
+                    folders=["python3/all/fast"],
                     goal="release",
                     generic_language_tests=[],
                 ),
                 TestSet(
                     name="pandas",
+                    files=["python3/pandas/slow/emit_dtypes_memory_leak.py"],
+                    folders=[],
+                    goal="release",
+                    generic_language_tests=[],
+                ),
+                TestSet(
+                    name="pandas",
+                    files=["python3/pandas/slow/dataframe_memory_leak.py"],
+                    folders=[],
+                    goal="release",
+                    generic_language_tests=[],
+                ),
+                TestSet(
+                    name="pandas",
+                    files=[],
                     folders=["python3/pandas"],
                     goal="release",
                     generic_language_tests=[],
                 ),
                 TestSet(
                     name="generic",
+                    files=[],
                     folders=[],
                     goal="release",
                     generic_language_tests=["python3"],
                 ),
                 TestSet(
                     name="gpu",
+                    files=[],
                     folders=["gpu"],
                     goal="release",
                     generic_language_tests=[],

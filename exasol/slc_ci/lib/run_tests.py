@@ -27,8 +27,11 @@ def run_tests(
     ]
     if len(matched_test_set) != 1:
         raise ValueError(f"Invalid test set name: {test_set_name}")
-    test_set_folders = tuple(matched_test_set[0].folders)
     test_set_files = tuple(matched_test_set[0].files)
+    test_set_folders = tuple(matched_test_set[0].folders)
+    is_files_or_folders = bool(test_set_files) ^ bool(test_set_folders)
+    if not is_files_or_folders:
+        raise ValueError(f"Either test_files or test_folders shall be valid, but not both")
     goal = matched_test_set[0].goal
     generic_language_tests = matched_test_set[0].generic_language_tests
     accelerator = matched_test_set[0].accelerator
@@ -51,7 +54,7 @@ def run_tests(
             flavor_path=flavor_path,
             slc_path=slc_file_path,
             goal=goal,
-            test_file=test_set_files,
+            test_files=test_set_files,
             generic_language_tests=tuple(),
             accelerator=accelerator,
             test_container_folder=test_container_folder,

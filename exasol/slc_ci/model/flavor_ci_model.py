@@ -6,7 +6,7 @@ from pydantic import BaseModel
 
 class TestSet(BaseModel):
     name: str
-    file: list[str]
+    files: list[str]
     folders: list[str]
     goal: str
     generic_language_tests: list[str]
