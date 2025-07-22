@@ -119,7 +119,7 @@ class CIExecuteTest:
         flavor_path: tuple[str, ...],
         slc_path: Path,
         goal: str,
-        test_files: tupe[str, ...],
+        test_files: tuple[str, ...],
         test_folders: tuple[str, ...],
         generic_language_tests: tuple[str, ...],
         accelerator: Accelerator,
