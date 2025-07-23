@@ -28,7 +28,7 @@ class DBTestRunnerProtocol(Protocol):
         docker_username: Optional[str],
         docker_password: Optional[str],
         use_existing_container: Optional[str],
-    ) -> AllTestsResult:
+    ) -> AllTestsResult:  # NOSONAR
         raise NotImplementedError()
 
 
@@ -48,7 +48,7 @@ class DBTestRunner(DBTestRunnerProtocol):
         docker_username: Optional[str],
         docker_password: Optional[str],
         use_existing_container: Optional[str],
-    ) -> AllTestsResult:
+    ) -> AllTestsResult: # NOSONAR
         return run_db_test(
             flavor_path=flavor_path,
             release_goal=release_goal,
