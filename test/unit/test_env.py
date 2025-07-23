@@ -32,14 +32,14 @@ class TestEnv:
                     generic_language_tests=[],
                 ),
                 TestSet(
-                    name="pandas",
+                    name="pandas_dtype_leak",
                     files=["python3/pandas/slow/emit_dtypes_memory_leak.py"],
                     folders=[],
                     goal="release",
                     generic_language_tests=[],
                 ),
                 TestSet(
-                    name="pandas",
+                    name="pandas_dataframe_leak",
                     files=["python3/pandas/slow/dataframe_memory_leak.py"],
                     folders=[],
                     goal="release",
