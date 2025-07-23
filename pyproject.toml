@@ -72,4 +72,7 @@ disable = """
 projectKey = "com.exasol:script-languages-container-ci"
 hostUrl = "https://sonarcloud.io"
 organization = "exasol"
-
+# exclude from analyses
+exclusions = "exasol/slc_ci/version.py"
+# duplicate check exclusions
+cpdExclusions = "exasol/slc_ci/lib/ci_test.py"
