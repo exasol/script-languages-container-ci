@@ -75,5 +75,4 @@ organization = "exasol"
 # exclude from analyses
 exclusions = "exasol/slc_ci/version.py"
 # duplicates
-cpdPythonMinimumTokens = "500"
-cpdPythonMinimumLines = "200"
+cpdPythonMinimumTokens = "0"
