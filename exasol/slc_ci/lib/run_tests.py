@@ -27,7 +27,11 @@ def run_tests(
     ]
     if len(matched_test_set) != 1:
         raise ValueError(f"Invalid test set name: {test_set_name}")
+    test_set_files = tuple(matched_test_set[0].files)
     test_set_folders = tuple(matched_test_set[0].folders)
+    is_files_folders = test_set_files and test_set_folders
+    if is_files_folders:
+        raise ValueError("Both test_files and test_folders cannot be set")
     goal = matched_test_set[0].goal
     generic_language_tests = matched_test_set[0].generic_language_tests
     accelerator = matched_test_set[0].accelerator
@@ -45,13 +49,29 @@ def run_tests(
     test_container_folder = build_config.test_container_folder
 
     ci_prepare.prepare(commit_sha=commit_sha)
-    if test_set_folders:
+    if test_set_files:
         ci_test.execute_tests(
             flavor_path=flavor_path,
             slc_path=slc_file_path,
             goal=goal,
+            test_files=test_set_files,
+            test_folders=(),
+            generic_language_tests=(),
+            accelerator=accelerator,
+            test_container_folder=test_container_folder,
+            docker_user=docker_user,
+            docker_password=docker_password,
+            commit_sha=commit_sha,
+            build_docker_repository=build_config.docker_build_repository,
+        )
+    elif test_set_folders:
+        ci_test.execute_tests(
+            flavor_path=flavor_path,
+            slc_path=slc_file_path,
+            goal=goal,
+            test_files=(),
             test_folders=test_set_folders,
-            generic_language_tests=tuple(),
+            generic_language_tests=(),
             accelerator=accelerator,
             test_container_folder=test_container_folder,
             docker_user=docker_user,
@@ -65,7 +85,8 @@ def run_tests(
             flavor_path=flavor_path,
             slc_path=slc_file_path,
             goal=goal,
-            test_folders=tuple(),
+            test_files=(),
+            test_folders=(),
             generic_language_tests=tuple(generic_language_tests),
             accelerator=accelerator,
             test_container_folder=test_container_folder,

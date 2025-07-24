@@ -22,6 +22,7 @@ def slc_directory(tmp_path: Path) -> Path:
 def run_db_test_call(
     slc_path: Path,
     goal: str,
+    test_files: tuple[str, ...],
     test_folders: tuple[str, ...],
     test_container_folder: str,
     flavor_path: str,
@@ -32,6 +33,7 @@ def run_db_test_call(
     return call.execute_tests(
         flavor_path=(flavor_path,),
         slc_path=slc_path,
+        test_files=test_files,
         test_folders=test_folders,
         docker_user=test_env.docker_user,
         docker_password=test_env.docker_pwd,
@@ -48,12 +50,14 @@ TEST_DATA = [t.dict().values() for t in test_env.flavor_ci_config.test_config.te
 
 
 @pytest.mark.parametrize(
-    "name, folders, goal, generic_language_tests, test_runner, accelerator", TEST_DATA
+    "name, files, folders, goal, generic_language_tests, test_runner, accelerator",
+    TEST_DATA,
 )
 def test_run_tests(
     slc_directory,
     build_config_with_flavor_environment,
     name,
+    files,
     folders,
     goal,
     generic_language_tests,
@@ -78,6 +82,7 @@ def test_run_tests(
         run_db_test_call(
             slc_path=slc_directory / f"{test_env.flavor_name}-dummy_slc.tar.gz",
             goal=goal,
+            test_files=tuple(files) if files else tuple(),
             test_folders=tuple(folders) if folders else tuple(),
             test_container_folder=build_config_with_flavor_environment.test_container_folder,
             flavor_path=str(

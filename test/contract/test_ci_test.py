@@ -37,6 +37,7 @@ class SuccessfulFlavorDBTestsContract(SuccessfulFlavorContract):
     def test(self, db_test_runner, test_container, flavor_path, existing_container):
         result = db_test_runner.run(
             flavor_path=(flavor_path,),
+            test_file=(),
             test_folder=(),
             release_goal=("release",),
             generic_language_tests=tuple(),
@@ -84,6 +85,7 @@ class FailingRunDBTestFlavorDBTestsContract(FailingRunDBTestFlavorContract):
     def test(self, db_test_runner, test_container, flavor_path, existing_container):
         result = db_test_runner.run(
             flavor_path=(flavor_path,),
+            test_file=(),
             test_folder=(),
             release_goal=("release",),
             generic_language_tests=tuple(),

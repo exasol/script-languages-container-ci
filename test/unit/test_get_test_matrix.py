@@ -12,6 +12,16 @@ EXPECTED_VALUES = {
             "goal": "release",
         },
         {
+            "test-set-name": "pandas_dtype_leak",
+            "test-runner": "some_test_runner",
+            "goal": "release",
+        },
+        {
+            "test-set-name": "pandas_dataframe_leak",
+            "test-runner": "some_test_runner",
+            "goal": "release",
+        },
+        {
             "test-set-name": "pandas",
             "test-runner": "some_test_runner",
             "goal": "release",
