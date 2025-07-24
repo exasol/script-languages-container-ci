@@ -29,7 +29,7 @@ def run_tests(
         raise ValueError(f"Invalid test set name: {test_set_name}")
     test_set_files = tuple(matched_test_set[0].files)
     test_set_folders = tuple(matched_test_set[0].folders)
-    is_files_folders = bool(test_set_files) & bool(test_set_folders)
+    is_files_folders = test_set_files and test_set_folders
     if is_files_folders:
         raise ValueError("Both test_files and test_folders cannot be set")
     goal = matched_test_set[0].goal

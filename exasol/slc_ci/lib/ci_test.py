@@ -17,7 +17,7 @@ class DBTestRunnerProtocol(Protocol):
         self,
         flavor_path: tuple[str, ...],
         release_goal: tuple[str, ...],
-        test_files: tuple[str, ...],
+        test_file: tuple[str, ...],
         test_folder: tuple[str, ...],
         test_container_folder: str,
         generic_language_tests: tuple[str, ...],
@@ -37,7 +37,7 @@ class DBTestRunner(DBTestRunnerProtocol):
         self,
         flavor_path: tuple[str, ...],
         release_goal: tuple[str, ...],
-        test_files: tuple[str, ...],
+        test_file: tuple[str, ...],
         test_folder: tuple[str, ...],
         test_container_folder: str,
         generic_language_tests: tuple[str, ...],
@@ -52,7 +52,7 @@ class DBTestRunner(DBTestRunnerProtocol):
         return run_db_test(
             flavor_path=flavor_path,
             release_goal=release_goal,
-            test_file=test_files,
+            test_file=test_file,
             test_folder=test_folder,
             test_container_folder=test_container_folder,
             generic_language_test=generic_language_tests,
@@ -132,7 +132,7 @@ class CIExecuteTest:
         logging.info(f"Running command 'run_db_test' for flavor-path {flavor_path}")
         db_test_result = self._db_test_runner.run(
             flavor_path=flavor_path,
-            test_files=test_files,
+            test_file=test_files,
             test_folder=test_folders,
             release_goal=(goal,),
             generic_language_tests=generic_language_tests,
