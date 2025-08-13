@@ -1,3 +1,5 @@
+import logging
+
 import click
 from exasol_integration_test_docker_environment.lib.utils.cli_function_decorators import (
     add_options,
@@ -19,6 +21,7 @@ def prepare_test_container(
     docker_user: str,
     docker_password: str,
 ) -> None:
+    logging.basicConfig(level=logging.INFO)
     ci_push_test_container = CIPushTestContainer()
     ci_prepare = CIPrepare()
     lib_prepare_test_container.prepare_test_container(

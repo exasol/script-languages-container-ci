@@ -1,3 +1,5 @@
+import logging
+
 import click
 from exasol_integration_test_docker_environment.lib.utils.cli_function_decorators import (
     add_options,
@@ -43,6 +45,7 @@ def export_and_scan_vulnerabilities(
     build_mode: str,
     github_output_var: str,
 ) -> None:
+    logging.basicConfig(level=logging.INFO)
     git_access: GitAccess = GitAccess()
     github_access: GithubAccess = GithubAccess(github_output_var)
     ci_build = CIBuild()
