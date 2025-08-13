@@ -1,6 +1,6 @@
 [project]
 name = "exasol-script-languages-container-ci"
-version = "4.0.0"
+version = "4.0.1"
 description = "Implements CI builds for script-language-container."
 
 requires-python = ">=3.10, <4.0"
