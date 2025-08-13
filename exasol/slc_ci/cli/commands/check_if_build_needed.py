@@ -1,3 +1,5 @@
+import logging
+
 import click
 from exasol_integration_test_docker_environment.lib.utils.cli_function_decorators import (
     add_options,
@@ -32,6 +34,7 @@ def check_if_build_needed(
     github_event: str,
     github_output_var: str,
 ) -> None:
+    logging.basicConfig(level=logging.INFO)
     git_access: GitAccess = GitAccess()
     github_access: GithubAccess = GithubAccess(github_output_var)
     lib_check_if_build_needed.check_if_need_to_build(

@@ -1,3 +1,5 @@
+import logging
+
 from exasol_integration_test_docker_environment.lib.utils.cli_function_decorators import (
     add_options,
 )
@@ -16,5 +18,6 @@ def get_flavors(
     """
     Searches for all available flavors and writes result as JSON array to Github variable <github-output-var>.
     """
+    logging.basicConfig(level=logging.INFO)
     github_access: GithubAccess = GithubAccess(github_output_var=github_output_var)
     lib_get_flavors.get_flavors(github_access=github_access)
