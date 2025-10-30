@@ -1,6 +1,5 @@
 # Unreleased
 
-## Dependencies
+## Refactorings
 
- - Updated poetry dependencies and Github workflows by PTB 1.12.0.
-    * Updated pip to 25.3 which fixes a security vulnerability
+ - #128: Updated poetry dependencies and Github workflows by PTB 1.12.0 and removed Python 3.9
