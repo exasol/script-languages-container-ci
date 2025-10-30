@@ -20,4 +20,8 @@ class Config(BaseConfig):
     )
 
 
-PROJECT_CONFIG = Config(python_versions=("3.10", "3.11", "3.12", "3.13"), exasol_versions=(), create_major_version_tags=False)
+PROJECT_CONFIG = Config(
+    python_versions=("3.10", "3.11", "3.12", "3.13"),
+    exasol_versions=(),
+    create_major_version_tags=False,
+)
