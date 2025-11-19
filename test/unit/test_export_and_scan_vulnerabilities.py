@@ -49,6 +49,7 @@ def test_export_and_scan_vulnerabilities_ci_normal(
             build_docker_repository=build_config_environment.docker_build_repository,
             docker_user=test_env.docker_user,
             docker_password=test_env.docker_pwd,
+            build_name=f"CI Build {test_env.branch_name}",
         ),
         call.run_security_scan(flavor_path=(expected_flavor_path,)),
         call.push(
@@ -92,11 +93,11 @@ def test_export_and_scan_vulnerabilities_ci_develop(
     github_output_mock = MagicMock()
     ci_export_mock.export = MagicMock(return_value=res_slc_path)
     ci_commands_mock: Union[CISecurityScan, CIPush, CIBuild, CIPrepare, Mock] = Mock()
-
+    branch_name = "refs/heads/develop"
     lib_export_and_scan_vulnerabilities(
         build_mode=BuildMode.REBUILD,
         flavor=test_env.flavor_name,
-        branch_name="refs/heads/develop",
+        branch_name=branch_name,
         docker_user=test_env.docker_user,
         docker_password=test_env.docker_pwd,
         commit_sha=test_env.commit_sha,
@@ -119,6 +120,7 @@ def test_export_and_scan_vulnerabilities_ci_develop(
             build_docker_repository=build_config_environment.docker_build_repository,
             docker_user=test_env.docker_user,
             docker_password=test_env.docker_pwd,
+            build_name=f"CI Build {branch_name}",
         ),
         call.run_security_scan(flavor_path=(expected_flavor_path,)),
         call.push(
@@ -158,6 +160,7 @@ def test_export_and_scan_vulnerabilities_ci_main(
     build_config_environment, git_access_mock
 ):
     res_slc_path = Path("/some_path/slc.tar.gz")
+    branch_name = "refs/heads/main"
     ci_export_mock = MagicMock()
     github_output_mock = MagicMock()
     ci_export_mock.export = MagicMock(return_value=res_slc_path)
@@ -166,7 +169,7 @@ def test_export_and_scan_vulnerabilities_ci_main(
     lib_export_and_scan_vulnerabilities(
         build_mode=BuildMode.REBUILD,
         flavor=test_env.flavor_name,
-        branch_name="refs/heads/main",
+        branch_name=branch_name,
         docker_user=test_env.docker_user,
         docker_password=test_env.docker_pwd,
         commit_sha=test_env.commit_sha,
@@ -189,6 +192,7 @@ def test_export_and_scan_vulnerabilities_ci_main(
             build_docker_repository=build_config_environment.docker_build_repository,
             docker_user=test_env.docker_user,
             docker_password=test_env.docker_pwd,
+            build_name=f"CI Build {branch_name}",
         ),
         call.run_security_scan(flavor_path=(expected_flavor_path,)),
         call.push(
@@ -264,6 +268,7 @@ def test_export_and_scan_vulnerabilities_cd(build_config_environment, git_access
             build_docker_repository=build_config_environment.docker_build_repository,
             docker_user=test_env.docker_user,
             docker_password=test_env.docker_pwd,
+            build_name=test_env.branch_name,
         ),
         call.run_security_scan(flavor_path=(expected_flavor_path,)),
         call.push(
