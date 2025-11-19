@@ -123,6 +123,7 @@ def _export_and_scan_vulnerabilities_cd(
         build_docker_repository=build_config.docker_build_repository,
         docker_user=docker_user,
         docker_password=docker_password,
+        build_name=branch_name,
     )
     ci_security_scan.run_security_scan(flavor_path=flavor_path)
     ci_push.push(
