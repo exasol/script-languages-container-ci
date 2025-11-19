@@ -23,7 +23,7 @@ def test(
     flavors_path,
 ):
     test_type = "successful"
-    build_name = "release-1.2.3"
+    build_name = "test-1.2.3"
     flavor_path = str(flavors_path / test_type)
     with not_raises(Exception):
         CIBuild().build(
