@@ -23,6 +23,7 @@ def test(
     flavors_path,
 ):
     test_type = "successful"
+    build_name = "test-1.2.3"
     flavor_path = str(flavors_path / test_type)
     with not_raises(Exception):
         CIBuild().build(
@@ -31,4 +32,5 @@ def test(
             build_docker_repository=input_docker_build_repository,
             docker_user=None,
             docker_password=None,
+            build_name=build_name,
         )

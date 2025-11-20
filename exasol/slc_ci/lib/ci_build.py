@@ -23,6 +23,7 @@ class CIBuild:
         build_docker_repository: Optional[str],
         docker_user: str,
         docker_password: str,
+        build_name: str,
     ):
         """
         Build the script-language container for given flavor.
@@ -39,6 +40,7 @@ class CIBuild:
                 workers=7,
                 log_level="WARNING",
                 use_job_specific_log_file=True,
+                build_name=build_name,
             )
         else:
             slc_image_infos = build(
@@ -51,5 +53,6 @@ class CIBuild:
                 workers=7,
                 log_level="WARNING",
                 use_job_specific_log_file=True,
+                build_name=build_name,
             )
         self._printer.print_exasol_docker_images()
