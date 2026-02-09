@@ -20,7 +20,8 @@ jobs:
   # No need for documentation
 
   metrics:
-    needs: [ ci-job ]
+    needs:
+      - ci-job
     uses: ./.github/workflows/report.yml
     secrets: inherit
     permissions:
