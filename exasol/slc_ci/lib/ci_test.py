@@ -1,6 +1,6 @@
 import logging
 from pathlib import Path
-from typing import Optional, Protocol, Tuple
+from typing import Protocol
 
 from exasol.slc.api.run_db_tests import run_db_test
 from exasol.slc.models.accelerator import Accelerator
@@ -25,9 +25,9 @@ class DBTestRunnerProtocol(Protocol):
         source_docker_tag_prefix: str,
         source_docker_repository_name: str,
         workers: int,
-        docker_username: Optional[str],
-        docker_password: Optional[str],
-        use_existing_container: Optional[str],
+        docker_username: str | None,
+        docker_password: str | None,
+        use_existing_container: str | None,
     ) -> AllTestsResult:
         raise NotImplementedError()
 
@@ -45,9 +45,9 @@ class DBTestRunner(DBTestRunnerProtocol):
         source_docker_tag_prefix: str,
         source_docker_repository_name: str,
         workers: int,
-        docker_username: Optional[str],
-        docker_password: Optional[str],
-        use_existing_container: Optional[str],
+        docker_username: str | None,
+        docker_password: str | None,
+        use_existing_container: str | None,
     ) -> AllTestsResult:
         return run_db_test(
             flavor_path=flavor_path,

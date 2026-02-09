@@ -1,9 +1,7 @@
 import datetime
 import os
 from pathlib import Path
-from unittest import mock
 
-import pytest
 from exasol_integration_test_docker_environment.cli.options.system_options import (
     DEFAULT_OUTPUT_DIRECTORY,
 )

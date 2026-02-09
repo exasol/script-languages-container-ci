@@ -18,7 +18,7 @@ from exasol.slc_ci.lib.ci_push import CIPush
 from exasol.slc_ci.lib.ci_security_scan import CISecurityScan
 from exasol.slc_ci.lib.git_access import GitAccess
 from exasol.slc_ci.lib.github_access import GithubAccess
-from exasol.slc_ci.model.build_mode import BuildMode, buildModeValues, defaultBuildMode
+from exasol.slc_ci.model.build_mode import BuildMode, buildModeValues
 
 
 @cli.command()

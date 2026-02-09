@@ -1,6 +1,5 @@
 import logging
 
-import click
 from exasol_integration_test_docker_environment.lib.utils.cli_function_decorators import (
     add_options,
 )
@@ -9,7 +8,6 @@ import exasol.slc_ci.lib.check_if_build_needed as lib_check_if_build_needed
 from exasol.slc_ci.cli.cli import cli
 from exasol.slc_ci.cli.options.branch_options import (
     base_branch_option,
-    branch_option,
     remote_option,
 )
 from exasol.slc_ci.cli.options.flavor_options import flavor_options

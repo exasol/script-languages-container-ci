@@ -1,6 +1,5 @@
 import logging
 from pathlib import Path
-from typing import Tuple
 
 from exasol.slc.api import security_scan
 

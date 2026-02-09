@@ -1,6 +1,5 @@
 import json
 import logging
-from typing import Tuple
 
 from exasol.slc_ci.lib.branch_config import push_to_docker_release_repo
 from exasol.slc_ci.lib.ci_build import CIBuild

@@ -1,5 +1,4 @@
 import logging
-from typing import Tuple
 
 from exasol.slc.api.push import push
 

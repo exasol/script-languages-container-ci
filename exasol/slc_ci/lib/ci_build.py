@@ -1,5 +1,4 @@
 import logging
-from typing import Optional, Tuple
 
 from exasol.slc.api import build
 
@@ -20,7 +19,7 @@ class CIBuild:
         self,
         flavor_path: tuple[str, ...],
         rebuild: bool,
-        build_docker_repository: Optional[str],
+        build_docker_repository: str | None,
         docker_user: str,
         docker_password: str,
         build_name: str,
