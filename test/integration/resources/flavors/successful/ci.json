@@ -9,7 +9,7 @@
         "folders": ["successful_test"],
         "goal": "release",
         "generic_language_tests": []
-      },
+      }
     ]
   }
 }
