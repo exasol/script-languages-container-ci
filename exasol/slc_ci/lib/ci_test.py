@@ -5,7 +5,6 @@ from typing import Protocol
 from exasol.slc.api.run_db_tests import run_db_test
 from exasol.slc.models.accelerator import Accelerator
 from exasol.slc.models.test_result import AllTestsResult
-from exasol_integration_test_docker_environment.cli.options.test_environment_options import LATEST_DB_VERSION
 
 from exasol.slc_ci.lib.ci_step_output_printer import (
     CIStepOutputPrinter,
@@ -50,8 +49,6 @@ class DBTestRunner(DBTestRunnerProtocol):
         docker_password: str | None,
         use_existing_container: str | None,
     ) -> AllTestsResult:
-        if LATEST_DB_VERSION != "2025.1.8":
-            raise ValueError("Something is strange")
         return run_db_test(
             flavor_path=flavor_path,
             release_goal=release_goal,

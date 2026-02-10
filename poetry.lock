@@ -1128,14 +1128,14 @@ requests = ">=2.32.4"
 
 [[package]]
 name = "exasol-error-reporting"
-version = "1.0.0"
+version = "1.1.0"
 description = "Exasol Python Error Reporting"
 optional = false
-python-versions = "<4.0,>=3.9"
+python-versions = "<4.0,>=3.10"
 groups = ["main"]
 files = [
-    {file = "exasol_error_reporting-1.0.0-py3-none-any.whl", hash = "sha256:62370f0925bbcbc847a6ee7d6bff8c82f76bdd1fe833de670af310b6b04ee5d5"},
-    {file = "exasol_error_reporting-1.0.0.tar.gz", hash = "sha256:0b81cbb208cd74ca47643532568e467053a29905808e9f29b7b0e4ec5e4e0302"},
+    {file = "exasol_error_reporting-1.1.0-py3-none-any.whl", hash = "sha256:1534d30aaf0fe9c66a5d5b49f28bb8ece909e660b616ba6df41384404fd936ad"},
+    {file = "exasol_error_reporting-1.1.0.tar.gz", hash = "sha256:a1e3273fddfac11b91beb75be7c79aaa5143f0ceb522b489aac426fc207ee6a5"},
 ]
 
 [[package]]
@@ -1193,14 +1193,14 @@ types-requests = ">=2.31.0.6,<3.0.0.0"
 
 [[package]]
 name = "exasol-script-languages-container-tool"
-version = "3.6.0"
+version = "3.6.1"
 description = "Script Languages Container Tool"
 optional = false
 python-versions = "<3.14,>=3.10"
 groups = ["main"]
 files = [
-    {file = "exasol_script_languages_container_tool-3.6.0-py3-none-any.whl", hash = "sha256:f6baec0f14ae8619a042eca3cd98961385af0e70aad81915191bb4397c2be229"},
-    {file = "exasol_script_languages_container_tool-3.6.0.tar.gz", hash = "sha256:86561a7f07ab9165059b997cfe56690f9161e7c2157f6cca6108da20118083c1"},
+    {file = "exasol_script_languages_container_tool-3.6.1-py3-none-any.whl", hash = "sha256:92a154e41d4d24ede20043fd15baf279236085ab4c54663360f0d912de9da593"},
+    {file = "exasol_script_languages_container_tool-3.6.1.tar.gz", hash = "sha256:dc36dfb90f0e4611e8e255583b6392a1446817194e24b64c144c9cbcce311923"},
 ]
 
 [package.dependencies]
@@ -1300,14 +1300,14 @@ pytest = ["pytest (>=7)"]
 
 [[package]]
 name = "fastapi"
-version = "0.128.6"
+version = "0.128.7"
 description = "FastAPI framework, high performance, easy to learn, fast to code, ready for production"
 optional = false
 python-versions = ">=3.9"
 groups = ["dev"]
 files = [
-    {file = "fastapi-0.128.6-py3-none-any.whl", hash = "sha256:bb1c1ef87d6086a7132d0ab60869d6f1ee67283b20fbf84ec0003bd335099509"},
-    {file = "fastapi-0.128.6.tar.gz", hash = "sha256:0cb3946557e792d731b26a42b04912f16367e3c3135ea8290f620e234f2b604f"},
+    {file = "fastapi-0.128.7-py3-none-any.whl", hash = "sha256:6bd9bd31cb7047465f2d3fa3ba3f33b0870b17d4eaf7cdb36d1576ab060ad662"},
+    {file = "fastapi-0.128.7.tar.gz", hash = "sha256:783c273416995486c155ad2c0e2b45905dedfaf20b9ef8d9f6a9124670639a24"},
 ]
 
 [package.dependencies]
