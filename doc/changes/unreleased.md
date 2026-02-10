@@ -7,3 +7,4 @@
 ## Features
 
  - #130: Added build name to SLC
+ - #132: Updated to PTB 5.1.1 and relocked dependencies
