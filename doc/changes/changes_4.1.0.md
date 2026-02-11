@@ -1,6 +1,6 @@
 # 4.1.0 - 2026-02-11
 
-This release sets the `build_name` to the ImageInfo object of a Script-Language-Container. Furthermor, it contains internal improvements and removed support for Python 3.9. 
+This release sets the `build_name` to the ImageInfo object of a Script-Language-Container. Furthermore, it contains internal improvements and removed support for Python 3.9. 
 
 ## Refactorings
 
