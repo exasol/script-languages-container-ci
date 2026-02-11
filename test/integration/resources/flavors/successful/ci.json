@@ -1,0 +1,15 @@
+{
+  "build_runner": "ubuntu-24.04",
+  "test_config": {
+    "default_test_runner": "ubuntu-24.04",
+    "test_sets": [
+      {
+        "name": "successful",
+        "files": [],
+        "folders": ["successful_test"],
+        "goal": "release",
+        "generic_language_tests": []
+      }
+    ]
+  }
+}

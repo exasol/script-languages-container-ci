@@ -1,5 +1,4 @@
 import json
-from typing import List
 
 from exasol.slc_ci.lib.get_build_config_model import get_build_config_model
 from exasol.slc_ci.lib.github_access import GithubAccess

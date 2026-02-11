@@ -1,6 +1,7 @@
+from collections.abc import Callable
 from inspect import cleandoc
 from pathlib import Path
-from typing import Callable, Protocol
+from typing import Protocol
 
 import docker
 

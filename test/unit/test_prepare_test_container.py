@@ -1,5 +1,4 @@
 from test.unit.test_env import test_env
-from typing import Union
 from unittest.mock import Mock, call
 
 from exasol.slc_ci.lib.ci_prepare import CIPrepare
@@ -10,7 +9,7 @@ from exasol.slc_ci.lib.prepare_test_container import (
 
 
 def test_prepare_test_container(build_config_environment):
-    ci_commands_mock: Union[CIPushTestContainer, CIPrepare, Mock] = Mock()
+    ci_commands_mock: CIPushTestContainer | CIPrepare | Mock = Mock()
 
     lib_prepare_test_container(
         commit_sha=test_env.commit_sha,

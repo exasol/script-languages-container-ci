@@ -1,5 +1,4 @@
 import logging
-from typing import Optional
 
 from exasol.slc.internal.tasks.test.test_container_content import (
     build_test_container_content,
@@ -21,7 +20,7 @@ class CIPushTestContainer:
 
     def push_test_container(
         self,
-        build_docker_repository: Optional[str],
+        build_docker_repository: str | None,
         force: bool,
         commit_sha: str,
         docker_user: str,

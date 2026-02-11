@@ -1,7 +1,6 @@
 import json
 from pathlib import Path
 from test.unit.test_env import test_env
-from typing import Union
 from unittest.mock import MagicMock, Mock, call
 
 from exasol.slc_ci.lib.ci_build import CIBuild
@@ -21,7 +20,7 @@ def test_export_and_scan_vulnerabilities_ci_normal(
     ci_export_mock = MagicMock()
     github_output_mock = MagicMock()
     ci_export_mock.export = MagicMock(return_value=res_slc_path)
-    ci_commands_mock: Union[CISecurityScan, CIPush, CIBuild, CIPrepare, Mock] = Mock()
+    ci_commands_mock: CISecurityScan | CIPush | CIBuild | CIPrepare | Mock = Mock()
 
     lib_export_and_scan_vulnerabilities(
         build_mode=BuildMode.NORMAL,
@@ -92,7 +91,7 @@ def test_export_and_scan_vulnerabilities_ci_develop(
     ci_export_mock = MagicMock()
     github_output_mock = MagicMock()
     ci_export_mock.export = MagicMock(return_value=res_slc_path)
-    ci_commands_mock: Union[CISecurityScan, CIPush, CIBuild, CIPrepare, Mock] = Mock()
+    ci_commands_mock: CISecurityScan | CIPush | CIBuild | CIPrepare | Mock = Mock()
     branch_name = "refs/heads/develop"
     lib_export_and_scan_vulnerabilities(
         build_mode=BuildMode.REBUILD,
@@ -164,7 +163,7 @@ def test_export_and_scan_vulnerabilities_ci_main(
     ci_export_mock = MagicMock()
     github_output_mock = MagicMock()
     ci_export_mock.export = MagicMock(return_value=res_slc_path)
-    ci_commands_mock: Union[CISecurityScan, CIPush, CIBuild, CIPrepare, Mock] = Mock()
+    ci_commands_mock: CISecurityScan | CIPush | CIBuild | CIPrepare | Mock = Mock()
 
     lib_export_and_scan_vulnerabilities(
         build_mode=BuildMode.REBUILD,
@@ -240,7 +239,7 @@ def test_export_and_scan_vulnerabilities_cd(build_config_environment, git_access
     ci_export_mock = MagicMock()
     github_output_mock = MagicMock()
     ci_export_mock.export = MagicMock(return_value=res_slc_path)
-    ci_commands_mock: Union[CISecurityScan, CIPush, CIBuild, CIPrepare, Mock] = Mock()
+    ci_commands_mock: CISecurityScan | CIPush | CIBuild | CIPrepare | Mock = Mock()
 
     lib_export_and_scan_vulnerabilities(
         build_mode=BuildMode.RELEASE,

@@ -1,7 +1,6 @@
 import os
 from pathlib import Path
 from test.unit.test_env import test_env
-from typing import Tuple, Union
 from unittest.mock import Mock, call
 
 import pytest
@@ -64,7 +63,7 @@ def test_run_tests(
     test_runner,
     accelerator,
 ):
-    ci_commands_mock: Union[CIExecuteTest, CIPrepare, Mock] = Mock()
+    ci_commands_mock: CIExecuteTest | CIPrepare | Mock = Mock()
 
     c = os.getcwd()
     run_tests(
