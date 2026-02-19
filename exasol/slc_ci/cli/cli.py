@@ -6,7 +6,7 @@ def cli():
     """
     EXASLC_CI - Exasol Script Languages Continuous Integration
 
-    Provides a CLI to build/test/deploy and release Exasol's Script-Languages-Containters in a Github CI environment.
+    Provides a CLI to build/test/deploy and release Exasol's Script-Languages-Containers in a GitHub CI environment.
 
     Examples:
 
