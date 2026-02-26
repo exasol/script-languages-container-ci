@@ -8,15 +8,15 @@ class TestSet(BaseModel):
     folders: list[str]
     goal: str
     generic_language_tests: list[str]
-    test_runner: str | None = None
+    test_runner: list[str] | None = None # the values can be x86_64 or arm64
     accelerator: Accelerator = Accelerator.NONE
 
 
 class TestConfig(BaseModel):
-    default_test_runner: str
+    default_test_runner: list[str] # the values can be x86_64 or arm64
     test_sets: list[TestSet]
 
 
 class FlavorCiConfig(BaseModel):
-    build_runner: str
+    build_runner: list[str] # the values can be x86_64 or arm64
     test_config: TestConfig
