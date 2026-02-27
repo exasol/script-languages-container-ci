@@ -1,7 +1,7 @@
 {
-  "build_runner": "ubuntu-24.04",
+  "build_runners": ["ubuntu-24.04, x86","ubuntu-24.04, arm64"],
   "test_config": {
-    "default_test_runners": ["ubuntu-24.04", "ubuntu-24.04-arm64"],
+    "default_test_runners": ["ubuntu-24.04","ubuntu-24.04, arm64"],
     "test_sets": [
       {
         "name": "functioning",
@@ -9,7 +9,7 @@
         "folders": ["functioning_test"],
         "goal": "release",
         "generic_language_tests": [],
-        "test_runners": ["ubuntu-24.04, x86", "ubuntu-24.04, arm64"]
+        "test_runners": ["ubuntu-24.04, x86","ubuntu-24.04, arm64"]
       }
     ]
   }

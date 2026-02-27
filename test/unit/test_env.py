@@ -71,7 +71,7 @@ class TestEnv:
                     goal="release",
                     generic_language_tests=[],
                     test_runners=["gpu_test_runner_1", "gpu_test_runner_2"],
-                    accelerator=Accelerator.NVIDIA,
+                    accelerator=Accelerator.NVIDA,
                 ),
             ],
         ),
