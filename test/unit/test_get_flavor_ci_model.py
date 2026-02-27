@@ -25,7 +25,7 @@ def test_get_flavor_ci_model_fails_with_wrong_json(build_config_environment):
         {
           "______________build_runners_______": "ubuntu-22.04",
           "test_config": {
-            "test_runner": "ubuntu-22.04",
+            "test_runners": ["ubuntu-22.04, x86", "ubuntu-22.04, arm64"],
             "test_sets": [
               {
                 "name": "all",

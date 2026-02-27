@@ -40,13 +40,13 @@ This file contains flavor-specific build information:
 
 - `build_runner`: The Github build runner to be used for building the SLC of the respective flavor
 - `test_config`: Test-specific build information:
-  - `default_test_runner`: The Github runner to be used for running the tests
+  - `default_test_runners`: The Github runners to be used for running the tests
   - `test_sets`: A set of tests which should run within the same matrix build
     - `name`: The name of the test set
     - `folders`: The list of folders with tests within the test container (usually `test_container/tests/test`) which will be executed.
     - `goal`: The release goal, to be used for running the tests, either `release` or `base_test_build_run`, see details below.
     - `generic_language_tests`: A list of generic language tests.
-    - `test_runner`: The specific Github runner for the test set. If set, it overwrites the `default_test_runner` enabling to use different Github runners for running specific tests, e.g. for minimizing costs.
+    - `test_runners`: The Github runners for the test set. If set, it overwrites the `default_test_runners` enabling to use different Github runners for running specific tests, e.g. for minimizing costs.
     - `accelerator`: SLC-CI forwards this option to `exaslct` command [run-db-test](https://github.com/exasol/script-languages-container-tool/blob/main/doc/user_guide/user_guide.md#testing-with-an-accelerator), example value `nvidia`.
 
 Only one of either `folders` or `generic_language_tests` should have a non-empty value.
@@ -59,26 +59,28 @@ Here is an example file:
 {
   "build_runner": "ubuntu-22.04",
   "test_config": {
-    "default_test_runner": "ubuntu-22.04",
+    "default_test_runners": ["ubuntu-22.04, x86", "ubuntu-22.04, arm64"]
     "test_sets": [
       {
         "name": "integration-test",
         "folders": ["some_tests"],
         "goal": "release",
-        "generic_language_tests": []
+        "generic_language_tests": [],
+        "test_runners":["ubuntu-22.04, x86", "ubuntu-22.04, arm64"]
       },
       {
         "name": "integration-test-for-base_test_build_run",
         "folders": ["some_tests"],
         "goal": "base_test_build_run",
-        "generic_language_tests": []
+        "generic_language_tests": [],
+        "test_runners":["ubuntu-22.04, x86", "ubuntu-22.04, arm64"]
       },
       {
         "name": "integration-test-gpu",
         "folders": ["gpu_tests"],
         "goal": "release",
         "generic_language_tests": [],
-        "test_runner": "int-linux-x64-4core-gpu-t4-ubuntu24.04-1",
+        "test_runners": ["int-linux-x64-4core-gpu-t4-ubuntu24.04-1", "arm-x64-4core-gpu-t4-ubuntu24.04-1"]
         "accelerator": "nvidia"
       }
     ]

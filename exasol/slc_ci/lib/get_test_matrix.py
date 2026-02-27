@@ -9,10 +9,10 @@ from exasol.slc_ci.model.flavor_ci_model import FlavorCiConfig, TestSet
 def _build_test_matrix_entry(flavor_config: FlavorCiConfig, test_set: TestSet) -> dict:
     return {
         "test-set-name": test_set.name,
-        "test-runner": (
-            test_set.test_runner
-            if test_set.test_runner
-            else flavor_config.test_config.default_test_runner
+        "test-runners": (
+            test_set.test_runners
+            if test_set.test_runners
+            else flavor_config.test_config.default_test_runners
         ),
         "goal": test_set.goal,
     }

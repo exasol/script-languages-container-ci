@@ -1,14 +1,15 @@
 {
   "build_runner": "ubuntu-24.04",
   "test_config": {
-    "default_test_runner": "ubuntu-24.04",
+    "default_test_runners": ["ubuntu-24.04", "ubuntu-24.04-arm64"],
     "test_sets": [
       {
         "name": "functioning",
         "files": [],
         "folders": ["functioning_test"],
         "goal": "release",
-        "generic_language_tests": []
+        "generic_language_tests": [],
+        "test_runners": ["ubuntu-24.04, x86", "ubuntu-24.04, arm64"]
       }
     ]
   }
