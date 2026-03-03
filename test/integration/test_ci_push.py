@@ -6,6 +6,7 @@ from exasol_integration_test_docker_environment.testing.docker_registry import (
 
 from exasol.slc_ci.lib.ci_push import CIPush
 
+
 def test(flavors_path):
     flavor_name = "successful"
     flavor_path = str(flavors_path / flavor_name)
