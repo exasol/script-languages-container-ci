@@ -14,7 +14,7 @@ authors = [
 dependencies = [
 "click (>=8.1.7, <9.0.0)",
 "GitPython (>=3.1.0, <4.0.0)",
-"exasol-script-languages-container-tool @ git+https://github.com/exasol/script-languages-container-tool.git@feature/346_runner_support_ARM#egg=exasol-script-languages-container-tool",
+"exasol-script-languages-container-tool @ git+https://github.com/exasol/script-languages-container-tool.git@feature/346_runner_support_ARM",
 "PyGithub (>=2.3.0, <3.0.0)",
 "setuptools (>=80.0.0)",
 ]
