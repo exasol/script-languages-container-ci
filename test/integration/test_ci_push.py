@@ -1,9 +1,10 @@
+import re
+
 from exasol_integration_test_docker_environment.testing.docker_registry import (
     LocalDockerRegistryContextManager,
 )
 
 from exasol.slc_ci.lib.ci_push import CIPush
-
 
 def test(flavors_path):
     flavor_name = "successful"
@@ -24,6 +25,12 @@ def test(flavors_path):
                 f"tag_{flavor_name}-release_MNWZZGSSFQ6VCLBDH7CZBEZC4K35QQBSLOW5DSYHF3DFFDX2OOZQ",
             ],
         }
+
+        def normalize_tag(tag: str) -> str:
+            # turns "...-release_x64_<HASH>" into "...-release_<HASH>"
+            arch_before_hash = re.compile(r"_(x64|arm64)_(?=[A-Z0-9]{10,}$)")
+            return arch_before_hash.sub("_", tag)
+
         assert expected_images["name"] == registry.images["name"] and set(
             expected_images["tags"]
-        ) == set(registry.images["tags"])
+        ) == {normalize_tag(t) for t in registry.images["tags"]}
