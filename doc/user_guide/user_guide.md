@@ -38,7 +38,7 @@ File `build_config.json` contains build parameters, which are independent of the
 
 This file contains flavor-specific build information:
 
-- `build_runner` *(or `build_runners` for backwards compatibility)*: The Github build runner to be used for building the SLC of the respective flavor.  The upstream `exasol.slc` code expects a single string, so only the first element from a legacy list will be honoured when the configuration is exported.
+- `build_runners`  The Github build runners to be used for building the SLC of the respective flavor.  For element in this list a separate Github matrix job will be spawned. This can be used to build an SLC on different platfors, e.g. "X86-64", "arm-64".
 - `test_config`: Test-specific build information:
   - `default_test_runner` *(or `default_test_runners` for backwards compatibility)*: The Github runner to be used for running the tests.  Again a plural list is tolerated but only the first item is used when the flavor is packaged.
   - `test_sets`: A set of tests which should run within the same matrix build
