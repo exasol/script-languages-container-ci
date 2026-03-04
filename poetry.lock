@@ -1213,8 +1213,8 @@ tabulate = ">=0.9.0,<1"
 [package.source]
 type = "git"
 url = "https://github.com/exasol/script-languages-container-tool.git"
-reference = "feature/346_runner_support_ARM"
-resolved_reference = "3dcf8177e1fad773a82b5d5ccd8db6116ee15a91"
+reference = "main"
+resolved_reference = "3c45cb91cb115d0ef6437eda0b1af1ae16fd94e5"
 
 [[package]]
 name = "exasol-toolbox"
@@ -5421,4 +5421,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10, <3.14"
-content-hash = "1a88e914fced982b6107a9464f61b9b9bfb32fea6d9e93612f40405ad37b09b6"
+content-hash = "c960bc4585aa8f961b463008b995df308df325cce6f6b84f0d59355727ca9d98"
