@@ -33,7 +33,7 @@ EXPECTED_VALUES = {
         },
         {
             "test-set-name": "gpu",
-            "test-runners": ["ubuntu-22.04", "ubuntu-22.04-arm"],
+            "test-runners": ["gpu_test_runner_1", "gpu_test_runner_2"],
             "goal": "release",
         },
     ]
