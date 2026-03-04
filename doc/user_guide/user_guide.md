@@ -65,20 +65,20 @@ Here is an example file:
         "name": "integration-test",
         "folders": ["some_tests"],
         "goal": "release",
-        "generic_language_tests": [],
+        "generic_language_tests": []
       },
       {
         "name": "integration-test-for-base_test_build_run",
         "folders": ["some_tests"],
         "goal": "base_test_build_run",
-        "generic_language_tests": [],
+        "generic_language_tests": []
       },
       {
         "name": "integration-test-gpu",
         "folders": ["gpu_tests"],
         "goal": "release",
         "generic_language_tests": [],
-        "accelerator": "nvidia"
+        "accelerator": "nvida"
       }
     ]
   }

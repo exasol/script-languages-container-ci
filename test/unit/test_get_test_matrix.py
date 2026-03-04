@@ -8,37 +8,27 @@ EXPECTED_VALUES = {
     "include": [
         {
             "test-set-name": "all",
-            "test-runners": [
-                "ubuntu-22.04", "ubuntu-22.04-arm"
-            ],
+            "test-runners": ["ubuntu-22.04", "ubuntu-22.04-arm"],
             "goal": "release",
         },
         {
             "test-set-name": "pandas_dtype_leak",
-            "test-runners": [
-                "ubuntu-22.04", "ubuntu-22.04-arm"
-            ],
+            "test-runners": ["ubuntu-22.04", "ubuntu-22.04-arm"],
             "goal": "release",
         },
         {
             "test-set-name": "pandas_dataframe_leak",
-            "test-runners": [
-                "ubuntu-22.04", "ubuntu-22.04-arm"
-            ],
+            "test-runners": ["ubuntu-22.04", "ubuntu-22.04-arm"],
             "goal": "release",
         },
         {
             "test-set-name": "pandas",
-            "test-runners": [
-                "ubuntu-22.04", "ubuntu-22.04-arm"
-            ],
+            "test-runners": ["ubuntu-22.04", "ubuntu-22.04-arm"],
             "goal": "release",
         },
         {
             "test-set-name": "generic",
-            "test-runners": [
-                "ubuntu-22.04", "ubuntu-22.04-arm"
-            ],
+            "test-runners": ["ubuntu-22.04", "ubuntu-22.04-arm"],
             "goal": "release",
         },
         {

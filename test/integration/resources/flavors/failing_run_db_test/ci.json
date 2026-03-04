@@ -8,7 +8,7 @@
         "files": [],
         "folders": ["failing_test"],
         "goal": "release",
-        "generic_language_tests": [],
+        "generic_language_tests": []
       }
     ]
   }

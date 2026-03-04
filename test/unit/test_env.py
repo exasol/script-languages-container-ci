@@ -30,6 +30,7 @@ class TestEnv:
                     folders=["python3/all/fast"],
                     goal="release",
                     generic_language_tests=[],
+                    test_runners=["ubuntu-22.04", "ubuntu-22.04-arm"],
                 ),
                 TestSet(
                     name="pandas_dtype_leak",
@@ -37,6 +38,7 @@ class TestEnv:
                     folders=[],
                     goal="release",
                     generic_language_tests=[],
+                    test_runners=["ubuntu-22.04", "ubuntu-22.04-arm"],
                 ),
                 TestSet(
                     name="pandas_dataframe_leak",
@@ -44,6 +46,7 @@ class TestEnv:
                     folders=[],
                     goal="release",
                     generic_language_tests=[],
+                    test_runners=["ubuntu-22.04", "ubuntu-22.04-arm"],
                 ),
                 TestSet(
                     name="pandas",
@@ -51,6 +54,7 @@ class TestEnv:
                     folders=["python3/pandas"],
                     goal="release",
                     generic_language_tests=[],
+                    test_runners=["ubuntu-22.04", "ubuntu-22.04-arm"],
                 ),
                 TestSet(
                     name="generic",
@@ -58,6 +62,7 @@ class TestEnv:
                     folders=[],
                     goal="release",
                     generic_language_tests=["python3"],
+                    test_runners=["ubuntu-22.04", "ubuntu-22.04-arm"],
                 ),
                 TestSet(
                     name="gpu",
@@ -65,6 +70,7 @@ class TestEnv:
                     folders=["gpu"],
                     goal="release",
                     generic_language_tests=[],
+                    test_runners=["gpu_test_runner_1", "gpu_test_runner_2"],
                     accelerator=Accelerator.NVIDA,
                 ),
             ],
