@@ -1,4 +1,4 @@
-import re
+import platform
 
 from exasol_integration_test_docker_environment.testing.docker_registry import (
     LocalDockerRegistryContextManager,
@@ -10,6 +10,9 @@ from exasol.slc_ci.lib.ci_push import CIPush
 def test(flavors_path):
     flavor_name = "successful"
     flavor_path = str(flavors_path / flavor_name)
+    machine = platform.machine().lower()
+    arch = "arm64" if ("arm" in machine) or ("aarch" in machine) else "x64"
+
     with LocalDockerRegistryContextManager("test_ci_push") as registry:
         CIPush().push(
             flavor_path=(flavor_path,),
@@ -18,20 +21,15 @@ def test(flavors_path):
             docker_user=None,
             docker_password=None,
         )
+
         expected_images = {
             "name": "test_ci_push",
             "tags": [
-                f"tag_{flavor_name}-base_test_build_run_GUA7R5J3UM27WOHJSQPX2OJNSIEKWCM5YF5GJXKKXZI53LZPV75Q",
-                f"tag_{flavor_name}-flavor_test_build_run_G2OIMXJ2S3VS2EUAQNW4KWQLX3B2C27XYZ2SDMF7TQRS3UMAUWJQ",
-                f"tag_{flavor_name}-release_MNWZZGSSFQ6VCLBDH7CZBEZC4K35QQBSLOW5DSYHF3DFFDX2OOZQ",
+                f"tag_{flavor_name}-base_test_build_run_{arch}_GUA7R5J3UM27WOHJSQPX2OJNSIEKWCM5YF5GJXKKXZI53LZPV75Q",
+                f"tag_{flavor_name}-flavor_test_build_run_{arch}_G2OIMXJ2S3VS2EUAQNW4KWQLX3B2C27XYZ2SDMF7TQRS3UMAUWJQ",
+                f"tag_{flavor_name}-release_{arch}_MNWZZGSSFQ6VCLBDH7CZBEZC4K35QQBSLOW5DSYHF3DFFDX2OOZQ",
             ],
         }
 
-        def normalize_tag(tag: str) -> str:
-            # turns "...-release_x64_<HASH>" into "...-release_<HASH>"
-            arch_before_hash = re.compile(r"_(x64|arm64)_(?=[A-Z0-9]{10,}$)")
-            return arch_before_hash.sub("_", tag)
-
-        assert expected_images["name"] == registry.images["name"] and set(
-            expected_images["tags"]
-        ) == {normalize_tag(t) for t in registry.images["tags"]}
+        assert expected_images["name"] == registry.images["name"]
+        assert set(expected_images["tags"]) == set(registry.images["tags"])

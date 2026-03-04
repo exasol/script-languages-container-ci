@@ -9,46 +9,41 @@ EXPECTED_VALUES = {
         {
             "test-set-name": "all",
             "test-runners": [
-                "some_test_runner_1",
-                "some_test_runner_2",
+                "ubuntu-22.04", "ubuntu-22.04-arm"
             ],
             "goal": "release",
         },
         {
             "test-set-name": "pandas_dtype_leak",
             "test-runners": [
-                "some_test_runner_1",
-                "some_test_runner_2",
+                "ubuntu-22.04", "ubuntu-22.04-arm"
             ],
             "goal": "release",
         },
         {
             "test-set-name": "pandas_dataframe_leak",
             "test-runners": [
-                "some_test_runner_1",
-                "some_test_runner_2",
+                "ubuntu-22.04", "ubuntu-22.04-arm"
             ],
             "goal": "release",
         },
         {
             "test-set-name": "pandas",
             "test-runners": [
-                "some_test_runner_1",
-                "some_test_runner_2",
+                "ubuntu-22.04", "ubuntu-22.04-arm"
             ],
             "goal": "release",
         },
         {
             "test-set-name": "generic",
             "test-runners": [
-                "some_test_runner_1",
-                "some_test_runner_2",
+                "ubuntu-22.04", "ubuntu-22.04-arm"
             ],
             "goal": "release",
         },
         {
             "test-set-name": "gpu",
-            "test-runners": ["gpu_test_runner_1", "gpu_test_runner_2"],
+            "test-runners": ["ubuntu-22.04", "ubuntu-22.04-arm"],
             "goal": "release",
         },
     ]

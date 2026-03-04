@@ -1,4 +1,4 @@
-import re
+import platform
 
 from exasol_integration_test_docker_environment.testing.docker_registry import (
     LocalDockerRegistryContextManager,
@@ -23,17 +23,14 @@ def test(
             test_container_folder=test_container_folder,
         )
 
-        def normalize_tag(tag: str) -> str:
-            # turns "...-release_x64_<HASH>" into "...-release_<HASH>"
-            arch_before_hash = re.compile(r"_(x64|arm64)_(?=[A-Z0-9]{10,}$)")
-            return arch_before_hash.sub("_", tag)
-
+        machine = platform.machine().lower()
+        arch = "arm64" if ("arm" in machine) or ("aarch" in machine) else "x64"
         expected_images = {
             "name": "test_ci_push_test_container",
             "tags": [
-                f"123_db-test-container_RHAJNDFIQLI4HPWH6PJXBXJ3GPZAHO6T6G6Z5QDM3MKBNPN2AOGQ",
+                f"123_db-test-container_{arch}_RHAJNDFIQLI4HPWH6PJXBXJ3GPZAHO6T6G6Z5QDM3MKBNPN2AOGQ",
             ],
         }
         assert expected_images["name"] == registry.images["name"] and set(
             expected_images["tags"]
-        ) == {normalize_tag(t) for t in registry.images["tags"]}
+        ) == set(registry.images["tags"])
