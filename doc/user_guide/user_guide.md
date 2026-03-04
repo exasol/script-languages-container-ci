@@ -57,7 +57,7 @@ Here is an example file:
 
 ```json
 {
-  "build_runners": ["ubuntu-22.04, x86", "ubuntu-22.04, arm64"]
+  "build_runners": ["ubuntu-22.04", "ubuntu-22.04-arm"]
   "test_config": {
     "default_test_runners": ["ubuntu-22.04, x86", "ubuntu-22.04, arm64"]
     "test_sets": [
