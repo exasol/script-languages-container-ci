@@ -8,62 +8,62 @@ EXPECTED_VALUES = {
     "include": [
         {
             "test-set-name": "all",
-            "test-runners": "ubuntu-22.04",
+            "test-runner": "ubuntu-22.04",
             "goal": "release",
         },
         {
             "test-set-name": "all",
-            "test-runners": "ubuntu-22.04-arm",
+            "test-runner": "ubuntu-22.04-arm",
             "goal": "release",
         },
         {
             "test-set-name": "pandas_dtype_leak",
-            "test-runners": "ubuntu-22.04",
+            "test-runner": "ubuntu-22.04",
             "goal": "release",
         },
         {
             "test-set-name": "pandas_dtype_leak",
-            "test-runners": "ubuntu-22.04-arm",
+            "test-runner": "ubuntu-22.04-arm",
             "goal": "release",
         },
         {
             "test-set-name": "pandas_dataframe_leak",
-            "test-runners": "ubuntu-22.04",
+            "test-runner": "ubuntu-22.04",
             "goal": "release",
         },
         {
             "test-set-name": "pandas_dataframe_leak",
-            "test-runners": "ubuntu-22.04-arm",
+            "test-runner": "ubuntu-22.04-arm",
             "goal": "release",
         },
         {
             "test-set-name": "pandas",
-            "test-runners": "ubuntu-22.04",
+            "test-runner": "ubuntu-22.04",
             "goal": "release",
         },
         {
             "test-set-name": "pandas",
-            "test-runners": "ubuntu-22.04-arm",
+            "test-runner": "ubuntu-22.04-arm",
             "goal": "release",
         },
         {
             "test-set-name": "generic",
-            "test-runners": "ubuntu-22.04",
+            "test-runner": "ubuntu-22.04",
             "goal": "release",
         },
         {
             "test-set-name": "generic",
-            "test-runners": "ubuntu-22.04-arm",
+            "test-runner": "ubuntu-22.04-arm",
             "goal": "release",
         },
         {
             "test-set-name": "gpu",
-            "test-runners": "gpu_test_runner_1",
+            "test-runner": "gpu_test_runner_1",
             "goal": "release",
         },
         {
             "test-set-name": "gpu",
-            "test-runners": "gpu_test_runner_2",
+            "test-runner": "gpu_test_runner_2",
             "goal": "release",
         },
     ]

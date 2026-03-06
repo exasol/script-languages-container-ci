@@ -20,7 +20,7 @@ def _build_test_matrix_entry(
         entries.append(
             {
                 "test-set-name": test_set.name,
-                "test-runners": runner,
+                "test-runner": runner,
                 "goal": test_set.goal,
             }
         )
@@ -31,9 +31,11 @@ def get_test_matrix(flavor: str, github_access: GithubAccess):
     build_config = get_build_config_model()
     flavor_config = get_flavor_ci_model(build_config, flavor)
 
-    include_entries: list[dict] = []
-    for entry in flavor_config.test_config.test_sets:
-        include_entries.extend(_build_test_matrix_entry(flavor_config, entry))
+    include_entries: list[dict] = [
+        item
+        for entry in flavor_config.test_config.test_sets
+        for item in _build_test_matrix_entry(flavor_config, entry)
+    ]
 
     test_matrix = {"include": include_entries}
     github_access.write_result(json.dumps(test_matrix))
