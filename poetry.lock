@@ -526,7 +526,7 @@ files = [
     {file = "cffi-2.0.0-cp39-cp39-win_amd64.whl", hash = "sha256:b882b3df248017dba09d6b16defe9b5c407fe32fc7c65a9c69798e6175601be9"},
     {file = "cffi-2.0.0.tar.gz", hash = "sha256:44d1b5909021139fe36001ae048dbdde8214afa20200eda0f64c068cac5d5529"},
 ]
-markers = {main = "platform_python_implementation != \"PyPy\"", dev = "sys_platform == \"linux\" and platform_machine != \"ppc64le\" and platform_machine != \"s390x\" and platform_python_implementation != \"PyPy\""}
+markers = {main = "platform_python_implementation != \"PyPy\"", dev = "platform_machine != \"ppc64le\" and platform_machine != \"s390x\" and sys_platform == \"linux\" and platform_python_implementation != \"PyPy\""}
 
 [package.dependencies]
 pycparser = {version = "*", markers = "implementation_name != \"PyPy\""}
@@ -668,14 +668,14 @@ files = [
 
 [[package]]
 name = "click"
-version = "8.2.1"
+version = "8.3.1"
 description = "Composable command line interface toolkit"
 optional = false
 python-versions = ">=3.10"
 groups = ["main", "dev"]
 files = [
-    {file = "click-8.2.1-py3-none-any.whl", hash = "sha256:61a3265b914e850b85317d0b3109c7f8cd35a670f963866005d6ef1d5175a12b"},
-    {file = "click-8.2.1.tar.gz", hash = "sha256:27c491cc05d968d271d5a1db13e3b5a184636d9d930f148c50b038f0d0646202"},
+    {file = "click-8.3.1-py3-none-any.whl", hash = "sha256:981153a64e25f12d547d3426c367a4857371575ee7ad18df2a6183ab0545b2a6"},
+    {file = "click-8.3.1.tar.gz", hash = "sha256:12ff4785d337a1bb490bb7e9c2b1ee5da3112e94a8622f26a6c77f5d2fc6842a"},
 ]
 
 [package.dependencies]
@@ -889,7 +889,7 @@ files = [
     {file = "cryptography-46.0.4-pp311-pypy311_pp73-win_amd64.whl", hash = "sha256:be8c01a7d5a55f9a47d1888162b76c8f49d62b234d88f0ff91a9fbebe32ffbc3"},
     {file = "cryptography-46.0.4.tar.gz", hash = "sha256:bfd019f60f8abc2ed1b9be4ddc21cfef059c841d86d710bb69909a688cbb8f59"},
 ]
-markers = {dev = "sys_platform == \"linux\" and platform_machine != \"ppc64le\" and platform_machine != \"s390x\""}
+markers = {dev = "platform_machine != \"ppc64le\" and platform_machine != \"s390x\" and sys_platform == \"linux\""}
 
 [package.dependencies]
 cffi = {version = ">=2.0.0", markers = "python_full_version >= \"3.9.0\" and platform_python_implementation != \"PyPy\""}
@@ -1140,14 +1140,14 @@ files = [
 
 [[package]]
 name = "exasol-integration-test-docker-environment"
-version = "6.0.0"
+version = "6.1.0"
 description = "Integration Test Docker Environment for Exasol"
 optional = false
 python-versions = "<3.15,>=3.10"
 groups = ["main"]
 files = [
-    {file = "exasol_integration_test_docker_environment-6.0.0-py3-none-any.whl", hash = "sha256:fbc15f6d986493023c8a666eb3c1dcfbab0aa755f7453467706172b2d564d45a"},
-    {file = "exasol_integration_test_docker_environment-6.0.0.tar.gz", hash = "sha256:8b5ad7c2c7461906714c31731b7526ef3833beb6facfa75948bf730d67430be6"},
+    {file = "exasol_integration_test_docker_environment-6.1.0-py3-none-any.whl", hash = "sha256:3da3e8d74c3c6ca947730587f0f22996b834a20363ef3d6d186564866cd97864"},
+    {file = "exasol_integration_test_docker_environment-6.1.0.tar.gz", hash = "sha256:f0ecf2dd2db8af0688630543b76373fe154a8a147eaf6f76d8c5794a1bc04d00"},
 ]
 
 [package.dependencies]
@@ -1160,7 +1160,7 @@ gitpython = ">=2.1.0"
 humanfriendly = ">=4.18"
 jinja2 = ">=2.10.1"
 jsonpickle = ">=1.1"
-luigi = ">=2.8.4"
+luigi = ">=2.8.4,<=3.6.0"
 netaddr = ">=0.7.19"
 networkx = ">=2.3"
 portalocker = ">=2.7.0,<3"
@@ -1192,29 +1192,45 @@ types-requests = ">=2.31.0.6,<3.0.0.0"
 
 [[package]]
 name = "exasol-script-languages-container-tool"
-version = "3.6.1"
+version = "4.0.1"
 description = "Script Languages Container Tool"
 optional = false
-python-versions = ">=3.10,<3.14"
+python-versions = "<3.14,>=3.10"
 groups = ["main"]
-files = []
-develop = false
+files = [
+    {file = "exasol_script_languages_container_tool-4.0.1-py3-none-any.whl", hash = "sha256:aedb76e9442bf9cba87073b1008c69b11c192981f93665a744bf5104ba08d2cf"},
+    {file = "exasol_script_languages_container_tool-4.0.1.tar.gz", hash = "sha256:aaa0de57b9aaa50c447429a08dc9b9819e775c27e2728db11aaed53398ec324f"},
+]
 
 [package.dependencies]
 click = ">=8.2.1,<9"
 exasol-bucketfs = ">=2.1.0,<3"
-exasol-integration-test-docker-environment = ">=6,<7"
+exasol-integration-test-docker-environment = ">=6.1.0,<7"
+exasol-script-languages-package-management = ">=1.0.0,<2"
 jsonschema = ">=4.23.0,<5"
 networkx = ">=3.3.0,<4"
 pandas = ">=2.2.3,<3"
 pydantic = ">=2.10.2,<3"
 tabulate = ">=0.9.0,<1"
 
-[package.source]
-type = "git"
-url = "https://github.com/exasol/script-languages-container-tool.git"
-reference = "main"
-resolved_reference = "3c45cb91cb115d0ef6437eda0b1af1ae16fd94e5"
+[[package]]
+name = "exasol-script-languages-package-management"
+version = "1.1.0"
+description = "This project provides a unified way of installing different packages from sources like coda, apt and PyPi"
+optional = false
+python-versions = "<3.15,>=3.10"
+groups = ["main"]
+files = [
+    {file = "exasol_script_languages_package_management-1.1.0-py3-none-any.whl", hash = "sha256:8d75bda8afb63e505aa68eca378d3f169c09c39e60a72daf7cf14c2917577c32"},
+    {file = "exasol_script_languages_package_management-1.1.0.tar.gz", hash = "sha256:12a7a9d7612ea2a2558b570bd3c6fa85980efd784c7a82cdb44ab05b9f55163c"},
+]
+
+[package.dependencies]
+click = ">=8.3.0,<9.0.0"
+jinja2 = ">=3.1.6,<4.0.0"
+pydantic = ">=2.10.2,<3.0.0"
+pyyaml = ">=6.0.3,<7.0.0"
+types-pyyaml = ">=6.0.12.20250915,<7.0.0.0"
 
 [[package]]
 name = "exasol-toolbox"
@@ -1874,7 +1890,7 @@ description = "Low-level, pure Python DBus protocol wrapper."
 optional = false
 python-versions = ">=3.7"
 groups = ["dev"]
-markers = "sys_platform == \"linux\" and platform_machine != \"ppc64le\" and platform_machine != \"s390x\""
+markers = "platform_machine != \"ppc64le\" and platform_machine != \"s390x\" and sys_platform == \"linux\""
 files = [
     {file = "jeepney-0.9.0-py3-none-any.whl", hash = "sha256:97e5714520c16fc0a45695e5365a2e11b81ea79bba796e26f9f1d178cb182683"},
     {file = "jeepney-0.9.0.tar.gz", hash = "sha256:cf0e9e845622b81e4a28df94c40345400256ec608d0e55bb8a3feaa9163f5732"},
@@ -2128,7 +2144,6 @@ description = "Workflow mgmgt + task scheduling + dependency resolution."
 optional = false
 python-versions = "*"
 groups = ["main"]
-markers = "python_version >= \"3.12\""
 files = [
     {file = "luigi-3.6.0.tar.gz", hash = "sha256:41b14850223c619d9006b30acda733e756b883fc7e60814205576647190c96e3"},
 ]
@@ -2138,34 +2153,6 @@ python-daemon = "*"
 python-dateutil = ">=2.7.5,<3"
 tenacity = ">=8,<9"
 tornado = ">=5.0,<7"
-
-[package.extras]
-jsonschema = ["jsonschema"]
-prometheus = ["prometheus-client (>=0.5,<0.15)"]
-toml = ["toml (<2.0.0)"]
-
-[[package]]
-name = "luigi"
-version = "3.7.2"
-description = "Workflow mgmgt + task scheduling + dependency resolution."
-optional = false
-python-versions = "<3.13,>=3.8.0"
-groups = ["main"]
-markers = "python_version < \"3.12\""
-files = [
-    {file = "luigi-3.7.2-py3-none-any.whl", hash = "sha256:6e51e40492d4c565a80f37a18f2b7471fa392739598b8d700408276ea3df5949"},
-    {file = "luigi-3.7.2.tar.gz", hash = "sha256:f3fe38dd3cb1a421d0dbbd9af40bad3f790af1868ca020dce42a1088c144d8a8"},
-]
-
-[package.dependencies]
-python-daemon = [
-    {version = "*", markers = "sys_platform != \"win32\""},
-    {version = "<2.2.0", markers = "sys_platform == \"win32\""},
-]
-python-dateutil = ">=2.7.5,<3"
-tenacity = ">=8,<9"
-tornado = ">=5.0,<7"
-typing-extensions = ">=4.12.2"
 
 [package.extras]
 jsonschema = ["jsonschema"]
@@ -3207,7 +3194,7 @@ files = [
     {file = "pycparser-3.0-py3-none-any.whl", hash = "sha256:b727414169a36b7d524c1c3e31839a521725078d7b2ff038656844266160a992"},
     {file = "pycparser-3.0.tar.gz", hash = "sha256:600f49d217304a5902ac3c37e1281c9fe94e4d0489de643a9504c5cdfdfc6b29"},
 ]
-markers = {main = "platform_python_implementation != \"PyPy\" and implementation_name != \"PyPy\"", dev = "sys_platform == \"linux\" and platform_machine != \"ppc64le\" and platform_machine != \"s390x\" and platform_python_implementation != \"PyPy\" and implementation_name != \"PyPy\""}
+markers = {main = "platform_python_implementation != \"PyPy\" and implementation_name != \"PyPy\"", dev = "platform_machine != \"ppc64le\" and platform_machine != \"s390x\" and sys_platform == \"linux\" and platform_python_implementation != \"PyPy\" and implementation_name != \"PyPy\""}
 
 [[package]]
 name = "pydantic"
@@ -3634,30 +3621,11 @@ dev = ["pre-commit", "pytest-asyncio", "tox"]
 
 [[package]]
 name = "python-daemon"
-version = "2.1.2"
-description = "Library to implement a well-behaved Unix daemon process."
-optional = false
-python-versions = "*"
-groups = ["main"]
-markers = "python_version < \"3.12\" and sys_platform == \"win32\""
-files = [
-    {file = "python-daemon-2.1.2.tar.gz", hash = "sha256:261c859be5c12ae7d4286dc6951e87e9e1a70a882a8b41fd926efc1ec4214f73"},
-    {file = "python_daemon-2.1.2-py2.py3-none-any.whl", hash = "sha256:53da55aec3bb67b576e13a8091a2181f99b395c2eec32a5a0d91d347a5c420a7"},
-]
-
-[package.dependencies]
-docutils = "*"
-lockfile = ">=0.10"
-setuptools = "*"
-
-[[package]]
-name = "python-daemon"
 version = "3.1.2"
 description = "Library to implement a well-behaved Unix daemon process."
 optional = false
 python-versions = ">=3.7"
 groups = ["main"]
-markers = "sys_platform != \"win32\" or python_version >= \"3.12\""
 files = [
     {file = "python_daemon-3.1.2-py3-none-any.whl", hash = "sha256:b906833cef63502994ad48e2eab213259ed9bb18d54fa8774dcba2ff7864cec6"},
     {file = "python_daemon-3.1.2.tar.gz", hash = "sha256:f7b04335adc473de877f5117e26d5f1142f4c9f7cd765408f0877757be5afbf4"},
@@ -3820,7 +3788,7 @@ version = "6.0.3"
 description = "YAML parser and emitter for Python"
 optional = false
 python-versions = ">=3.8"
-groups = ["dev"]
+groups = ["main", "dev"]
 files = [
     {file = "PyYAML-6.0.3-cp38-cp38-macosx_10_13_x86_64.whl", hash = "sha256:c2514fceb77bc5e7a2f7adfaa1feb2fb311607c9cb518dbc378688ec73d8292f"},
     {file = "PyYAML-6.0.3-cp38-cp38-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:9c57bb8c96f6d1808c030b1687b9b5fb476abaa47f0db9c0101f5e9f394e97f4"},
@@ -4289,7 +4257,7 @@ description = "Python bindings to FreeDesktop.org Secret Service API"
 optional = false
 python-versions = ">=3.10"
 groups = ["dev"]
-markers = "sys_platform == \"linux\" and platform_machine != \"ppc64le\" and platform_machine != \"s390x\""
+markers = "platform_machine != \"ppc64le\" and platform_machine != \"s390x\" and sys_platform == \"linux\""
 files = [
     {file = "secretstorage-3.5.0-py3-none-any.whl", hash = "sha256:0ce65888c0725fcb2c5bc0fdb8e5438eece02c523557ea40ce0703c266248137"},
     {file = "secretstorage-3.5.0.tar.gz", hash = "sha256:f04b8e4689cbce351744d5537bf6b1329c6fc68f91fa666f60a380edddcd11be"},
@@ -5173,6 +5141,18 @@ shellingham = ">=1.3.0"
 typing-extensions = ">=3.7.4.3"
 
 [[package]]
+name = "types-pyyaml"
+version = "6.0.12.20250915"
+description = "Typing stubs for PyYAML"
+optional = false
+python-versions = ">=3.9"
+groups = ["main"]
+files = [
+    {file = "types_pyyaml-6.0.12.20250915-py3-none-any.whl", hash = "sha256:e7d4d9e064e89a3b3cae120b4990cd370874d2bf12fa5f46c97018dd5d3c9ab6"},
+    {file = "types_pyyaml-6.0.12.20250915.tar.gz", hash = "sha256:0f8b54a528c303f0e6f7165687dd33fafa81c807fcac23f632b63aa624ced1d3"},
+]
+
+[[package]]
 name = "types-requests"
 version = "2.32.4.20260107"
 description = "Typing stubs for requests"
@@ -5421,4 +5401,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10, <3.14"
-content-hash = "c960bc4585aa8f961b463008b995df308df325cce6f6b84f0d59355727ca9d98"
+content-hash = "b982689b4d8b437db27fa57c561db4191595830cd0995a85ced8c86e6a5ee2e9"
