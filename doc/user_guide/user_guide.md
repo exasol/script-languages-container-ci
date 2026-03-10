@@ -38,15 +38,15 @@ File `build_config.json` contains build parameters, which are independent of the
 
 This file contains flavor-specific build information:
 
-- `build_runner`: The Github build runner to be used for building the SLC of the respective flavor
+- `build_runners`  The Github build runners are to be used for building the SLC of the respective flavor.  For each element in this list a separate Github matrix job will be spawned. This can be used to build an SLC on different platforms, e.g. "x86-64", "arm-64".
 - `test_config`: Test-specific build information:
-  - `default_test_runner`: The Github runner to be used for running the tests
+  - `default_test_runners` The Github default test runners are to be used for testing the SLC of the respective flavor.  For each element in this list a separate Github matrix job will be spawned. This can be used to test an SLC on different platforms, e.g. "x86-64", "arm-64".
   - `test_sets`: A set of tests which should run within the same matrix build
     - `name`: The name of the test set
     - `folders`: The list of folders with tests within the test container (usually `test_container/tests/test`) which will be executed.
     - `goal`: The release goal, to be used for running the tests, either `release` or `base_test_build_run`, see details below.
     - `generic_language_tests`: A list of generic language tests.
-    - `test_runner`: The specific Github runner for the test set. If set, it overwrites the `default_test_runner` enabling to use different Github runners for running specific tests, e.g. for minimizing costs.
+    - `test_runners` The Github test runners are to be used for testing the SLC of the respective flavor.  For each element in this list a separate Github matrix job will be spawned. This can be used to test an SLC on different platforms, e.g. "x86-64", "arm-64"
     - `accelerator`: SLC-CI forwards this option to `exaslct` command [run-db-test](https://github.com/exasol/script-languages-container-tool/blob/main/doc/user_guide/user_guide.md#testing-with-an-accelerator), example value `nvidia`.
 
 Only one of either `folders` or `generic_language_tests` should have a non-empty value.
@@ -57,9 +57,9 @@ Here is an example file:
 
 ```json
 {
-  "build_runner": "ubuntu-22.04",
+  "build_runners": ["ubuntu-22.04", "ubuntu-22.04-arm"]
   "test_config": {
-    "default_test_runner": "ubuntu-22.04",
+    "default_test_runners": ["ubuntu-22.04", "ubuntu-22.04-arm"]
     "test_sets": [
       {
         "name": "integration-test",
@@ -78,8 +78,7 @@ Here is an example file:
         "folders": ["gpu_tests"],
         "goal": "release",
         "generic_language_tests": [],
-        "test_runner": "int-linux-x64-4core-gpu-t4-ubuntu24.04-1",
-        "accelerator": "nvidia"
+        "accelerator": "nvida"
       }
     ]
   }

@@ -20,9 +20,9 @@ class TestEnv:
     )
 
     flavor_ci_config = FlavorCiConfig(
-        build_runner="some_runner",
+        build_runners=["ubuntu-22.04", "ubuntu-22.04-arm"],
         test_config=TestConfig(
-            default_test_runner="some_test_runner",
+            default_test_runners=["ubuntu-22.04", "ubuntu-22.04-arm"],
             test_sets=[
                 TestSet(
                     name="all",
@@ -37,6 +37,7 @@ class TestEnv:
                     folders=[],
                     goal="release",
                     generic_language_tests=[],
+                    test_runners=["ubuntu-22.04", "ubuntu-22.04-arm"],
                 ),
                 TestSet(
                     name="pandas_dataframe_leak",
@@ -44,6 +45,7 @@ class TestEnv:
                     folders=[],
                     goal="release",
                     generic_language_tests=[],
+                    test_runners=["ubuntu-22.04", "ubuntu-22.04-arm"],
                 ),
                 TestSet(
                     name="pandas",
@@ -51,6 +53,7 @@ class TestEnv:
                     folders=["python3/pandas"],
                     goal="release",
                     generic_language_tests=[],
+                    test_runners=["ubuntu-22.04", "ubuntu-22.04-arm"],
                 ),
                 TestSet(
                     name="generic",
@@ -65,7 +68,7 @@ class TestEnv:
                     folders=["gpu"],
                     goal="release",
                     generic_language_tests=[],
-                    test_runner="gpu_runner",
+                    test_runners=["gpu_test_runner_1", "gpu_test_runner_2"],
                     accelerator=Accelerator.NVIDA,
                 ),
             ],

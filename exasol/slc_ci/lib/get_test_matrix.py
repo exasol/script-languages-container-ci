@@ -6,25 +6,36 @@ from exasol.slc_ci.lib.github_access import GithubAccess
 from exasol.slc_ci.model.flavor_ci_model import FlavorCiConfig, TestSet
 
 
-def _build_test_matrix_entry(flavor_config: FlavorCiConfig, test_set: TestSet) -> dict:
-    return {
-        "test-set-name": test_set.name,
-        "test-runner": (
-            test_set.test_runner
-            if test_set.test_runner
-            else flavor_config.test_config.default_test_runner
-        ),
-        "goal": test_set.goal,
-    }
+def _build_test_matrix_entry(
+    flavor_config: FlavorCiConfig, test_set: TestSet
+) -> list[dict]:
+    runners = (
+        test_set.test_runners
+        if test_set.test_runners
+        else flavor_config.test_config.default_test_runners
+    )
+
+    entries: list[dict] = []
+    for runner in runners:
+        entries.append(
+            {
+                "test-set-name": test_set.name,
+                "test-runner": runner,
+                "goal": test_set.goal,
+            }
+        )
+    return entries
 
 
 def get_test_matrix(flavor: str, github_access: GithubAccess):
     build_config = get_build_config_model()
     flavor_config = get_flavor_ci_model(build_config, flavor)
-    test_matrix = {
-        "include": [
-            _build_test_matrix_entry(flavor_config, entry)
-            for entry in flavor_config.test_config.test_sets
-        ]
-    }
+
+    include_entries: list[dict] = [
+        item
+        for entry in flavor_config.test_config.test_sets
+        for item in _build_test_matrix_entry(flavor_config, entry)
+    ]
+
+    test_matrix = {"include": include_entries}
     github_access.write_result(json.dumps(test_matrix))

@@ -8,32 +8,62 @@ EXPECTED_VALUES = {
     "include": [
         {
             "test-set-name": "all",
-            "test-runner": "some_test_runner",
+            "test-runner": "ubuntu-22.04",
+            "goal": "release",
+        },
+        {
+            "test-set-name": "all",
+            "test-runner": "ubuntu-22.04-arm",
             "goal": "release",
         },
         {
             "test-set-name": "pandas_dtype_leak",
-            "test-runner": "some_test_runner",
+            "test-runner": "ubuntu-22.04",
+            "goal": "release",
+        },
+        {
+            "test-set-name": "pandas_dtype_leak",
+            "test-runner": "ubuntu-22.04-arm",
             "goal": "release",
         },
         {
             "test-set-name": "pandas_dataframe_leak",
-            "test-runner": "some_test_runner",
+            "test-runner": "ubuntu-22.04",
+            "goal": "release",
+        },
+        {
+            "test-set-name": "pandas_dataframe_leak",
+            "test-runner": "ubuntu-22.04-arm",
             "goal": "release",
         },
         {
             "test-set-name": "pandas",
-            "test-runner": "some_test_runner",
+            "test-runner": "ubuntu-22.04",
+            "goal": "release",
+        },
+        {
+            "test-set-name": "pandas",
+            "test-runner": "ubuntu-22.04-arm",
             "goal": "release",
         },
         {
             "test-set-name": "generic",
-            "test-runner": "some_test_runner",
+            "test-runner": "ubuntu-22.04",
+            "goal": "release",
+        },
+        {
+            "test-set-name": "generic",
+            "test-runner": "ubuntu-22.04-arm",
             "goal": "release",
         },
         {
             "test-set-name": "gpu",
-            "test-runner": "gpu_runner",
+            "test-runner": "gpu_test_runner_1",
+            "goal": "release",
+        },
+        {
+            "test-set-name": "gpu",
+            "test-runner": "gpu_test_runner_2",
             "goal": "release",
         },
     ]

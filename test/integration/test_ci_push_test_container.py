@@ -1,3 +1,5 @@
+import platform
+
 from exasol_integration_test_docker_environment.testing.docker_registry import (
     LocalDockerRegistryContextManager,
 )
@@ -20,10 +22,13 @@ def test(
             docker_password=None,
             test_container_folder=test_container_folder,
         )
+
+        machine = platform.machine().lower()
+        arch = "arm64" if ("arm" in machine) or ("aarch" in machine) else "x64"
         expected_images = {
             "name": "test_ci_push_test_container",
             "tags": [
-                f"123_db-test-container_RHAJNDFIQLI4HPWH6PJXBXJ3GPZAHO6T6G6Z5QDM3MKBNPN2AOGQ",
+                f"123_db-test-container_{arch}_RHAJNDFIQLI4HPWH6PJXBXJ3GPZAHO6T6G6Z5QDM3MKBNPN2AOGQ",
             ],
         }
         assert expected_images["name"] == registry.images["name"] and set(

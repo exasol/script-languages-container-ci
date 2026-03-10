@@ -49,7 +49,7 @@ TEST_DATA = [t.dict().values() for t in test_env.flavor_ci_config.test_config.te
 
 
 @pytest.mark.parametrize(
-    "name, files, folders, goal, generic_language_tests, test_runner, accelerator",
+    "name, files, folders, goal, generic_language_tests, test_runners, accelerator",
     TEST_DATA,
 )
 def test_run_tests(
@@ -60,7 +60,7 @@ def test_run_tests(
     folders,
     goal,
     generic_language_tests,
-    test_runner,
+    test_runners,
     accelerator,
 ):
     ci_commands_mock: CIExecuteTest | CIPrepare | Mock = Mock()
