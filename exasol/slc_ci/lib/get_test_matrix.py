@@ -3,7 +3,7 @@ import json
 from exasol.slc_ci.lib.get_build_config_model import get_build_config_model
 from exasol.slc_ci.lib.get_flavor_ci_model import get_flavor_ci_model
 from exasol.slc_ci.lib.github_access import GithubAccess
-from exasol.slc_ci.model.flavor_ci_model import FlavorCiConfig, TestSet
+from exasol.slc.models.flavor_ci_model import FlavorCiConfig, TestSet
 
 
 def _build_test_matrix_entry(
