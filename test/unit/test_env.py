@@ -1,9 +1,9 @@
 from pathlib import Path
 
 from exasol.slc.models.accelerator import Accelerator
+from exasol.slc.models.flavor_ci_model import FlavorCiConfig, TestConfig, TestSet
 
 from exasol.slc_ci.model.build_config_model import BuildConfig
-from exasol.slc.models.flavor_ci_model import FlavorCiConfig, TestConfig, TestSet
 
 
 class TestEnv:
