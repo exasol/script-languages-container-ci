@@ -55,8 +55,6 @@ def _export_and_scan_vulnerabilities_ci(
     logging.info(
         f"Running build image and scan vulnerabilities for parameters: {locals()}"
     )
-    if len(commit_sha) > 7:
-        commit_sha = commit_sha[:7]
     build_config: BuildConfig = get_build_config_model()
 
     flavor_path = (f"{build_config.flavors_path}/{flavor}",)

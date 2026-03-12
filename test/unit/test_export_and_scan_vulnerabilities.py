@@ -16,8 +16,6 @@ from exasol.slc_ci.model.build_mode import BuildMode
 def test_export_and_scan_vulnerabilities_ci_normal(
     build_config_environment, git_access_mock
 ):
-    if len(test_env.commit_sha) > 7:
-        test_env.commit_sha = test_env.commit_sha[:7]
     res_slc_path = Path("/some_path/slc.tar.gz")
     ci_export_mock = MagicMock()
     github_output_mock = MagicMock()
@@ -89,8 +87,6 @@ def test_export_and_scan_vulnerabilities_ci_normal(
 def test_export_and_scan_vulnerabilities_ci_develop(
     build_config_environment, git_access_mock
 ):
-    if len(test_env.commit_sha) > 7:
-        test_env.commit_sha = test_env.commit_sha[:7]
     res_slc_path = Path("/some_path/slc.tar.gz")
     ci_export_mock = MagicMock()
     github_output_mock = MagicMock()
@@ -162,8 +158,6 @@ def test_export_and_scan_vulnerabilities_ci_develop(
 def test_export_and_scan_vulnerabilities_ci_main(
     build_config_environment, git_access_mock
 ):
-    if len(test_env.commit_sha) > 7:
-        test_env.commit_sha = test_env.commit_sha[:7]
     res_slc_path = Path("/some_path/slc.tar.gz")
     branch_name = "refs/heads/main"
     ci_export_mock = MagicMock()
