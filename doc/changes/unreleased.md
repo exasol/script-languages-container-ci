@@ -5,6 +5,7 @@
 ## Features
  
  - #140: Add get-platform
+ - #144: Reduce the length of commit hash
 
 ## Refactorings
 

@@ -2,17 +2,31 @@ import datetime
 import os
 from pathlib import Path
 
+import pytest
 from exasol_integration_test_docker_environment.cli.options.system_options import (
     DEFAULT_OUTPUT_DIRECTORY,
 )
 from exasol_integration_test_docker_environment.lib.logging import luigi_log_config
 
-from exasol.slc_ci.lib.ci_prepare import CIPrepare
+from exasol.slc_ci.lib.ci_prepare import CIPrepare, get_commit_sha_for_docker_tag
 
 EXPECTED_LOG_PARENT_DIRECTORY = Path(DEFAULT_OUTPUT_DIRECTORY) / "jobs" / "logs"
 EXPECTED_LOG_FILE = EXPECTED_LOG_PARENT_DIRECTORY / "main.log"
 
 COMMIT_SHA = "sha_123"
+
+
+@pytest.mark.parametrize(
+    "commit_sha, expected_sha",
+    [
+        ("", ""),
+        ("1234567", "1234567"),
+        ("123456", "123456"),
+        ("0123456789", "0123456"),
+    ],
+)
+def test_get_commit_sha_for_docker_tag(commit_sha: str, expected_sha: str):
+    assert get_commit_sha_for_docker_tag(commit_sha) == expected_sha
 
 
 def test_ci_prepare_log_environment_variable_is_set(

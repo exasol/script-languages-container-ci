@@ -2,6 +2,7 @@ import logging
 
 from exasol.slc.api.push import push
 
+from exasol.slc_ci.lib.ci_prepare import get_commit_sha_for_docker_tag
 from exasol.slc_ci.lib.ci_step_output_printer import (
     CIStepOutputPrinter,
     CIStepOutputPrinterProtocol,
@@ -34,7 +35,9 @@ class CIPush:
             force_push=True,
             workers=7,
             target_docker_repository_name=target_docker_repository,
-            target_docker_tag_prefix=target_docker_tag_prefix,
+            target_docker_tag_prefix=get_commit_sha_for_docker_tag(
+                target_docker_tag_prefix
+            ),
             target_docker_username=docker_user,
             target_docker_password=docker_password,
             log_level="WARNING",
