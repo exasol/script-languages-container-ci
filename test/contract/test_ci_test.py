@@ -2,7 +2,6 @@ import pytest
 from exasol.slc.models.accelerator import Accelerator
 
 from exasol.slc_ci.lib.ci_export import CIExport
-from exasol.slc_ci.lib.ci_prepare import get_commit_sha_for_docker_tag
 from exasol.slc_ci.lib.ci_test import DBTestRunnerProtocol
 
 
@@ -48,7 +47,7 @@ class SuccessfulFlavorDBTestsContract(SuccessfulFlavorContract):
             docker_password=None,
             test_container_folder=test_container,
             use_existing_container=existing_container,
-            source_docker_tag_prefix=get_commit_sha_for_docker_tag("123"),
+            source_docker_tag_prefix="123",
             source_docker_repository_name="",
         )
         assert result.tests_are_ok and result.command_line_output_path.exists()
@@ -96,7 +95,7 @@ class FailingRunDBTestFlavorDBTestsContract(FailingRunDBTestFlavorContract):
             docker_password=None,
             test_container_folder=test_container,
             use_existing_container=existing_container,
-            source_docker_tag_prefix=get_commit_sha_for_docker_tag("123"),
+            source_docker_tag_prefix="123",
             source_docker_repository_name="",
         )
         assert not result.tests_are_ok and result.command_line_output_path.exists()

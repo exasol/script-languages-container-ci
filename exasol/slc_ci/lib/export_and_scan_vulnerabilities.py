@@ -79,7 +79,7 @@ def _export_and_scan_vulnerabilities_ci(
     ci_push.push(
         flavor_path=flavor_path,
         target_docker_repository=build_config.docker_build_repository,
-        target_docker_tag_prefix=get_commit_sha_for_docker_tag(""),
+        target_docker_tag_prefix="",
         docker_user=docker_user,
         docker_password=docker_password,
     )
@@ -87,7 +87,7 @@ def _export_and_scan_vulnerabilities_ci(
         ci_push.push(
             flavor_path=flavor_path,
             target_docker_repository=build_config.docker_release_repository,
-            target_docker_tag_prefix=get_commit_sha_for_docker_tag(""),
+            target_docker_tag_prefix="",
             docker_user=docker_user,
             docker_password=docker_password,
         )
@@ -129,7 +129,7 @@ def _export_and_scan_vulnerabilities_cd(
     ci_push.push(
         flavor_path=flavor_path,
         target_docker_repository=build_config.docker_release_repository,
-        target_docker_tag_prefix=get_commit_sha_for_docker_tag(""),
+        target_docker_tag_prefix="",
         docker_user=docker_user,
         docker_password=docker_password,
     )

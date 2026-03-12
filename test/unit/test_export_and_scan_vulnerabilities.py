@@ -61,7 +61,7 @@ def test_export_and_scan_vulnerabilities_ci_normal(
         call.push(
             flavor_path=(expected_flavor_path,),
             target_docker_repository=build_config_environment.docker_build_repository,
-            target_docker_tag_prefix=get_commit_sha_for_docker_tag(""),
+            target_docker_tag_prefix="",
             docker_user=test_env.docker_user,
             docker_password=test_env.docker_pwd,
         ),
@@ -132,7 +132,7 @@ def test_export_and_scan_vulnerabilities_ci_develop(
         call.push(
             flavor_path=(expected_flavor_path,),
             target_docker_repository=build_config_environment.docker_build_repository,
-            target_docker_tag_prefix=get_commit_sha_for_docker_tag(""),
+            target_docker_tag_prefix="",
             docker_user=test_env.docker_user,
             docker_password=test_env.docker_pwd,
         ),
@@ -204,14 +204,14 @@ def test_export_and_scan_vulnerabilities_ci_main(
         call.push(
             flavor_path=(expected_flavor_path,),
             target_docker_repository=build_config_environment.docker_build_repository,
-            target_docker_tag_prefix=get_commit_sha_for_docker_tag(""),
+            target_docker_tag_prefix="",
             docker_user=test_env.docker_user,
             docker_password=test_env.docker_pwd,
         ),
         call.push(
             flavor_path=(expected_flavor_path,),
             target_docker_repository=build_config_environment.docker_release_repository,
-            target_docker_tag_prefix=get_commit_sha_for_docker_tag(""),
+            target_docker_tag_prefix="",
             docker_user=test_env.docker_user,
             docker_password=test_env.docker_pwd,
         ),
@@ -273,7 +273,7 @@ def test_export_and_scan_vulnerabilities_cd(build_config_environment, git_access
         call.push(
             flavor_path=(expected_flavor_path,),
             target_docker_repository=build_config_environment.docker_release_repository,
-            target_docker_tag_prefix=get_commit_sha_for_docker_tag(""),
+            target_docker_tag_prefix="",
             docker_user=test_env.docker_user,
             docker_password=test_env.docker_pwd,
         ),

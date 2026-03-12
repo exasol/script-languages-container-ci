@@ -7,12 +7,19 @@ from exasol_integration_test_docker_environment.cli.options.system_options impor
 )
 from exasol_integration_test_docker_environment.lib.logging import luigi_log_config
 
-from exasol.slc_ci.lib.ci_prepare import CIPrepare
+from exasol.slc_ci.lib.ci_prepare import CIPrepare, get_commit_sha_for_docker_tag
 
 EXPECTED_LOG_PARENT_DIRECTORY = Path(DEFAULT_OUTPUT_DIRECTORY) / "jobs" / "logs"
 EXPECTED_LOG_FILE = EXPECTED_LOG_PARENT_DIRECTORY / "main.log"
 
 COMMIT_SHA = "sha_123"
+
+
+def test_get_commit_sha_for_docker_tag_short_sha():
+    assert get_commit_sha_for_docker_tag("") == ""
+    assert get_commit_sha_for_docker_tag("1234567") == "1234567"
+    assert get_commit_sha_for_docker_tag("123456") == "123456"
+    assert get_commit_sha_for_docker_tag("0123456789") == "0123456"
 
 
 def test_ci_prepare_log_environment_variable_is_set(
