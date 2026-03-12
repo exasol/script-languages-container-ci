@@ -6,6 +6,7 @@ from exasol.slc.api.run_db_tests import run_db_test
 from exasol.slc.models.accelerator import Accelerator
 from exasol.slc.models.test_result import AllTestsResult
 
+from exasol.slc_ci.lib.ci_prepare import get_commit_sha_for_docker_tag
 from exasol.slc_ci.lib.ci_step_output_printer import (
     CIStepOutputPrinter,
     CIStepOutputPrinterProtocol,
@@ -57,7 +58,9 @@ class DBTestRunner(DBTestRunnerProtocol):
             test_container_folder=test_container_folder,
             generic_language_test=generic_language_tests,
             accelerator=accelerator,
-            source_docker_tag_prefix=source_docker_tag_prefix,
+            source_docker_tag_prefix=get_commit_sha_for_docker_tag(
+                source_docker_tag_prefix
+            ),
             source_docker_repository_name=source_docker_repository_name,
             workers=workers,
             source_docker_username=docker_username,
@@ -137,7 +140,7 @@ class CIExecuteTest:
             release_goal=(goal,),
             generic_language_tests=generic_language_tests,
             accelerator=accelerator,
-            source_docker_tag_prefix=commit_sha,
+            source_docker_tag_prefix=get_commit_sha_for_docker_tag(commit_sha),
             source_docker_repository_name=build_docker_repository,
             workers=7,
             docker_username=docker_user,

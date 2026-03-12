@@ -4,7 +4,7 @@ from test.unit.test_env import test_env
 from unittest.mock import MagicMock, Mock, call
 
 from exasol.slc_ci.lib.ci_build import CIBuild
-from exasol.slc_ci.lib.ci_prepare import CIPrepare
+from exasol.slc_ci.lib.ci_prepare import CIPrepare, get_commit_sha_for_docker_tag
 from exasol.slc_ci.lib.ci_push import CIPush
 from exasol.slc_ci.lib.ci_security_scan import CISecurityScan
 from exasol.slc_ci.lib.export_and_scan_vulnerabilities import (
@@ -54,14 +54,14 @@ def test_export_and_scan_vulnerabilities_ci_normal(
         call.push(
             flavor_path=(expected_flavor_path,),
             target_docker_repository=build_config_environment.docker_build_repository,
-            target_docker_tag_prefix=test_env.commit_sha,
+            target_docker_tag_prefix=get_commit_sha_for_docker_tag(test_env.commit_sha),
             docker_user=test_env.docker_user,
             docker_password=test_env.docker_pwd,
         ),
         call.push(
             flavor_path=(expected_flavor_path,),
             target_docker_repository=build_config_environment.docker_build_repository,
-            target_docker_tag_prefix="",
+            target_docker_tag_prefix=get_commit_sha_for_docker_tag(""),
             docker_user=test_env.docker_user,
             docker_password=test_env.docker_pwd,
         ),
@@ -125,14 +125,14 @@ def test_export_and_scan_vulnerabilities_ci_develop(
         call.push(
             flavor_path=(expected_flavor_path,),
             target_docker_repository=build_config_environment.docker_build_repository,
-            target_docker_tag_prefix=test_env.commit_sha,
+            target_docker_tag_prefix=get_commit_sha_for_docker_tag(test_env.commit_sha),
             docker_user=test_env.docker_user,
             docker_password=test_env.docker_pwd,
         ),
         call.push(
             flavor_path=(expected_flavor_path,),
             target_docker_repository=build_config_environment.docker_build_repository,
-            target_docker_tag_prefix="",
+            target_docker_tag_prefix=get_commit_sha_for_docker_tag(""),
             docker_user=test_env.docker_user,
             docker_password=test_env.docker_pwd,
         ),
@@ -197,21 +197,21 @@ def test_export_and_scan_vulnerabilities_ci_main(
         call.push(
             flavor_path=(expected_flavor_path,),
             target_docker_repository=build_config_environment.docker_build_repository,
-            target_docker_tag_prefix=test_env.commit_sha,
+            target_docker_tag_prefix=get_commit_sha_for_docker_tag(test_env.commit_sha),
             docker_user=test_env.docker_user,
             docker_password=test_env.docker_pwd,
         ),
         call.push(
             flavor_path=(expected_flavor_path,),
             target_docker_repository=build_config_environment.docker_build_repository,
-            target_docker_tag_prefix="",
+            target_docker_tag_prefix=get_commit_sha_for_docker_tag(""),
             docker_user=test_env.docker_user,
             docker_password=test_env.docker_pwd,
         ),
         call.push(
             flavor_path=(expected_flavor_path,),
             target_docker_repository=build_config_environment.docker_release_repository,
-            target_docker_tag_prefix="",
+            target_docker_tag_prefix=get_commit_sha_for_docker_tag(""),
             docker_user=test_env.docker_user,
             docker_password=test_env.docker_pwd,
         ),
@@ -273,7 +273,7 @@ def test_export_and_scan_vulnerabilities_cd(build_config_environment, git_access
         call.push(
             flavor_path=(expected_flavor_path,),
             target_docker_repository=build_config_environment.docker_release_repository,
-            target_docker_tag_prefix="",
+            target_docker_tag_prefix=get_commit_sha_for_docker_tag(""),
             docker_user=test_env.docker_user,
             docker_password=test_env.docker_pwd,
         ),

@@ -4,6 +4,7 @@ from exasol_integration_test_docker_environment.testing.docker_registry import (
     LocalDockerRegistryContextManager,
 )
 
+from exasol.slc_ci.lib.ci_prepare import get_commit_sha_for_docker_tag
 from exasol.slc_ci.lib.ci_push import CIPush
 
 
@@ -17,7 +18,7 @@ def test(flavors_path):
         CIPush().push(
             flavor_path=(flavor_path,),
             target_docker_repository=registry.name,
-            target_docker_tag_prefix="tag",
+            target_docker_tag_prefix=get_commit_sha_for_docker_tag("tag"),
             docker_user=None,
             docker_password=None,
         )

@@ -4,7 +4,7 @@ import logging
 from exasol.slc_ci.lib.branch_config import push_to_docker_release_repo
 from exasol.slc_ci.lib.ci_build import CIBuild
 from exasol.slc_ci.lib.ci_export import CIExport
-from exasol.slc_ci.lib.ci_prepare import CIPrepare
+from exasol.slc_ci.lib.ci_prepare import CIPrepare, get_commit_sha_for_docker_tag
 from exasol.slc_ci.lib.ci_push import CIPush
 from exasol.slc_ci.lib.ci_security_scan import CISecurityScan
 from exasol.slc_ci.lib.get_build_config_model import get_build_config_model
@@ -72,14 +72,14 @@ def _export_and_scan_vulnerabilities_ci(
     ci_push.push(
         flavor_path=flavor_path,
         target_docker_repository=build_config.docker_build_repository,
-        target_docker_tag_prefix=commit_sha,
+        target_docker_tag_prefix=get_commit_sha_for_docker_tag(commit_sha),
         docker_user=docker_user,
         docker_password=docker_password,
     )
     ci_push.push(
         flavor_path=flavor_path,
         target_docker_repository=build_config.docker_build_repository,
-        target_docker_tag_prefix="",
+        target_docker_tag_prefix=get_commit_sha_for_docker_tag(""),
         docker_user=docker_user,
         docker_password=docker_password,
     )
@@ -87,7 +87,7 @@ def _export_and_scan_vulnerabilities_ci(
         ci_push.push(
             flavor_path=flavor_path,
             target_docker_repository=build_config.docker_release_repository,
-            target_docker_tag_prefix="",
+            target_docker_tag_prefix=get_commit_sha_for_docker_tag(""),
             docker_user=docker_user,
             docker_password=docker_password,
         )
@@ -129,7 +129,7 @@ def _export_and_scan_vulnerabilities_cd(
     ci_push.push(
         flavor_path=flavor_path,
         target_docker_repository=build_config.docker_release_repository,
-        target_docker_tag_prefix="",
+        target_docker_tag_prefix=get_commit_sha_for_docker_tag(""),
         docker_user=docker_user,
         docker_password=docker_password,
     )

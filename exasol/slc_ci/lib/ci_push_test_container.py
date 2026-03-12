@@ -5,6 +5,7 @@ from exasol.slc.internal.tasks.test.test_container_content import (
 )
 from exasol_integration_test_docker_environment.lib.api import push_test_container
 
+from exasol.slc_ci.lib.ci_prepare import get_commit_sha_for_docker_tag
 from exasol.slc_ci.lib.ci_step_output_printer import (
     CIStepOutputPrinter,
     CIStepOutputPrinterProtocol,
@@ -40,7 +41,7 @@ class CIPushTestContainer:
             workers=7,
             test_container_content=content,
             target_docker_repository_name=build_docker_repository,
-            target_docker_tag_prefix=commit_sha,
+            target_docker_tag_prefix=get_commit_sha_for_docker_tag(commit_sha),
             target_docker_username=docker_user,
             target_docker_password=docker_password,
             log_level="WARNING",
