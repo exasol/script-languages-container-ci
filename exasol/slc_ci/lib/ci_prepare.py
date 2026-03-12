@@ -7,13 +7,15 @@ from exasol_integration_test_docker_environment.cli.options.system_options impor
 )
 from exasol_integration_test_docker_environment.lib.logging import luigi_log_config
 
+MAX_DOCKER_TAG_PREFIX_LENGTH = 7
+
 
 def get_commit_sha_for_docker_tag(commit_sha: str) -> str:
     """
     Docker tags have a max len of 128 characters. If the commit sha is > 7 char, it'll be reduced to 7 chars.
     """
-    if len(commit_sha) > 7:
-        return commit_sha[:7]
+    if len(commit_sha) > MAX_DOCKER_TAG_PREFIX_LENGTH:
+        return commit_sha[:MAX_DOCKER_TAG_PREFIX_LENGTH]
     return commit_sha
 
 

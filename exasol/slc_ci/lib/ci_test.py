@@ -6,7 +6,10 @@ from exasol.slc.api.run_db_tests import run_db_test
 from exasol.slc.models.accelerator import Accelerator
 from exasol.slc.models.test_result import AllTestsResult
 
-from exasol.slc_ci.lib.ci_prepare import get_commit_sha_for_docker_tag
+from exasol.slc_ci.lib.ci_prepare import (
+    MAX_DOCKER_TAG_PREFIX_LENGTH,
+    get_commit_sha_for_docker_tag,
+)
 from exasol.slc_ci.lib.ci_step_output_printer import (
     CIStepOutputPrinter,
     CIStepOutputPrinterProtocol,
@@ -50,6 +53,12 @@ class DBTestRunner(DBTestRunnerProtocol):
         docker_password: str | None,
         use_existing_container: str | None,
     ) -> AllTestsResult:
+        if len(source_docker_tag_prefix) > MAX_DOCKER_TAG_PREFIX_LENGTH:
+            raise ValueError(
+                "source_docker_tag_prefix - "
+                f"{source_docker_tag_prefix} exceeds "
+                f"{MAX_DOCKER_TAG_PREFIX_LENGTH} characters"
+            )
         return run_db_test(
             flavor_path=flavor_path,
             release_goal=release_goal,
@@ -58,9 +67,7 @@ class DBTestRunner(DBTestRunnerProtocol):
             test_container_folder=test_container_folder,
             generic_language_test=generic_language_tests,
             accelerator=accelerator,
-            source_docker_tag_prefix=get_commit_sha_for_docker_tag(
-                source_docker_tag_prefix
-            ),
+            source_docker_tag_prefix=source_docker_tag_prefix,
             source_docker_repository_name=source_docker_repository_name,
             workers=workers,
             source_docker_username=docker_username,
