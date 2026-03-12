@@ -1,5 +1,6 @@
+from exasol.slc.models.flavor_ci_model import FlavorCiConfig
+
 from exasol.slc_ci.model.build_config_model import BuildConfig
-from exasol.slc_ci.model.flavor_ci_model import FlavorCiConfig
 
 
 def get_flavor_ci_model(build_config: BuildConfig, flavor: str) -> FlavorCiConfig:
