@@ -5,6 +5,7 @@ from .get_flavors import get_flavors
 from .get_test_matrix import get_test_matrix
 from .prepare_test_container import prepare_test_container
 from .run_tests import run_tests
+from .get_platform import get_platform
 
 __all__ = [
     "check_if_build_needed",
@@ -14,4 +15,5 @@ __all__ = [
     "get_test_matrix",
     "prepare_test_container",
     "run_tests",
+    "get_platform",
 ]
