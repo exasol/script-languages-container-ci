@@ -7,17 +7,16 @@ on:
       - '!v*'
 
 jobs:
-
-  check-tag-version-job:
+  check-release-tag:
     name: Check Release Tag
     uses: ./.github/workflows/check-release-tag.yml
     permissions:
       contents: read
 
-  cd-job:
+  build-and-publish:
     needs:
-      - check-tag-version-job
-    name: Continuous Delivery
+      - check-release-tag
+    name: Build & Publish
     uses: ./.github/workflows/build-and-publish.yml
     permissions:
       contents: write
