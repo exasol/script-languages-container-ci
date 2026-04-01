@@ -9,8 +9,5 @@ PROJECT_CONFIG = BaseConfig(
     project_name="slc_ci",
     python_versions=("3.10", "3.11", "3.12", "3.13"),
     exasol_versions=(),
-    add_to_excluded_python_paths=(
-        "resources",
-        "config_data_model.py",
-    ),
+    add_to_excluded_python_paths=("test/integration/resources",),
 )
