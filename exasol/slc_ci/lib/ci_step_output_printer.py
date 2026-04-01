@@ -38,13 +38,13 @@ class CIStepOutputPrinter(CIStepOutputPrinterProtocol):
         """
 
         self._writer(
-            cleandoc(
-                """
+            cleandoc("""
             {seperator}
             Printing docker images
             {seperator}
-            {images}"""
-            ).format(seperator=20 * "=", images="\n".join(_get_exasol_docker_images()))
+            {images}""").format(
+                seperator=20 * "=", images="\n".join(_get_exasol_docker_images())
+            )
         )
 
     def print_file(self, filename: Path):
