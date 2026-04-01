@@ -1,2 +1,11 @@
 poetry.lock linguist-generated=true
 exasol_script_languages_container_ci/lib/config/config_data_model.py linguist-generated=true
+/.github/workflows/build-and-publish.yml linguist-generated=True
+/.github/workflows/cd.yml linguist-generated=True
+/.github/workflows/check-release-tag.yml linguist-generated=True
+/.github/workflows/checks.yml linguist-generated=True
+/.github/workflows/ci.yml linguist-generated=True
+/.github/workflows/matrix-python.yml linguist-generated=True
+/.github/workflows/merge-gate.yml linguist-generated=True
+/.github/workflows/pr-merge.yml linguist-generated=True
+/.github/workflows/report.yml linguist-generated=True

@@ -15,8 +15,6 @@ jobs:
     permissions:
       contents: read
 
-  # No need for documentation
-
   report:
     needs:
       - run-fast-checks

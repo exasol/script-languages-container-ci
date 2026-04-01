@@ -22,5 +22,3 @@ jobs:
       contents: write
     secrets:
       PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
-
-  #No need for documentation
