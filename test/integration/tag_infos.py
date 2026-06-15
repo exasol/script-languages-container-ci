@@ -22,10 +22,25 @@ EXPECTED_TAG_INFO_HASHES = [
     ),
 ]
 
+EXPECTED_LOCAL_TAG_INFO_HASHES = EXPECTED_TAG_INFO_HASHES + [
+    TagInfo(
+        build_step="security_scan",
+        tag_suffix="JQFVF3LEHI7PQ5W6MCVODGJ3VKXPHDZSRCRLGSZJYNLHV2ALYYRQ",
+    ),
+]
+
 BUILD_NAME = "test-build_1.2.3"
 
 EXPECTED_TAG_INFO_RELEASE = [
     TagInfo(build_step="base_test_build_run", tag_suffix=BUILD_NAME),
     TagInfo(build_step="flavor_test_build_run", tag_suffix=BUILD_NAME),
     TagInfo(build_step="release", tag_suffix=BUILD_NAME),
+]
+
+
+EXPECTED_LOCAL_TAG_INFO_RELEASE = EXPECTED_TAG_INFO_RELEASE + [
+    TagInfo(
+        build_step="security_scan",
+        tag_suffix=BUILD_NAME,
+    ),
 ]

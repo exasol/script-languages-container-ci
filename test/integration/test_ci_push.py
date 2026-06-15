@@ -1,5 +1,10 @@
 import dataclasses
 import platform
+from test.integration.tag_infos import (
+    EXPECTED_TAG_INFO_HASHES,
+    EXPECTED_TAG_INFO_RELEASE,
+    TagInfo,
+)
 
 import pytest
 from exasol_integration_test_docker_environment.testing.docker_registry import (
@@ -7,11 +12,6 @@ from exasol_integration_test_docker_environment.testing.docker_registry import (
 )
 
 from exasol.slc_ci.lib.ci_push import CIPush
-from test.integration.tag_infos import (
-    EXPECTED_TAG_INFO_HASHES,
-    TagInfo,
-    EXPECTED_TAG_INFO_RELEASE,
-)
 
 
 def build_tag_name(flavor_name: str, arch: str, tag_info: TagInfo) -> str:
