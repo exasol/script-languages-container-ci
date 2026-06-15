@@ -1,4 +1,8 @@
 workflows:
+  - name: checks
+    remove_jobs:
+      - check-workflows
+      - build-documentation-and-check-links
   - name: gh-pages
     remove_jobs:
       - deploy-documentation
@@ -17,20 +21,3 @@ workflows:
           - name: Upload Artifact
             id: upload-artifact
             run: echo Do nothing
-  - name: checks
-    step_customizations:
-      - action: REPLACE
-        job: build-documentation-and-check-links
-        step_id:  build-documentation
-        content:
-          - name: Build Documentation
-            id:  build-documentation
-            run: echo Do nothing
-      - action: REPLACE
-        job: build-documentation-and-check-links
-        step_id: check-links
-        content:
-          - name: Check Links
-            id: check-links
-            run: echo Do nothing
-
