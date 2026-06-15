@@ -22,7 +22,10 @@ def _export_slc(
 ) -> None:
     release_output = ".build_output_release"
     slc_release = ci_export.export(
-        flavor_path=flavor_path, goal="release", output_directory=release_output
+        flavor_path=flavor_path,
+        goal="release",
+        output_directory=release_output,
+        build_name=build_name,
     )
     test_output = ".build_output_test"
     slc_test = ci_export.export(
@@ -95,7 +98,7 @@ def _export_and_scan_vulnerabilities_ci(
             docker_password=docker_password,
         )
 
-    _export_slc(ci_export, github_access, flavor_path)
+    _export_slc(ci_export, github_access, flavor_path, build_name=None)
 
 
 def _export_and_scan_vulnerabilities_cd(

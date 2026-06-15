@@ -48,7 +48,6 @@ def test_export_and_scan_vulnerabilities_ci_normal(
             build_docker_repository=build_config_environment.docker_build_repository,
             docker_user=test_env.docker_user,
             docker_password=test_env.docker_pwd,
-            build_name=f"CI Build {test_env.branch_name}",
         ),
         call.run_security_scan(flavor_path=(expected_flavor_path,)),
         call.push(
@@ -71,11 +70,13 @@ def test_export_and_scan_vulnerabilities_ci_normal(
             flavor_path=(expected_flavor_path,),
             goal="release",
             output_directory=".build_output_release",
+            build_name=None,
         ),
         call.export(
             flavor_path=(expected_flavor_path,),
             goal="base_test_build_run",
             output_directory=".build_output_test",
+            build_name=None,
         ),
     ]
     assert json.loads(github_output_mock.write_result.call_args.args[0]) == {
@@ -119,7 +120,6 @@ def test_export_and_scan_vulnerabilities_ci_develop(
             build_docker_repository=build_config_environment.docker_build_repository,
             docker_user=test_env.docker_user,
             docker_password=test_env.docker_pwd,
-            build_name=f"CI Build {branch_name}",
         ),
         call.run_security_scan(flavor_path=(expected_flavor_path,)),
         call.push(
@@ -142,11 +142,13 @@ def test_export_and_scan_vulnerabilities_ci_develop(
             flavor_path=(expected_flavor_path,),
             goal="release",
             output_directory=".build_output_release",
+            build_name=None,
         ),
         call.export(
             flavor_path=(expected_flavor_path,),
             goal="base_test_build_run",
             output_directory=".build_output_test",
+            build_name=None,
         ),
     ]
     assert json.loads(github_output_mock.write_result.call_args.args[0]) == {
@@ -191,7 +193,6 @@ def test_export_and_scan_vulnerabilities_ci_main(
             build_docker_repository=build_config_environment.docker_build_repository,
             docker_user=test_env.docker_user,
             docker_password=test_env.docker_pwd,
-            build_name=f"CI Build {branch_name}",
         ),
         call.run_security_scan(flavor_path=(expected_flavor_path,)),
         call.push(
@@ -221,11 +222,13 @@ def test_export_and_scan_vulnerabilities_ci_main(
             flavor_path=(expected_flavor_path,),
             goal="release",
             output_directory=".build_output_release",
+            build_name=None,
         ),
         call.export(
             flavor_path=(expected_flavor_path,),
             goal="base_test_build_run",
             output_directory=".build_output_test",
+            build_name=None,
         ),
     ]
     assert json.loads(github_output_mock.write_result.call_args.args[0]) == {
@@ -269,13 +272,16 @@ def test_export_and_scan_vulnerabilities_cd(build_config_environment, git_access
             docker_password=test_env.docker_pwd,
             build_name=test_env.branch_name,
         ),
-        call.run_security_scan(flavor_path=(expected_flavor_path,)),
+        call.run_security_scan(
+            flavor_path=(expected_flavor_path,), build_name="test_branch_name"
+        ),
         call.push(
             flavor_path=(expected_flavor_path,),
             target_docker_repository=build_config_environment.docker_release_repository,
             target_docker_tag_prefix="",
             docker_user=test_env.docker_user,
             docker_password=test_env.docker_pwd,
+            build_name="test_branch_name",
         ),
     ]
     assert ci_export_mock.mock_calls == [
@@ -283,11 +289,13 @@ def test_export_and_scan_vulnerabilities_cd(build_config_environment, git_access
             flavor_path=(expected_flavor_path,),
             goal="release",
             output_directory=".build_output_release",
+            build_name="test_branch_name",
         ),
         call.export(
             flavor_path=(expected_flavor_path,),
             goal="base_test_build_run",
             output_directory=".build_output_test",
+            build_name="test_branch_name",
         ),
     ]
     assert json.loads(github_output_mock.write_result.call_args.args[0]) == {
