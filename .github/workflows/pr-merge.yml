@@ -8,4 +8,14 @@ on:
       - 'main'
       - 'master'
 
-jobs: {}
+jobs:
+  publish-docs:
+    runs-on: ubuntu-24.04
+    #Manual modification needed here
+    #Since PTB 8.2.0 `publish-docs` is the only Job in the GH Workflow
+    #Removing it would make the workflow invalid (empty job list)
+    name: Publish Documentation
+    steps:
+      - name: Dummy
+        id: dummy
+        run: echo Nothing to do

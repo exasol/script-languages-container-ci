@@ -5,6 +5,3 @@ workflows:
   - name: checks
     remove_jobs:
       - build-documentation-and-check-links
-  - name: pr-merge
-    remove_jobs:
-      - publish-docs
