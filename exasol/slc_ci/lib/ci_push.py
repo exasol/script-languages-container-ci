@@ -43,6 +43,6 @@ class CIPush:
             target_docker_password=docker_password,
             log_level="WARNING",
             use_job_specific_log_file=True,
-            build_name=build_name,
+            build_name=build_name if build_name else "",
         )
         self._printer.print_exasol_docker_images()
