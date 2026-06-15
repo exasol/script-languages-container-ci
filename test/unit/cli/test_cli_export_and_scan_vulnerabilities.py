@@ -14,7 +14,6 @@ from exasol.slc_ci.lib.ci_export import CIExport
 from exasol.slc_ci.lib.ci_prepare import CIPrepare
 from exasol.slc_ci.lib.ci_push import CIPush
 from exasol.slc_ci.lib.ci_security_scan import CISecurityScan
-from exasol.slc_ci.lib.git_access import GitAccess
 from exasol.slc_ci.lib.github_access import GithubAccess
 from exasol.slc_ci.model.build_mode import BuildMode
 
@@ -158,7 +157,6 @@ def test_export_and_scan_vulnerabilities(
         docker_password="secret",
         commit_sha="12345",
         build_mode=BuildMode.NORMAL,
-        git_access=IsInstance(GitAccess),
         github_access=IsInstance(GithubAccess),
         ci_build=IsInstance(CIBuild),
         ci_security_scan=IsInstance(CISecurityScan),

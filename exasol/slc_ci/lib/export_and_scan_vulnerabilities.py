@@ -8,7 +8,6 @@ from exasol.slc_ci.lib.ci_prepare import CIPrepare, get_commit_sha_for_docker_ta
 from exasol.slc_ci.lib.ci_push import CIPush
 from exasol.slc_ci.lib.ci_security_scan import CISecurityScan
 from exasol.slc_ci.lib.get_build_config_model import get_build_config_model
-from exasol.slc_ci.lib.git_access import GitAccess
 from exasol.slc_ci.lib.github_access import GithubAccess
 from exasol.slc_ci.model.build_config_model import BuildConfig
 from exasol.slc_ci.model.build_mode import BuildMode
@@ -51,7 +50,6 @@ def _export_and_scan_vulnerabilities_ci(
     docker_password: str,
     commit_sha: str,
     rebuild: bool,
-    git_access: GitAccess,
     github_access: GithubAccess,
     ci_build: CIBuild = CIBuild(),
     ci_security_scan: CISecurityScan = CISecurityScan(),
@@ -107,7 +105,6 @@ def _export_and_scan_vulnerabilities_cd(
     docker_user: str,
     docker_password: str,
     commit_sha: str,
-    git_access: GitAccess,
     github_access: GithubAccess,
     ci_build: CIBuild = CIBuild(),
     ci_security_scan: CISecurityScan = CISecurityScan(),

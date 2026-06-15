@@ -16,7 +16,6 @@ from exasol.slc_ci.lib.ci_export import CIExport
 from exasol.slc_ci.lib.ci_prepare import CIPrepare
 from exasol.slc_ci.lib.ci_push import CIPush
 from exasol.slc_ci.lib.ci_security_scan import CISecurityScan
-from exasol.slc_ci.lib.git_access import GitAccess
 from exasol.slc_ci.lib.github_access import GithubAccess
 from exasol.slc_ci.model.build_mode import BuildMode, buildModeValues
 
@@ -46,7 +45,6 @@ def export_and_scan_vulnerabilities(
     github_output_var: str,
 ) -> None:
     logging.basicConfig(level=logging.INFO)
-    git_access: GitAccess = GitAccess()
     github_access: GithubAccess = GithubAccess(github_output_var)
     ci_build = CIBuild()
     ci_security_scan = CISecurityScan()
@@ -61,7 +59,6 @@ def export_and_scan_vulnerabilities(
         docker_user=docker_user,
         docker_password=docker_password,
         commit_sha=commit_sha,
-        git_access=git_access,
         github_access=github_access,
         ci_build=ci_build,
         ci_security_scan=ci_security_scan,
