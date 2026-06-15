@@ -15,7 +15,7 @@ from exasol.slc_ci.model.build_mode import BuildMode
 
 
 def _export_slc(
-    ci_export: CIExport, github_access: GithubAccess, flavor_path: tuple[str, ...]
+    ci_export: CIExport, github_access: GithubAccess, flavor_path: tuple[str, ...], build_name: str | None
 ) -> None:
     release_output = ".build_output_release"
     slc_release = ci_export.export(
@@ -26,6 +26,7 @@ def _export_slc(
         flavor_path=flavor_path,
         goal="base_test_build_run",
         output_directory=test_output,
+        build_name=build_name,
     )
     github_access.write_result(
         json.dumps(
@@ -66,7 +67,6 @@ def _export_and_scan_vulnerabilities_ci(
         build_docker_repository=build_config.docker_build_repository,
         docker_user=docker_user,
         docker_password=docker_password,
-        build_name=f"CI Build {branch_name}",
     )
     ci_security_scan.run_security_scan(flavor_path=flavor_path)
     ci_push.push(
@@ -125,15 +125,16 @@ def _export_and_scan_vulnerabilities_cd(
         docker_password=docker_password,
         build_name=branch_name,
     )
-    ci_security_scan.run_security_scan(flavor_path=flavor_path)
+    ci_security_scan.run_security_scan(flavor_path=flavor_path, build_name=branch_name,)
     ci_push.push(
         flavor_path=flavor_path,
         target_docker_repository=build_config.docker_release_repository,
         target_docker_tag_prefix="",
         docker_user=docker_user,
         docker_password=docker_password,
+        build_name=branch_name,
     )
-    _export_slc(ci_export, github_access, flavor_path)
+    _export_slc(ci_export, github_access, flavor_path, build_name=branch_name)
 
 
 def export_and_scan_vulnerabilities(

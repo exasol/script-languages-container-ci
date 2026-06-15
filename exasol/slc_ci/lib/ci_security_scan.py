@@ -16,7 +16,7 @@ class CISecurityScan:
     ):
         self._printer = printer
 
-    def run_security_scan(self, flavor_path: tuple[str, ...]):
+    def run_security_scan(self, flavor_path: tuple[str, ...], build_name: str | None = None,):
         """
         Run security scan and print result
         """
@@ -27,6 +27,7 @@ class CISecurityScan:
             workers=7,
             log_level="WARNING",
             use_job_specific_log_file=True,
+            build_name=build_name,
         )
         logging.info("============= SECURITY REPORT ===========")
         self._printer.print_file(Path(security_scan_result.report_path))
