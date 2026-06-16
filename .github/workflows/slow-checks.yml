@@ -6,9 +6,9 @@ on:
 jobs:
   build-matrix:
     name: Build Matrix
-    uses: ./.github/workflows/matrix-python.yml
-    permissions:
-      contents: read
+    uses: ./.github/workflows/matrix.yml
+    with:
+      matrix_keys_json: '["python_versions"]'
 
   run-integration-tests:
     name: Run Integration Tests (Python-${{ matrix.python-version }}
@@ -29,7 +29,7 @@ jobs:
 
       - name: Set up Python & Poetry Environment
         id: set-up-python-and-poetry-environment
-        uses: exasol/python-toolbox/.github/actions/python-environment@v7
+        uses: exasol/python-toolbox/.github/actions/python-environment@v9
         with:
           python-version: ${{ matrix.python-version }}
           poetry-version: "2.3.0"
