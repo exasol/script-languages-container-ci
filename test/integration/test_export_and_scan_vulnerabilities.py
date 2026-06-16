@@ -17,6 +17,7 @@ import docker
 import pytest
 from exasol.slc.api import clean_flavor_images
 from exasol_integration_test_docker_environment.testing.docker_registry import (
+    LocalDockerRegistry,
     LocalDockerRegistryContextManager,
 )
 
@@ -166,8 +167,8 @@ def _expected_local_images(
 
 def _resolve_repository(
     target: RepositoryTarget,
-    build_registry: LocalDockerRegistryContextManager,
-    release_registry: LocalDockerRegistryContextManager,
+    build_registry: LocalDockerRegistry,
+    release_registry: LocalDockerRegistry,
 ) -> str:
     repositories = {
         RepositoryTarget.BUILD_REGISTRY: build_registry.name,
