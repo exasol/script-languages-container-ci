@@ -4,7 +4,6 @@ import json
 import platform
 import shutil
 from enum import Enum
-from inspect import cleandoc
 from pathlib import Path
 from test.integration.tag_infos import (
     EXPECTED_LOCAL_TAG_INFO_HASHES,
@@ -60,37 +59,158 @@ def _build_local_tag_name_cd(
     return f"exasol/script-language-container:{flavor_name}-{tag_info.build_step}_{arch}_{branch_name}"
 
 
-class BuildConfigMode(Enum):
-    NORMAL = "normal"
-    RELEASE = "release"
-    MASTER = "master"
+BUILD_REGISTRY_NAME = "test_export_and_scan_vulnerabilities_build"
+RELEASE_REGISTRY_NAME = "test_export_and_scan_vulnerabilities_release"
+
+
+class RepositoryTarget(Enum):
+    BUILD_REGISTRY = "build_registry"
+    RELEASE_REGISTRY = "release_registry"
+    DUMMY_BUILD = "dummy/build"
+    DUMMY_RELEASE = "dummy/releases"
+
+
+class RegistryTagSet(Enum):
+    EMPTY = "empty"
+    CI_BUILD = "ci_build"
+    CI_RELEASE = "ci_release"
+    CD_RELEASE = "cd_release"
+
+
+class LocalImageSet(Enum):
+    CI = "ci"
+    CD = "cd"
+
+
+@dataclasses.dataclass(frozen=True)
+class RegistryTestConfigTemplate:
+    repository_target: RepositoryTarget
+    expected_name: str | None
+    expected_tags: RegistryTagSet
+
+
+@dataclasses.dataclass(frozen=True)
+class BuildTestConfigTemplate:
+    build_mode: BuildMode
+    branch_name: str
+    build_registry: RegistryTestConfigTemplate
+    release_registry: RegistryTestConfigTemplate
+    expected_local_images: LocalImageSet
 
 
 @dataclasses.dataclass(frozen=True)
 class BuildTestConfig:
-    build_cfg_mode: BuildConfigMode
+    build_mode: BuildMode
     branch_name: str
+    build_repository: str
+    release_repository: str
+    expected_build_registry: "ExpectedRegistryImages"
+    expected_release_registry: "ExpectedRegistryImages"
+    expected_local_images: list[str]
 
-    @property
-    def build_mode(self) -> BuildMode:
-        table = {
-            BuildConfigMode.NORMAL: BuildMode.NORMAL,
-            BuildConfigMode.RELEASE: BuildMode.RELEASE,
-            BuildConfigMode.MASTER: BuildMode.NORMAL,
-        }
-        return table[self.build_cfg_mode]
+
+@dataclasses.dataclass(frozen=True)
+class ExpectedRegistryImages:
+    name: str | None
+    tags: list[str]
+
+
+def _expected_registry_tags(
+    tag_set: RegistryTagSet,
+    flavor_name: str,
+    arch: str,
+    commit_sha: str,
+    branch_name: str,
+) -> list[str]:
+    match tag_set:
+        case RegistryTagSet.EMPTY:
+            return []
+        case RegistryTagSet.CI_BUILD:
+            return [
+                _build_tag_name_ci("", flavor_name, arch, tag_info)
+                for tag_info in EXPECTED_TAG_INFO_HASHES
+            ] + [
+                _build_tag_name_ci(commit_sha, flavor_name, arch, tag_info)
+                for tag_info in EXPECTED_TAG_INFO_HASHES
+            ]
+        case RegistryTagSet.CI_RELEASE:
+            return [
+                _build_tag_name_ci("", flavor_name, arch, tag_info)
+                for tag_info in EXPECTED_TAG_INFO_HASHES
+            ]
+        case RegistryTagSet.CD_RELEASE:
+            return [
+                _build_tag_name_cd(flavor_name, arch, branch_name, tag_info)
+                for tag_info in EXPECTED_TAG_INFO_RELEASE
+            ]
+
+
+def _expected_local_images(
+    image_set: LocalImageSet,
+    flavor_name: str,
+    arch: str,
+    branch_name: str,
+) -> list[str]:
+    match image_set:
+        case LocalImageSet.CI:
+            return [
+                _build_local_tag_name_ci(flavor_name, arch, tag_info)
+                for tag_info in EXPECTED_LOCAL_TAG_INFO_HASHES
+            ]
+        case LocalImageSet.CD:
+            return [
+                _build_local_tag_name_cd(flavor_name, arch, branch_name, tag_info)
+                for tag_info in EXPECTED_LOCAL_TAG_INFO_RELEASE
+            ]
+
+
+def _resolve_repository(
+    target: RepositoryTarget,
+    build_registry: LocalDockerRegistryContextManager,
+    release_registry: LocalDockerRegistryContextManager,
+) -> str:
+    repositories = {
+        RepositoryTarget.BUILD_REGISTRY: build_registry.name,
+        RepositoryTarget.RELEASE_REGISTRY: release_registry.name,
+        RepositoryTarget.DUMMY_BUILD: RepositoryTarget.DUMMY_BUILD.value,
+        RepositoryTarget.DUMMY_RELEASE: RepositoryTarget.DUMMY_RELEASE.value,
+    }
+    return repositories[target]
+
+
+def _expected_registry_images(
+    template: RegistryTestConfigTemplate,
+    flavor_name: str,
+    arch: str,
+    commit_sha: str,
+    branch_name: str,
+) -> ExpectedRegistryImages:
+    return ExpectedRegistryImages(
+        name=template.expected_name,
+        tags=_expected_registry_tags(
+            template.expected_tags,
+            flavor_name,
+            arch,
+            commit_sha,
+            branch_name,
+        ),
+    )
+
+
+def _assert_registry_images(registry, expected_images: ExpectedRegistryImages):
+    assert registry.images.get("name") == expected_images.name
+    assert set(registry.images.get("tags", [])) == set(expected_images.tags)
 
 
 def _get_docker_images_for_flavor(flavor: str) -> set[str]:
     docker_client = docker.from_env()
     try:
-        exa_images = [
-            str(tag)
+        return {
+            tag
             for img in docker_client.images.list()
             for tag in img.tags
             if tag.startswith(f"exasol/script-language-container:{flavor}")
-        ]
-        return set(exa_images)
+        }
 
     finally:
         docker_client.close()
@@ -107,202 +227,223 @@ def _cleanup_images(flavor_path: Path):
     )
 
 
-@pytest.mark.parametrize(
-    "build_test_config",
-    [
-        pytest.param(
-            BuildTestConfig(
-                build_cfg_mode=BuildConfigMode.NORMAL,
-                branch_name="refs/heads/some_branch",
+def _tag_suffix_for_build_step(build_step: str) -> str:
+    return next(
+        tag_info.tag_suffix
+        for tag_info in EXPECTED_TAG_INFO_HASHES
+        if tag_info.build_step == build_step
+    )
+
+
+BUILD_TEST_CONFIGS = [
+    pytest.param(
+        BuildTestConfigTemplate(
+            build_mode=BuildMode.NORMAL,
+            branch_name="refs/heads/some_branch",
+            build_registry=RegistryTestConfigTemplate(
+                repository_target=RepositoryTarget.BUILD_REGISTRY,
+                expected_name=BUILD_REGISTRY_NAME,
+                expected_tags=RegistryTagSet.CI_BUILD,
             ),
-            id="ci-pr",
-        ),
-        pytest.param(
-            BuildTestConfig(
-                build_cfg_mode=BuildConfigMode.RELEASE, branch_name="1.2.3"
+            release_registry=RegistryTestConfigTemplate(
+                repository_target=RepositoryTarget.DUMMY_RELEASE,
+                expected_name=None,
+                expected_tags=RegistryTagSet.EMPTY,
             ),
-            id="cd",
+            expected_local_images=LocalImageSet.CI,
         ),
-        pytest.param(
-            BuildTestConfig(
-                build_cfg_mode=BuildConfigMode.MASTER, branch_name="refs/heads/master"
+        id="ci-pr",
+    ),
+    pytest.param(
+        BuildTestConfigTemplate(
+            build_mode=BuildMode.RELEASE,
+            branch_name="1.2.3",
+            build_registry=RegistryTestConfigTemplate(
+                repository_target=RepositoryTarget.DUMMY_BUILD,
+                expected_name=None,
+                expected_tags=RegistryTagSet.EMPTY,
             ),
-            id="ci-master",
+            release_registry=RegistryTestConfigTemplate(
+                repository_target=RepositoryTarget.RELEASE_REGISTRY,
+                expected_name=RELEASE_REGISTRY_NAME,
+                expected_tags=RegistryTagSet.CD_RELEASE,
+            ),
+            expected_local_images=LocalImageSet.CD,
         ),
-    ],
-)
-def test_export_and_scan_vulnerabilities(
-    flavors_path, tmp_test_dir: str, build_test_config
-):
-    flavor_name = "successful"
+        id="cd",
+    ),
+    pytest.param(
+        BuildTestConfigTemplate(
+            build_mode=BuildMode.NORMAL,
+            branch_name="refs/heads/master",
+            build_registry=RegistryTestConfigTemplate(
+                repository_target=RepositoryTarget.BUILD_REGISTRY,
+                expected_name=BUILD_REGISTRY_NAME,
+                expected_tags=RegistryTagSet.CI_BUILD,
+            ),
+            release_registry=RegistryTestConfigTemplate(
+                repository_target=RepositoryTarget.RELEASE_REGISTRY,
+                expected_name=RELEASE_REGISTRY_NAME,
+                expected_tags=RegistryTagSet.CI_RELEASE,
+            ),
+            expected_local_images=LocalImageSet.CI,
+        ),
+        id="ci-master",
+    ),
+]
+
+
+@pytest.fixture
+def arch():
     machine = platform.machine().lower()
-    arch = "arm64" if ("arm" in machine) or ("aarch" in machine) else "x64"
+    return "arm64" if ("arm" in machine) or ("aarch" in machine) else "x64"
 
-    branch_name = build_test_config.branch_name
-    build_mode = build_test_config.build_mode
-    docker_user = None
-    docker_password = None
 
-    commit_sha = "123"
+@pytest.fixture
+def flavor_name():
+    return "successful"
+
+
+@pytest.fixture
+def commit_sha():
+    return "123"
+
+
+@pytest.fixture
+def exported_github_out_result(tmp_test_dir: str, flavor_name, arch):
+    release_hash = _tag_suffix_for_build_step("release")
+    test_hash = _tag_suffix_for_build_step("base_test_build_run")
+    return {
+        "slc_release": {
+            "path": str(
+                Path(tmp_test_dir)
+                / ".build_output_release"
+                / "cache"
+                / "exports"
+                / f"{flavor_name}-release-{arch}-{release_hash}.tar.gz"
+            ),
+            "goal": "release",
+        },
+        "slc_test": {
+            "path": str(
+                Path(tmp_test_dir)
+                / ".build_output_test"
+                / "cache"
+                / "exports"
+                / f"{flavor_name}-base_test_build_run-{arch}-{test_hash}.tar.gz"
+            ),
+            "goal": "base_test_build_run",
+        },
+    }
+
+
+@pytest.fixture
+def local_build_registry():
+    with LocalDockerRegistryContextManager(BUILD_REGISTRY_NAME) as build_registry:
+        yield build_registry
+
+
+@pytest.fixture
+def local_release_registry():
+    with LocalDockerRegistryContextManager(RELEASE_REGISTRY_NAME) as release_registry:
+        yield release_registry
+
+
+@pytest.fixture(params=BUILD_TEST_CONFIGS)
+def build_test_config(
+    request,
+    flavor_name,
+    arch,
+    commit_sha,
+    local_build_registry,
+    local_release_registry,
+):
+    template = request.param
+    branch_name = template.branch_name
+    return BuildTestConfig(
+        build_mode=template.build_mode,
+        branch_name=branch_name,
+        build_repository=_resolve_repository(
+            template.build_registry.repository_target,
+            local_build_registry,
+            local_release_registry,
+        ),
+        release_repository=_resolve_repository(
+            template.release_registry.repository_target,
+            local_build_registry,
+            local_release_registry,
+        ),
+        expected_build_registry=_expected_registry_images(
+            template.build_registry,
+            flavor_name,
+            arch,
+            commit_sha,
+            branch_name,
+        ),
+        expected_release_registry=_expected_registry_images(
+            template.release_registry,
+            flavor_name,
+            arch,
+            commit_sha,
+            branch_name,
+        ),
+        expected_local_images=_expected_local_images(
+            template.expected_local_images,
+            flavor_name,
+            arch,
+            branch_name,
+        ),
+    )
+
+
+def test_export_and_scan_vulnerabilities(
+    flavors_path,
+    tmp_test_dir: str,
+    build_test_config,
+    flavor_name,
+    commit_sha,
+    local_build_registry,
+    local_release_registry,
+    exported_github_out_result,
+):
     github_access = GithubAccessMock()
 
     local_flavors_path = Path(tmp_test_dir) / "flavors"
     shutil.copytree(src=flavors_path, dst=local_flavors_path)
 
     build_config_path = Path(tmp_test_dir) / "build_config.json"
-    build_config_content = cleandoc("""
- {{
-    "ignore_paths": [
-      "some_path"
-    ],
-    "docker_build_repository": "{build_repository}",
-    "docker_release_repository": "{release_repository}",
-    "test_container_folder": "test_container"
-}}
-""")
-
-    release_hash = [
-        tag_info.tag_suffix
-        for tag_info in EXPECTED_TAG_INFO_HASHES
-        if tag_info.build_step == "release"
-    ][0]
-    test_hash = [
-        tag_info.tag_suffix
-        for tag_info in EXPECTED_TAG_INFO_HASHES
-        if tag_info.build_step == "base_test_build_run"
-    ][0]
-    export_release_tar_gz_file = (
-        Path(tmp_test_dir)
-        / ".build_output_release"
-        / "cache"
-        / "exports"
-        / f"{flavor_name}-release-{arch}-{release_hash}.tar.gz"
+    build_config_path.write_text(
+        json.dumps(
+            {
+                "ignore_paths": ["some_path"],
+                "docker_build_repository": build_test_config.build_repository,
+                "docker_release_repository": build_test_config.release_repository,
+                "test_container_folder": "test_container",
+            }
+        )
     )
-    export_test_tar_gz_file = (
-        Path(tmp_test_dir)
-        / ".build_output_test"
-        / "cache"
-        / "exports"
-        / f"{flavor_name}-base_test_build_run-{arch}-{test_hash}.tar.gz"
-    )
-    exported_github_out_result = {
-        "slc_release": {
-            "path": str(export_release_tar_gz_file),
-            "goal": "release",
-        },
-        "slc_test": {
-            "path": str(export_test_tar_gz_file),
-            "goal": "base_test_build_run",
-        },
-    }
 
-    repository_name_build = "test_export_and_scan_vulnerabilities_build"
-    repository_name_release = "test_export_and_scan_vulnerabilities_release"
+    with _cleanup_images(local_flavors_path / flavor_name):
+        export_and_scan_vulnerabilities(
+            build_mode=build_test_config.build_mode,
+            flavor=flavor_name,
+            branch_name=build_test_config.branch_name,
+            docker_user=None,
+            docker_password=None,
+            commit_sha=commit_sha,
+            github_access=github_access,
+        )
 
-    with LocalDockerRegistryContextManager(repository_name_build) as build_registry:
-        with LocalDockerRegistryContextManager(
-            repository_name_release
-        ) as release_registry:
-            with _cleanup_images(local_flavors_path / flavor_name):
-                if build_test_config.build_cfg_mode == BuildConfigMode.NORMAL:
-                    build_repository = build_registry.name
-                    release_repository = "dummy/releases"
-                    expected_tags_build_registry = [
-                        _build_tag_name_ci("", flavor_name, arch, tag_info)
-                        for tag_info in EXPECTED_TAG_INFO_HASHES
-                    ] + [
-                        _build_tag_name_ci(commit_sha, flavor_name, arch, tag_info)
-                        for tag_info in EXPECTED_TAG_INFO_HASHES
-                    ]
-                    expected_tags_release_registry = []
-                    expected_local_images = [
-                        _build_local_tag_name_ci(flavor_name, arch, tag_info)
-                        for tag_info in EXPECTED_LOCAL_TAG_INFO_HASHES
-                    ]
-                elif build_test_config.build_cfg_mode == BuildConfigMode.RELEASE:
-                    build_repository = "dummy/build"
-                    release_repository = release_registry.name
-                    expected_tags_release_registry = [
-                        _build_tag_name_cd(flavor_name, arch, branch_name, tag_info)
-                        for tag_info in EXPECTED_TAG_INFO_RELEASE
-                    ]
-                    expected_tags_build_registry = []
-                    expected_local_images = [
-                        _build_local_tag_name_cd(
-                            flavor_name, arch, branch_name, tag_info
-                        )
-                        for tag_info in EXPECTED_LOCAL_TAG_INFO_RELEASE
-                    ]
-                elif build_test_config.build_cfg_mode == BuildConfigMode.MASTER:
-                    build_repository = build_registry.name
-                    release_repository = release_registry.name
-                    expected_tags_build_registry = [
-                        _build_tag_name_ci("", flavor_name, arch, tag_info)
-                        for tag_info in EXPECTED_TAG_INFO_HASHES
-                    ] + [
-                        _build_tag_name_ci(commit_sha, flavor_name, arch, tag_info)
-                        for tag_info in EXPECTED_TAG_INFO_HASHES
-                    ]
-                    expected_tags_release_registry = [
-                        _build_tag_name_ci("", flavor_name, arch, tag_info)
-                        for tag_info in EXPECTED_TAG_INFO_HASHES
-                    ]
-                    expected_local_images = [
-                        _build_local_tag_name_ci(flavor_name, arch, tag_info)
-                        for tag_info in EXPECTED_LOCAL_TAG_INFO_HASHES
-                    ]
+        assert json.loads(github_access.result) == exported_github_out_result
 
-                build_config_path.write_text(
-                    build_config_content.format(
-                        build_repository=build_repository,
-                        release_repository=release_repository,
-                    )
-                )
-                export_and_scan_vulnerabilities(
-                    build_mode=build_mode,
-                    flavor=flavor_name,
-                    branch_name=branch_name,
-                    docker_user=docker_user,
-                    docker_password=docker_password,
-                    commit_sha=commit_sha,
-                    github_access=github_access,
-                )
+        _assert_registry_images(
+            local_build_registry,
+            build_test_config.expected_build_registry,
+        )
+        _assert_registry_images(
+            local_release_registry,
+            build_test_config.expected_release_registry,
+        )
 
-                assert json.loads(github_access.result) == exported_github_out_result
-
-                expected_images_build_registry = {
-                    "name": repository_name_build,
-                    "tags": expected_tags_build_registry,
-                }
-
-                expected_images_release_registry = {
-                    "name": repository_name_release,
-                    "tags": expected_tags_release_registry,
-                }
-
-                if expected_tags_build_registry:
-                    assert (
-                        build_registry.images["name"]
-                        == expected_images_build_registry["name"]
-                    )
-                    assert set(build_registry.images["tags"]) == set(
-                        expected_images_build_registry["tags"]
-                    )
-                else:
-                    with pytest.raises(KeyError):
-                        images = build_registry.images["name"]
-
-                if expected_tags_release_registry:
-                    assert (
-                        release_registry.images["name"]
-                        == expected_images_release_registry["name"]
-                    )
-                    assert set(release_registry.images["tags"]) == set(
-                        expected_images_release_registry["tags"]
-                    )
-                else:
-                    with pytest.raises(KeyError):
-                        images = release_registry.images["name"]
-
-                images = _get_docker_images_for_flavor(flavor_name)
-                assert images == set(expected_local_images)
+        images = _get_docker_images_for_flavor(flavor_name)
+        assert images == set(build_test_config.expected_local_images)
