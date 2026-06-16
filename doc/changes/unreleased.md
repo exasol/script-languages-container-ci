@@ -9,3 +9,4 @@
 ## Internal
 
  - #155: Updated PTB to 8.2.0
+ - #158: Updated PTB to 9.0.0
