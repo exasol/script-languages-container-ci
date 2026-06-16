@@ -8,24 +8,30 @@ from exasol.slc_ci.lib.ci_prepare import CIPrepare, get_commit_sha_for_docker_ta
 from exasol.slc_ci.lib.ci_push import CIPush
 from exasol.slc_ci.lib.ci_security_scan import CISecurityScan
 from exasol.slc_ci.lib.get_build_config_model import get_build_config_model
-from exasol.slc_ci.lib.git_access import GitAccess
 from exasol.slc_ci.lib.github_access import GithubAccess
 from exasol.slc_ci.model.build_config_model import BuildConfig
 from exasol.slc_ci.model.build_mode import BuildMode
 
 
 def _export_slc(
-    ci_export: CIExport, github_access: GithubAccess, flavor_path: tuple[str, ...]
+    ci_export: CIExport,
+    github_access: GithubAccess,
+    flavor_path: tuple[str, ...],
+    build_name: str | None = None,
 ) -> None:
     release_output = ".build_output_release"
     slc_release = ci_export.export(
-        flavor_path=flavor_path, goal="release", output_directory=release_output
+        flavor_path=flavor_path,
+        goal="release",
+        output_directory=release_output,
+        build_name=build_name,
     )
     test_output = ".build_output_test"
     slc_test = ci_export.export(
         flavor_path=flavor_path,
         goal="base_test_build_run",
         output_directory=test_output,
+        build_name=build_name,
     )
     github_access.write_result(
         json.dumps(
@@ -44,7 +50,6 @@ def _export_and_scan_vulnerabilities_ci(
     docker_password: str,
     commit_sha: str,
     rebuild: bool,
-    git_access: GitAccess,
     github_access: GithubAccess,
     ci_build: CIBuild = CIBuild(),
     ci_security_scan: CISecurityScan = CISecurityScan(),
@@ -66,7 +71,6 @@ def _export_and_scan_vulnerabilities_ci(
         build_docker_repository=build_config.docker_build_repository,
         docker_user=docker_user,
         docker_password=docker_password,
-        build_name=f"CI Build {branch_name}",
     )
     ci_security_scan.run_security_scan(flavor_path=flavor_path)
     ci_push.push(
@@ -101,7 +105,6 @@ def _export_and_scan_vulnerabilities_cd(
     docker_user: str,
     docker_password: str,
     commit_sha: str,
-    git_access: GitAccess,
     github_access: GithubAccess,
     ci_build: CIBuild = CIBuild(),
     ci_security_scan: CISecurityScan = CISecurityScan(),
@@ -125,15 +128,19 @@ def _export_and_scan_vulnerabilities_cd(
         docker_password=docker_password,
         build_name=branch_name,
     )
-    ci_security_scan.run_security_scan(flavor_path=flavor_path)
+    ci_security_scan.run_security_scan(
+        flavor_path=flavor_path,
+        build_name=branch_name,
+    )
     ci_push.push(
         flavor_path=flavor_path,
         target_docker_repository=build_config.docker_release_repository,
         target_docker_tag_prefix="",
         docker_user=docker_user,
         docker_password=docker_password,
+        build_name=branch_name,
     )
-    _export_slc(ci_export, github_access, flavor_path)
+    _export_slc(ci_export, github_access, flavor_path, build_name=branch_name)
 
 
 def export_and_scan_vulnerabilities(

@@ -1,16 +1,14 @@
 # Generated and maintained by the exasol-toolbox.
 # Last generated with exasol-toolbox version 8.2.0.
-name: Build Matrix (Python)
+name: Publish Documentation
 
 on:
   workflow_call:
-    outputs:
-      matrix:
-        description: "Generates the python version build matrix"
-        value: ${{ jobs.set-matrix-python.outputs.matrix }}
+  workflow_dispatch:
 
 jobs:
-  set-matrix-python:
+
+  build-documentation:
     runs-on: "ubuntu-24.04"
     permissions:
       contents: read
@@ -19,6 +17,7 @@ jobs:
         id: check-out-repository
         uses: actions/checkout@v6
         with:
+          fetch-depth: 0
           persist-credentials: false
 
       - name: Set up Python & Poetry Environment
@@ -28,14 +27,9 @@ jobs:
           python-version: "3.10"
           poetry-version: "2.3.0"
 
-      - name: Generate Matrix
-        id: generate-matrix
-        run: poetry run -- nox -s matrix:python
-
-      - name: Set Matrix
-        id: set-matrix
-        run: |
-          echo "matrix=$(poetry run -- nox -s matrix:python)" >> $GITHUB_OUTPUT
-
-    outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      - name: Build Documentation
+        id: build-documentation
+        run: echo Do nothing
+      - name: Upload Artifact
+        id: upload-artifact
+        run: echo Do nothing

@@ -22,7 +22,7 @@ class CIBuild:
         build_docker_repository: str | None,
         docker_user: str,
         docker_password: str,
-        build_name: str,
+        build_name: str | None = None,
     ):
         """
         Build the script-language container for given flavor.
