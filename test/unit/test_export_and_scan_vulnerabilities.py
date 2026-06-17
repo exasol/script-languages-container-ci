@@ -244,7 +244,7 @@ def test_export_and_scan_vulnerabilities_cd(build_config_environment, git_access
     lib_export_and_scan_vulnerabilities(
         build_mode=BuildMode.RELEASE,
         flavor=test_env.flavor_name,
-        branch_name=test_env.branch_name,
+        branch_name="refs/tags/4.4.0",
         docker_user=test_env.docker_user,
         docker_password=test_env.docker_pwd,
         commit_sha=test_env.commit_sha,
@@ -266,10 +266,10 @@ def test_export_and_scan_vulnerabilities_cd(build_config_environment, git_access
             build_docker_repository=build_config_environment.docker_build_repository,
             docker_user=test_env.docker_user,
             docker_password=test_env.docker_pwd,
-            build_name=test_env.branch_name,
+            build_name="4.4.0",
         ),
         call.run_security_scan(
-            flavor_path=(expected_flavor_path,), build_name="test_branch_name"
+            flavor_path=(expected_flavor_path,), build_name="4.4.0"
         ),
         call.push(
             flavor_path=(expected_flavor_path,),
@@ -277,7 +277,7 @@ def test_export_and_scan_vulnerabilities_cd(build_config_environment, git_access
             target_docker_tag_prefix="",
             docker_user=test_env.docker_user,
             docker_password=test_env.docker_pwd,
-            build_name="test_branch_name",
+            build_name="4.4.0",
         ),
     ]
     assert ci_export_mock.mock_calls == [
@@ -285,13 +285,13 @@ def test_export_and_scan_vulnerabilities_cd(build_config_environment, git_access
             flavor_path=(expected_flavor_path,),
             goal="release",
             output_directory=".build_output_release",
-            build_name="test_branch_name",
+            build_name="4.4.0",
         ),
         call.export(
             flavor_path=(expected_flavor_path,),
             goal="base_test_build_run",
             output_directory=".build_output_test",
-            build_name="test_branch_name",
+            build_name="4.4.0",
         ),
     ]
     assert json.loads(github_output_mock.write_result.call_args.args[0]) == {

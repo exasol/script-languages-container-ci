@@ -120,17 +120,18 @@ def _export_and_scan_vulnerabilities_cd(
     flavor_path = (f"{build_config.flavors_path}/{flavor}",)
     test_container_folder = build_config.test_container_folder
     ci_prepare.prepare(commit_sha=commit_sha)
+    build_name = branch_name.split("/")[-1]
     ci_build.build(
         flavor_path=flavor_path,
         rebuild=True,
         build_docker_repository=build_config.docker_build_repository,
         docker_user=docker_user,
         docker_password=docker_password,
-        build_name=branch_name,
+        build_name=build_name,
     )
     ci_security_scan.run_security_scan(
         flavor_path=flavor_path,
-        build_name=branch_name,
+        build_name=build_name,
     )
     ci_push.push(
         flavor_path=flavor_path,
@@ -138,9 +139,9 @@ def _export_and_scan_vulnerabilities_cd(
         target_docker_tag_prefix="",
         docker_user=docker_user,
         docker_password=docker_password,
-        build_name=branch_name,
+        build_name=build_name,
     )
-    _export_slc(ci_export, github_access, flavor_path, build_name=branch_name)
+    _export_slc(ci_export, github_access, flavor_path, build_name=build_name)
 
 
 def export_and_scan_vulnerabilities(
