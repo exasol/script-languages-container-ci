@@ -268,9 +268,7 @@ def test_export_and_scan_vulnerabilities_cd(build_config_environment, git_access
             docker_password=test_env.docker_pwd,
             build_name="4.4.0",
         ),
-        call.run_security_scan(
-            flavor_path=(expected_flavor_path,), build_name="4.4.0"
-        ),
+        call.run_security_scan(flavor_path=(expected_flavor_path,), build_name="4.4.0"),
         call.push(
             flavor_path=(expected_flavor_path,),
             target_docker_repository=build_config_environment.docker_release_repository,

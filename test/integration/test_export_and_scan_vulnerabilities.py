@@ -161,7 +161,9 @@ def _expected_local_images(
             ]
         case LocalImageSet.CD:
             return [
-                _build_local_tag_name_cd(flavor_name, arch, expected_build_name, tag_info)
+                _build_local_tag_name_cd(
+                    flavor_name, arch, expected_build_name, tag_info
+                )
                 for tag_info in EXPECTED_LOCAL_TAG_INFO_RELEASE
             ]
 
