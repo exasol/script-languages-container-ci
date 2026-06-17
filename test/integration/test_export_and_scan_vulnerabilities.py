@@ -45,9 +45,9 @@ def _build_tag_name_ci(
 
 
 def _build_tag_name_cd(
-    flavor_name: str, arch: str, branch_name: str, tag_info: TagInfo
+    flavor_name: str, arch: str, build_name: str, tag_info: TagInfo
 ) -> str:
-    return f"{flavor_name}-{tag_info.build_step}_{arch}_{branch_name}"
+    return f"{flavor_name}-{tag_info.build_step}_{arch}_{build_name}"
 
 
 def _build_local_tag_name_ci(flavor_name: str, arch: str, tag_info: TagInfo) -> str:
@@ -55,9 +55,9 @@ def _build_local_tag_name_ci(flavor_name: str, arch: str, tag_info: TagInfo) -> 
 
 
 def _build_local_tag_name_cd(
-    flavor_name: str, arch: str, branch_name: str, tag_info: TagInfo
+    flavor_name: str, arch: str, expected_build_name: str, tag_info: TagInfo
 ) -> str:
-    return f"exasol/script-language-container:{flavor_name}-{tag_info.build_step}_{arch}_{branch_name}"
+    return f"exasol/script-language-container:{flavor_name}-{tag_info.build_step}_{arch}_{expected_build_name}"
 
 
 BUILD_REGISTRY_NAME = "test_export_and_scan_vulnerabilities_build"
@@ -94,6 +94,7 @@ class RegistryTestConfigTemplate:
 class BuildTestConfigTemplate:
     build_mode: BuildMode
     branch_name: str
+    expected_build_name: str
     build_registry: RegistryTestConfigTemplate
     release_registry: RegistryTestConfigTemplate
     expected_local_images: LocalImageSet
@@ -121,7 +122,7 @@ def _expected_registry_tags(
     flavor_name: str,
     arch: str,
     commit_sha: str,
-    branch_name: str,
+    expected_build_name: str,
 ) -> list[str]:
     match tag_set:
         case RegistryTagSet.EMPTY:
@@ -141,7 +142,7 @@ def _expected_registry_tags(
             ]
         case RegistryTagSet.CD_RELEASE:
             return [
-                _build_tag_name_cd(flavor_name, arch, branch_name, tag_info)
+                _build_tag_name_cd(flavor_name, arch, expected_build_name, tag_info)
                 for tag_info in EXPECTED_TAG_INFO_RELEASE
             ]
 
@@ -150,7 +151,7 @@ def _expected_local_images(
     image_set: LocalImageSet,
     flavor_name: str,
     arch: str,
-    branch_name: str,
+    expected_build_name: str,
 ) -> list[str]:
     match image_set:
         case LocalImageSet.CI:
@@ -160,7 +161,9 @@ def _expected_local_images(
             ]
         case LocalImageSet.CD:
             return [
-                _build_local_tag_name_cd(flavor_name, arch, branch_name, tag_info)
+                _build_local_tag_name_cd(
+                    flavor_name, arch, expected_build_name, tag_info
+                )
                 for tag_info in EXPECTED_LOCAL_TAG_INFO_RELEASE
             ]
 
@@ -184,7 +187,7 @@ def _expected_registry_images(
     flavor_name: str,
     arch: str,
     commit_sha: str,
-    branch_name: str,
+    expected_build_name: str,
 ) -> ExpectedRegistryImages:
     return ExpectedRegistryImages(
         name=template.expected_name,
@@ -193,7 +196,7 @@ def _expected_registry_images(
             flavor_name,
             arch,
             commit_sha,
-            branch_name,
+            expected_build_name,
         ),
     )
 
@@ -241,6 +244,7 @@ BUILD_TEST_CONFIGS = [
         BuildTestConfigTemplate(
             build_mode=BuildMode.NORMAL,
             branch_name="refs/heads/some_branch",
+            expected_build_name="",
             build_registry=RegistryTestConfigTemplate(
                 repository_target=RepositoryTarget.BUILD_REGISTRY,
                 expected_name=BUILD_REGISTRY_NAME,
@@ -258,7 +262,8 @@ BUILD_TEST_CONFIGS = [
     pytest.param(
         BuildTestConfigTemplate(
             build_mode=BuildMode.RELEASE,
-            branch_name="1.2.3",
+            branch_name="refs/tags/1.2.3",
+            expected_build_name="1.2.3",
             build_registry=RegistryTestConfigTemplate(
                 repository_target=RepositoryTarget.DUMMY_BUILD,
                 expected_name=None,
@@ -277,6 +282,7 @@ BUILD_TEST_CONFIGS = [
         BuildTestConfigTemplate(
             build_mode=BuildMode.NORMAL,
             branch_name="refs/heads/master",
+            expected_build_name="",
             build_registry=RegistryTestConfigTemplate(
                 repository_target=RepositoryTarget.BUILD_REGISTRY,
                 expected_name=BUILD_REGISTRY_NAME,
@@ -361,6 +367,7 @@ def build_test_config(
 ):
     template = request.param
     branch_name = template.branch_name
+    expected_build_name = template.expected_build_name
     return BuildTestConfig(
         build_mode=template.build_mode,
         branch_name=branch_name,
@@ -379,20 +386,20 @@ def build_test_config(
             flavor_name,
             arch,
             commit_sha,
-            branch_name,
+            expected_build_name,
         ),
         expected_release_registry=_expected_registry_images(
             template.release_registry,
             flavor_name,
             arch,
             commit_sha,
-            branch_name,
+            expected_build_name,
         ),
         expected_local_images=_expected_local_images(
             template.expected_local_images,
             flavor_name,
             arch,
-            branch_name,
+            expected_build_name,
         ),
     )
 
