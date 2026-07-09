@@ -48,7 +48,7 @@ dev = [
     "toml>=0.10.2",
     "pytest>=9.0.3, <10",
     "pytest-mock>=3.7.0, <4.0.0",
-    "exasol-toolbox>=9, <10",
+    "exasol-toolbox>=10.2.1, <11",
     ]
 
 [tool.black]
