@@ -7,6 +7,8 @@ jobs:
   build-matrix:
     name: Build Matrix
     uses: ./.github/workflows/matrix.yml
+    permissions:
+      contents: read
     with:
       matrix_keys_json: '["python_versions"]'
 
@@ -26,6 +28,8 @@ jobs:
       - name: Check out Repository
         id: check-out-repository
         uses: actions/checkout@v6
+        with:
+          persist-credentials: false
 
       - name: Set up Python & Poetry Environment
         id: set-up-python-and-poetry-environment
