@@ -17,13 +17,17 @@ class SuccessfulFlavorContract:
 
     @pytest.fixture()
     def existing_container(self, flavor_path, tmp_path):
-        export_path = tmp_path / "successful"
+        output_path = tmp_path / "successful"
+        output_path.mkdir(parents=True, exist_ok=False)
+        export_path = tmp_path / "successful_slc"
         export_path.mkdir(parents=True, exist_ok=False)
         ci_export = CIExport()
         slc = ci_export.export(
             flavor_path=(flavor_path,),
             goal="release",
-            output_directory=str(export_path),
+            output_directory=str(output_path),
+            export_path=str(export_path),
+            use_symlink_for_export_path=True,
         )
         return slc
 
@@ -65,13 +69,17 @@ class FailingRunDBTestFlavorContract:
 
     @pytest.fixture()
     def existing_container(self, flavor_path, tmp_path):
-        export_path = tmp_path / "failure"
+        output_path = tmp_path / "failure"
+        output_path.mkdir(parents=True, exist_ok=False)
+        export_path = tmp_path / "failing_slc"
         export_path.mkdir(parents=True, exist_ok=False)
         ci_export = CIExport()
         slc = ci_export.export(
             flavor_path=(flavor_path,),
             goal="release",
-            output_directory=str(export_path),
+            output_directory=str(output_path),
+            export_path=str(export_path),
+            use_symlink_for_export_path=True,
         )
         return slc
 
