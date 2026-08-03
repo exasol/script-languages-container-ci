@@ -28,7 +28,8 @@ class _CiTestConfig:
     "test_ci_config",
     [
         _CiTestConfig(
-            expected_tag_infos=EXPECTED_TAG_INFO_RELEASE, build_name="test-build_1.2.3"
+            expected_tag_infos=EXPECTED_TAG_INFO_RELEASE + EXPECTED_TAG_INFO_HASHES,
+            build_name="test-build_1.2.3",
         ),
         _CiTestConfig(expected_tag_infos=EXPECTED_TAG_INFO_HASHES, build_name=None),
     ],
