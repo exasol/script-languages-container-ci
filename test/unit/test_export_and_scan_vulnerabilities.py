@@ -70,12 +70,16 @@ def test_export_and_scan_vulnerabilities_ci_normal(
             goal="release",
             output_directory=".build_output_release",
             build_name=None,
+            export_path="release_slc",
+            use_symlink_for_export_path=True,
         ),
         call.export(
             flavor_path=(expected_flavor_path,),
             goal="base_test_build_run",
             output_directory=".build_output_test",
             build_name=None,
+            export_path="test_slc",
+            use_symlink_for_export_path=True,
         ),
     ]
     assert json.loads(github_output_mock.write_result.call_args.args[0]) == {
@@ -141,12 +145,16 @@ def test_export_and_scan_vulnerabilities_ci_develop(
             goal="release",
             output_directory=".build_output_release",
             build_name=None,
+            export_path="release_slc",
+            use_symlink_for_export_path=True,
         ),
         call.export(
             flavor_path=(expected_flavor_path,),
             goal="base_test_build_run",
             output_directory=".build_output_test",
             build_name=None,
+            export_path="test_slc",
+            use_symlink_for_export_path=True,
         ),
     ]
     assert json.loads(github_output_mock.write_result.call_args.args[0]) == {
@@ -220,12 +228,16 @@ def test_export_and_scan_vulnerabilities_ci_main(
             goal="release",
             output_directory=".build_output_release",
             build_name=None,
+            export_path="release_slc",
+            use_symlink_for_export_path=True,
         ),
         call.export(
             flavor_path=(expected_flavor_path,),
             goal="base_test_build_run",
             output_directory=".build_output_test",
             build_name=None,
+            export_path="test_slc",
+            use_symlink_for_export_path=True,
         ),
     ]
     assert json.loads(github_output_mock.write_result.call_args.args[0]) == {
@@ -284,12 +296,16 @@ def test_export_and_scan_vulnerabilities_cd(build_config_environment, git_access
             goal="release",
             output_directory=".build_output_release",
             build_name="4.4.0",
+            export_path="release_slc",
+            use_symlink_for_export_path=True,
         ),
         call.export(
             flavor_path=(expected_flavor_path,),
             goal="base_test_build_run",
             output_directory=".build_output_test",
             build_name="4.4.0",
+            export_path="test_slc",
+            use_symlink_for_export_path=True,
         ),
     ]
     assert json.loads(github_output_mock.write_result.call_args.args[0]) == {
