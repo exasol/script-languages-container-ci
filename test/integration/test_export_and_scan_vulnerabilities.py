@@ -89,6 +89,7 @@ class RegistryTestConfigTemplate:
     expected_name: str | None
     expected_tags: RegistryTagSet
 
+RELEASE_BUILD_NAME = "1.2.3"
 
 @dataclasses.dataclass(frozen=True)
 class BuildTestConfigTemplate:
@@ -263,7 +264,7 @@ BUILD_TEST_CONFIGS = [
         BuildTestConfigTemplate(
             build_mode=BuildMode.RELEASE,
             branch_name="refs/tags/1.2.3",
-            expected_build_name="1.2.3",
+            expected_build_name=RELEASE_BUILD_NAME,
             build_registry=RegistryTestConfigTemplate(
                 repository_target=RepositoryTarget.DUMMY_BUILD,
                 expected_name=None,
@@ -314,35 +315,6 @@ def flavor_name():
 @pytest.fixture
 def commit_sha():
     return "123"
-
-
-@pytest.fixture
-def exported_github_out_result(tmp_test_dir: str, flavor_name, arch):
-    release_hash = _tag_suffix_for_build_step("release")
-    test_hash = _tag_suffix_for_build_step("base_test_build_run")
-    return {
-        "slc_release": {
-            "path": str(
-                Path(tmp_test_dir)
-                / ".build_output_release"
-                / "cache"
-                / "exports"
-                / f"{flavor_name}-release-{arch}-{release_hash}.tar.gz"
-            ),
-            "goal": "release",
-        },
-        "slc_test": {
-            "path": str(
-                Path(tmp_test_dir)
-                / ".build_output_test"
-                / "cache"
-                / "exports"
-                / f"{flavor_name}-base_test_build_run-{arch}-{test_hash}.tar.gz"
-            ),
-            "goal": "base_test_build_run",
-        },
-    }
-
 
 @pytest.fixture
 def local_build_registry():
@@ -402,6 +374,30 @@ def build_test_config(
             expected_build_name,
         ),
     )
+
+@pytest.fixture
+def exported_github_out_result(tmp_test_dir: str, flavor_name, arch, build_test_config):
+    suffix = (
+        f"_{RELEASE_BUILD_NAME}"
+        if build_test_config.build_mode == BuildMode.RELEASE
+        else ""
+    )
+    return {
+        "slc_release": {
+            "path": str(
+                Path("release_slc")
+                / f"{flavor_name}_release{suffix}.tar.gz"
+            ),
+            "goal": "release",
+        },
+        "slc_test": {
+            "path": str(
+                Path("test_slc")
+                / f"{flavor_name}_base_test_build_run{suffix}.tar.gz"
+            ),
+            "goal": "base_test_build_run",
+        },
+    }
 
 
 def test_export_and_scan_vulnerabilities(
