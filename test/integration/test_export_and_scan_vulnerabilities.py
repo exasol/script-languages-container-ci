@@ -89,7 +89,9 @@ class RegistryTestConfigTemplate:
     expected_name: str | None
     expected_tags: RegistryTagSet
 
+
 RELEASE_BUILD_NAME = "1.2.3"
+
 
 @dataclasses.dataclass(frozen=True)
 class BuildTestConfigTemplate:
@@ -316,6 +318,7 @@ def flavor_name():
 def commit_sha():
     return "123"
 
+
 @pytest.fixture
 def local_build_registry():
     with LocalDockerRegistryContextManager(BUILD_REGISTRY_NAME) as build_registry:
@@ -375,6 +378,7 @@ def build_test_config(
         ),
     )
 
+
 @pytest.fixture
 def exported_github_out_result(tmp_test_dir: str, flavor_name, arch, build_test_config):
     suffix = (
@@ -384,16 +388,12 @@ def exported_github_out_result(tmp_test_dir: str, flavor_name, arch, build_test_
     )
     return {
         "slc_release": {
-            "path": str(
-                Path("release_slc")
-                / f"{flavor_name}_release{suffix}.tar.gz"
-            ),
+            "path": str(Path("release_slc") / f"{flavor_name}_release{suffix}.tar.gz"),
             "goal": "release",
         },
         "slc_test": {
             "path": str(
-                Path("test_slc")
-                / f"{flavor_name}_base_test_build_run{suffix}.tar.gz"
+                Path("test_slc") / f"{flavor_name}_base_test_build_run{suffix}.tar.gz"
             ),
             "goal": "base_test_build_run",
         },
