@@ -144,9 +144,10 @@ def _expected_registry_tags(
                 for tag_info in EXPECTED_TAG_INFO_HASHES
             ]
         case RegistryTagSet.CD_RELEASE:
+            combined_tags = (EXPECTED_TAG_INFO_RELEASE + EXPECTED_TAG_INFO_HASHES)
             return [
                 _build_tag_name_cd(flavor_name, arch, expected_build_name, tag_info)
-                for tag_info in EXPECTED_TAG_INFO_RELEASE
+                for tag_info in combined_tags
             ]
 
 
