@@ -6,12 +6,12 @@ import shutil
 from enum import Enum
 from pathlib import Path
 from test.integration.tag_infos import (
+    BUILD_NAME,
     EXPECTED_LOCAL_TAG_INFO_HASHES,
     EXPECTED_LOCAL_TAG_INFO_RELEASE,
     EXPECTED_TAG_INFO_HASHES,
     EXPECTED_TAG_INFO_RELEASE,
     TagInfo,
-    BUILD_NAME,
 )
 
 import docker
@@ -45,9 +45,7 @@ def _build_tag_name_ci(
         return f"{flavor_name}-{tag_info.build_step}_{arch}_{tag_info.tag_suffix}"
 
 
-def _build_tag_name_cd(
-    flavor_name: str, arch: str, tag_info: TagInfo
-) -> str:
+def _build_tag_name_cd(flavor_name: str, arch: str, tag_info: TagInfo) -> str:
     return f"{flavor_name}-{tag_info.build_step}_{arch}_{tag_info.tag_suffix}"
 
 
@@ -55,9 +53,7 @@ def _build_local_tag_name_ci(flavor_name: str, arch: str, tag_info: TagInfo) -> 
     return f"exasol/script-language-container:{flavor_name}-{tag_info.build_step}_{arch}_{tag_info.tag_suffix}"
 
 
-def _build_local_tag_name_cd(
-    flavor_name: str, arch: str, tag_info: TagInfo
-) -> str:
+def _build_local_tag_name_cd(flavor_name: str, arch: str, tag_info: TagInfo) -> str:
     return f"exasol/script-language-container:{flavor_name}-{tag_info.build_step}_{arch}_{tag_info.tag_suffix}"
 
 
@@ -89,7 +85,6 @@ class RegistryTestConfigTemplate:
     repository_target: RepositoryTarget
     expected_name: str | None
     expected_tags: RegistryTagSet
-
 
 
 @dataclasses.dataclass(frozen=True)
@@ -145,8 +140,7 @@ def _expected_registry_tags(
         case RegistryTagSet.CD_RELEASE:
             combined = EXPECTED_TAG_INFO_RELEASE + EXPECTED_TAG_INFO_HASHES
             return [
-                _build_tag_name_cd(flavor_name, arch, tag_info)
-                for tag_info in combined
+                _build_tag_name_cd(flavor_name, arch, tag_info) for tag_info in combined
             ]
 
 
@@ -165,9 +159,7 @@ def _expected_local_images(
         case LocalImageSet.CD:
             combined = EXPECTED_LOCAL_TAG_INFO_RELEASE + EXPECTED_LOCAL_TAG_INFO_HASHES
             return [
-                _build_local_tag_name_cd(
-                    flavor_name, arch, tag_info
-                )
+                _build_local_tag_name_cd(flavor_name, arch, tag_info)
                 for tag_info in combined
             ]
 
@@ -383,9 +375,7 @@ def build_test_config(
 @pytest.fixture
 def expected_github_out_result(tmp_test_dir: str, flavor_name, arch, build_test_config):
     suffix = (
-        f"_{BUILD_NAME}"
-        if build_test_config.build_mode == BuildMode.RELEASE
-        else ""
+        f"_{BUILD_NAME}" if build_test_config.build_mode == BuildMode.RELEASE else ""
     )
     return {
         "slc_release": {

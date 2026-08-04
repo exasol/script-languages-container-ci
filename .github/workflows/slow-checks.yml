@@ -10,10 +10,10 @@ jobs:
     permissions:
       contents: read
     with:
-      matrix_keys_json: '["python_versions"]'
+      matrix_keys_json: '["python_versions", "integration_test_targets"]'
 
   run-integration-tests:
-    name: Run Integration Tests (Python-${{ matrix.python_versions }})
+    name: Run Integration Tests (Python-${{ matrix.python_versions }}, Target-${{ matrix.integration_test_targets }})
     needs:
       - build-matrix
     runs-on: "ubuntu-24.04"
@@ -40,13 +40,13 @@ jobs:
 
       - name: Run Integration Tests
         id: run-integration-tests
-        run: poetry run -- nox -s test:integration -- --coverage
+        run: poetry run -- nox -s test:integration -- --coverage -k "${{ matrix.integration_test_targets }}"
 
       - name: Upload Artifacts
         id: upload-artifacts
         uses: actions/upload-artifact@v7
         with:
-          name: coverage-python${{ matrix.python_versions }}-slow
+          name: coverage-python${{ matrix.python_versions }}-slow-${{ matrix.integration_test_targets }}
           path: .coverage
           include-hidden-files: true
           overwrite: false
