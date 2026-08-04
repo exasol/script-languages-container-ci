@@ -11,6 +11,7 @@ from test.integration.tag_infos import (
     EXPECTED_TAG_INFO_HASHES,
     EXPECTED_TAG_INFO_RELEASE,
     TagInfo,
+    BUILD_NAME,
 )
 
 import docker
@@ -45,9 +46,9 @@ def _build_tag_name_ci(
 
 
 def _build_tag_name_cd(
-    flavor_name: str, arch: str, build_name: str, tag_info: TagInfo
+    flavor_name: str, arch: str, tag_info: TagInfo
 ) -> str:
-    return f"{flavor_name}-{tag_info.build_step}_{arch}_{build_name}"
+    return f"{flavor_name}-{tag_info.build_step}_{arch}_{tag_info.tag_suffix}"
 
 
 def _build_local_tag_name_ci(flavor_name: str, arch: str, tag_info: TagInfo) -> str:
@@ -55,9 +56,9 @@ def _build_local_tag_name_ci(flavor_name: str, arch: str, tag_info: TagInfo) -> 
 
 
 def _build_local_tag_name_cd(
-    flavor_name: str, arch: str, expected_build_name: str, tag_info: TagInfo
+    flavor_name: str, arch: str, tag_info: TagInfo
 ) -> str:
-    return f"exasol/script-language-container:{flavor_name}-{tag_info.build_step}_{arch}_{expected_build_name}"
+    return f"exasol/script-language-container:{flavor_name}-{tag_info.build_step}_{arch}_{tag_info.tag_suffix}"
 
 
 BUILD_REGISTRY_NAME = "test_export_and_scan_vulnerabilities_build"
@@ -89,8 +90,6 @@ class RegistryTestConfigTemplate:
     expected_name: str | None
     expected_tags: RegistryTagSet
 
-
-RELEASE_BUILD_NAME = "1.2.3"
 
 
 @dataclasses.dataclass(frozen=True)
@@ -144,10 +143,10 @@ def _expected_registry_tags(
                 for tag_info in EXPECTED_TAG_INFO_HASHES
             ]
         case RegistryTagSet.CD_RELEASE:
-            combined_tags = (EXPECTED_TAG_INFO_RELEASE + EXPECTED_TAG_INFO_HASHES)
+            combined = EXPECTED_TAG_INFO_RELEASE + EXPECTED_TAG_INFO_HASHES
             return [
-                _build_tag_name_cd(flavor_name, arch, expected_build_name, tag_info)
-                for tag_info in combined_tags
+                _build_tag_name_cd(flavor_name, arch, tag_info)
+                for tag_info in combined
             ]
 
 
@@ -164,11 +163,12 @@ def _expected_local_images(
                 for tag_info in EXPECTED_LOCAL_TAG_INFO_HASHES
             ]
         case LocalImageSet.CD:
+            combined = EXPECTED_LOCAL_TAG_INFO_RELEASE + EXPECTED_LOCAL_TAG_INFO_HASHES
             return [
                 _build_local_tag_name_cd(
-                    flavor_name, arch, expected_build_name, tag_info
+                    flavor_name, arch, tag_info
                 )
-                for tag_info in EXPECTED_LOCAL_TAG_INFO_RELEASE
+                for tag_info in combined
             ]
 
 
@@ -266,8 +266,8 @@ BUILD_TEST_CONFIGS = [
     pytest.param(
         BuildTestConfigTemplate(
             build_mode=BuildMode.RELEASE,
-            branch_name="refs/tags/1.2.3",
-            expected_build_name=RELEASE_BUILD_NAME,
+            branch_name=f"refs/tags/{BUILD_NAME}",
+            expected_build_name=BUILD_NAME,
             build_registry=RegistryTestConfigTemplate(
                 repository_target=RepositoryTarget.DUMMY_BUILD,
                 expected_name=None,
@@ -381,9 +381,9 @@ def build_test_config(
 
 
 @pytest.fixture
-def exported_github_out_result(tmp_test_dir: str, flavor_name, arch, build_test_config):
+def expected_github_out_result(tmp_test_dir: str, flavor_name, arch, build_test_config):
     suffix = (
-        f"_{RELEASE_BUILD_NAME}"
+        f"_{BUILD_NAME}"
         if build_test_config.build_mode == BuildMode.RELEASE
         else ""
     )
@@ -409,7 +409,7 @@ def test_export_and_scan_vulnerabilities(
     commit_sha,
     local_build_registry,
     local_release_registry,
-    exported_github_out_result,
+    expected_github_out_result,
 ):
     github_access = GithubAccessMock()
 
@@ -439,7 +439,7 @@ def test_export_and_scan_vulnerabilities(
             github_access=github_access,
         )
 
-        assert json.loads(github_access.result) == exported_github_out_result
+        assert json.loads(github_access.result) == expected_github_out_result
 
         _assert_registry_images(
             local_build_registry,
