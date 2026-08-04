@@ -115,14 +115,14 @@ idna = ">=2.5"
 
 [[package]]
 name = "argcomplete"
-version = "3.7.0"
+version = "3.7.1"
 description = "Bash tab completion for argparse"
 optional = false
 python-versions = ">=3.8"
 groups = ["dev"]
 files = [
-    {file = "argcomplete-3.7.0-py3-none-any.whl", hash = "sha256:d8f0f22d2a8a7caa383be1e22b6caf1ecaf0ebd10d8f83cc125e36540c95830c"},
-    {file = "argcomplete-3.7.0.tar.gz", hash = "sha256:afde224f753f874807b1dc1414e883ab8fe0cda9c04807b6047dcb8e1ac23913"},
+    {file = "argcomplete-3.7.1-py3-none-any.whl", hash = "sha256:0bed095030f295599b1018a622a53ea22f4f253e134b87be396b51e59ee00954"},
+    {file = "argcomplete-3.7.1.tar.gz", hash = "sha256:6926a3a70ae70dce1f3dfb5cf1fc984278cd163e78ec18ad2ed7fa4fabd8f281"},
 ]
 
 [package.extras]
@@ -1205,13 +1205,15 @@ files = [
 
 [[package]]
 name = "exasol-integration-test-docker-environment"
-version = "6.5.0"
+version = "6.5.1"
 description = "Integration Test Docker Environment for Exasol"
 optional = false
-python-versions = ">=3.10,<3.15"
+python-versions = "<3.15,>=3.10"
 groups = ["main"]
-files = []
-develop = false
+files = [
+    {file = "exasol_integration_test_docker_environment-6.5.1-py3-none-any.whl", hash = "sha256:ceb80bdc585447ba7204d6cb058ec832497d75586941a85860c0f5388daec6d1"},
+    {file = "exasol_integration_test_docker_environment-6.5.1.tar.gz", hash = "sha256:e6a977af93eda5d863c03a28d097e268a687e0f2f493c11c773aff43b8e457af"},
+]
 
 [package.dependencies]
 click = ">=7.0"
@@ -1231,12 +1233,6 @@ pydot = ">=1.4.0"
 requests = ">=2.32.4"
 simplejson = ">=3.16.0"
 "stopwatch.py" = ">=1.0.0"
-
-[package.source]
-type = "git"
-url = "https://github.com/exasol/integration-test-docker-environment.git"
-reference = "agent/tag-build-name-after-source-retag"
-resolved_reference = "ea5ed6b006b0e6350cfa2913a2d8bb529dac4025"
 
 [[package]]
 name = "exasol-saas-api"
@@ -1261,20 +1257,20 @@ types-requests = ">=2.31.0.6,<3.0.0.0"
 
 [[package]]
 name = "exasol-script-languages-container-tool"
-version = "4.3.0"
+version = "4.3.1"
 description = "Script Languages Container Tool"
 optional = false
 python-versions = "<3.15,>=3.10"
 groups = ["main"]
 files = [
-    {file = "exasol_script_languages_container_tool-4.3.0-py3-none-any.whl", hash = "sha256:873bd37264e060e1d152180fb6b188b2ffcdc66a9a715994ad47c9989430bc60"},
-    {file = "exasol_script_languages_container_tool-4.3.0.tar.gz", hash = "sha256:1545ec245684e4b947ff6c89dd7c73101ce607f6a38fc34ffb2eb726fd457a50"},
+    {file = "exasol_script_languages_container_tool-4.3.1-py3-none-any.whl", hash = "sha256:5b0d9a6cba1940e70d85fb0016110934cf6ba07b3c3454693958789c24b0f684"},
+    {file = "exasol_script_languages_container_tool-4.3.1.tar.gz", hash = "sha256:2095cf6d44cd079d6a4be8807096c6d8f0bc94f35f522c6d1fffd5176ac6bdcb"},
 ]
 
 [package.dependencies]
 click = ">=8.2.1,<9"
 exasol-bucketfs = ">=2.1.0,<3"
-exasol-integration-test-docker-environment = ">=6.5.0,<7"
+exasol-integration-test-docker-environment = ">=6.5.1,<7"
 exasol-script-languages-package-management = ">=1.0.0,<2"
 jsonschema = ">=4.23.0,<5"
 networkx = ">=3.3.0,<4"
@@ -1465,14 +1461,14 @@ smmap = ">=3.0.1,<6"
 
 [[package]]
 name = "gitpython"
-version = "3.1.57"
+version = "3.1.58"
 description = "GitPython is a Python library used to interact with Git repositories"
 optional = false
 python-versions = ">=3.7"
 groups = ["main"]
 files = [
-    {file = "gitpython-3.1.57-py3-none-any.whl", hash = "sha256:4ccf7d73c10f5c9e76043fbb2675ac5a1b3ff5b41e648f56bcbed5f63792ecaf"},
-    {file = "gitpython-3.1.57.tar.gz", hash = "sha256:c493ec57c0ef6b19743798b6a5af859c71814b524e7e6f97baa2f8e658961488"},
+    {file = "gitpython-3.1.58-py3-none-any.whl", hash = "sha256:d331e722577f0fd7fc1f857419b3ecc07af66282b933d2a4d95f84a042fdd50f"},
+    {file = "gitpython-3.1.58.tar.gz", hash = "sha256:621416df10ef3fd0e19fabf9172ddeed0fa704d353d04f194eec56a625a95b22"},
 ]
 
 [package.dependencies]
@@ -6037,4 +6033,4 @@ files = [
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10, <3.14"
-content-hash = "c48a2b3178e16d631147b4835e478d2b1d38becdd86350d9029f884f3c89301a"
+content-hash = "d251e58ff2df876b71f749f4ed84d9ec3b6b850694ae8b933c1d2ddf51c425b9"
