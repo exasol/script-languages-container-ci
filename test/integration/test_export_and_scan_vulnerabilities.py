@@ -379,12 +379,15 @@ def expected_github_out_result(tmp_test_dir: str, flavor_name, arch, build_test_
     )
     return {
         "slc_release": {
-            "path": str(Path("release_slc") / f"{flavor_name}_release{suffix}.tar.gz"),
+            "path": str(
+                Path("release_slc") / f"{flavor_name}_release_{arch}{suffix}.tar.gz"
+            ),
             "goal": "release",
         },
         "slc_test": {
             "path": str(
-                Path("test_slc") / f"{flavor_name}_base_test_build_run{suffix}.tar.gz"
+                Path("test_slc")
+                / f"{flavor_name}_base_test_build_run_{arch}{suffix}.tar.gz"
             ),
             "goal": "base_test_build_run",
         },
