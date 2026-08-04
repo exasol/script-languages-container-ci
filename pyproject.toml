@@ -62,6 +62,9 @@ profile = "black"
 [tool.pytest.ini_options]
 minversion = "6.0"
 addopts = "--ignore=test/integration/resources"
+log_cli = true
+log_cli_level = "INFO"
+
 
 testpaths = [
     "test"
