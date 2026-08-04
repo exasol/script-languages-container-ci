@@ -53,5 +53,5 @@ class CIExport:
 
         export_flavor_info = export_flavor_infos[0]
         if not export_flavor_info.output_file:
-            raise RuntimeError(f"Output file not found")
+            raise RuntimeError("Output file not found")
         return Path(export_flavor_info.output_file)
