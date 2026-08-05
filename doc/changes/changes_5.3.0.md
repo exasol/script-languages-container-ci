@@ -2,6 +2,8 @@
 
 ## Summary
 
+This release changes the filename of the exported Script-Languages-Container and updates to exaslct v4.3.1 and itde v6.5.1. Also, it contains some internal improvements.
+
 ## Security Issues
 
 This release fixes vulnerabilities by updating dependencies:
