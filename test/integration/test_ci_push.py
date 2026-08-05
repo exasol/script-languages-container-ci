@@ -1,11 +1,11 @@
 import dataclasses
 import platform
-from test.integration.utils import cleanup_images
 from test.integration.tag_infos import (
     EXPECTED_TAG_INFO_HASHES,
     EXPECTED_TAG_INFO_RELEASE,
     TagInfo,
 )
+from test.integration.utils import cleanup_images
 
 import pytest
 from exasol_integration_test_docker_environment.testing.docker_registry import (

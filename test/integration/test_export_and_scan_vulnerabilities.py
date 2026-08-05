@@ -4,7 +4,6 @@ import platform
 import shutil
 from enum import Enum
 from pathlib import Path
-from test.integration.utils import cleanup_images
 from test.integration.tag_infos import (
     BUILD_NAME,
     EXPECTED_LOCAL_TAG_INFO_HASHES,
@@ -13,6 +12,7 @@ from test.integration.tag_infos import (
     EXPECTED_TAG_INFO_RELEASE,
     TagInfo,
 )
+from test.integration.utils import cleanup_images
 
 import docker
 import pytest
