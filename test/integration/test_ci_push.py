@@ -1,5 +1,6 @@
 import dataclasses
 import platform
+from test.integration.utils import cleanup_images
 from test.integration.tag_infos import (
     EXPECTED_TAG_INFO_HASHES,
     EXPECTED_TAG_INFO_RELEASE,
@@ -40,23 +41,24 @@ def test(flavors_path, test_ci_config):
     machine = platform.machine().lower()
     arch = "arm64" if ("arm" in machine) or ("aarch" in machine) else "x64"
 
-    with LocalDockerRegistryContextManager("test_ci_push") as registry:
-        CIPush().push(
-            flavor_path=(flavor_path,),
-            target_docker_repository=registry.name,
-            target_docker_tag_prefix="tag",
-            docker_user=None,
-            docker_password=None,
-            build_name=test_ci_config.build_name,
-        )
+    with cleanup_images(flavors_path / flavor_name):
+        with LocalDockerRegistryContextManager("test_ci_push") as registry:
+            CIPush().push(
+                flavor_path=(flavor_path,),
+                target_docker_repository=registry.name,
+                target_docker_tag_prefix="tag",
+                docker_user=None,
+                docker_password=None,
+                build_name=test_ci_config.build_name,
+            )
 
-        expected_images = {
-            "name": "test_ci_push",
-            "tags": [
-                build_tag_name(flavor_name, arch, tag_info)
-                for tag_info in test_ci_config.expected_tag_infos
-            ],
-        }
+            expected_images = {
+                "name": "test_ci_push",
+                "tags": [
+                    build_tag_name(flavor_name, arch, tag_info)
+                    for tag_info in test_ci_config.expected_tag_infos
+                ],
+            }
 
-        assert expected_images["name"] == registry.images["name"]
-        assert set(expected_images["tags"]) == set(registry.images["tags"])
+            assert expected_images["name"] == registry.images["name"]
+            assert set(expected_images["tags"]) == set(registry.images["tags"])

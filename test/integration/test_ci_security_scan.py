@@ -1,3 +1,4 @@
+from test.integration.utils import cleanup_images
 from test.matchers import file_exists_matcher
 from unittest.mock import call, create_autospec
 
@@ -10,23 +11,25 @@ from exasol.slc_ci.lib.ci_step_output_printer import CIStepOutputPrinterProtocol
 def test_successful_flavor(flavors_path, test_containers_folder):
     flavor_path = str(flavors_path / "successful")
     printer_mock = create_autospec(CIStepOutputPrinterProtocol)
-    CISecurityScan(printer=printer_mock).run_security_scan(
-        flavor_path=(flavor_path,),
-    )
-    assert printer_mock.mock_calls == [
-        call.print_file(file_exists_matcher()),
-        call.print_exasol_docker_images(),
-    ]
+    with cleanup_images(flavors_path / "successful"):
+        CISecurityScan(printer=printer_mock).run_security_scan(
+            flavor_path=(flavor_path,),
+        )
+        assert printer_mock.mock_calls == [
+            call.print_file(file_exists_matcher()),
+            call.print_exasol_docker_images(),
+        ]
 
 
 def test_failing_security_scan(flavors_path):
     flavor_path = str(flavors_path / "failing_security_scan")
     printer_mock = create_autospec(CIStepOutputPrinterProtocol)
-    with pytest.raises(AssertionError, match="Some security scans not successful."):
-        CISecurityScan(printer=printer_mock).run_security_scan(
-            flavor_path=(flavor_path,),
-        )
-    assert printer_mock.mock_calls == [
-        call.print_file(file_exists_matcher()),
-        call.print_exasol_docker_images(),
-    ]
+    with cleanup_images(flavors_path / "failing_security_scan"):
+        with pytest.raises(AssertionError, match="Some security scans not successful."):
+            CISecurityScan(printer=printer_mock).run_security_scan(
+                flavor_path=(flavor_path,),
+            )
+        assert printer_mock.mock_calls == [
+            call.print_file(file_exists_matcher()),
+            call.print_exasol_docker_images(),
+        ]

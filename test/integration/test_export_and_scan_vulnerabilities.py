@@ -1,10 +1,10 @@
-import contextlib
 import dataclasses
 import json
 import platform
 import shutil
 from enum import Enum
 from pathlib import Path
+from test.integration.utils import cleanup_images
 from test.integration.tag_infos import (
     BUILD_NAME,
     EXPECTED_LOCAL_TAG_INFO_HASHES,
@@ -16,7 +16,6 @@ from test.integration.tag_infos import (
 
 import docker
 import pytest
-from exasol.slc.api import clean_flavor_images
 from exasol_integration_test_docker_environment.testing.docker_registry import (
     LocalDockerRegistry,
     LocalDockerRegistryContextManager,
@@ -216,17 +215,6 @@ def _get_docker_images_for_flavor(flavor: str) -> set[str]:
         docker_client.close()
 
 
-@contextlib.contextmanager
-def _cleanup_images(flavor_path: Path):
-    clean_flavor_images(
-        flavor_path=(str(flavor_path),),
-    )
-    yield
-    clean_flavor_images(
-        flavor_path=(str(flavor_path),),
-    )
-
-
 def _tag_suffix_for_build_step(build_step: str) -> str:
     return next(
         tag_info.tag_suffix
@@ -421,7 +409,7 @@ def test_export_and_scan_vulnerabilities(
         )
     )
 
-    with _cleanup_images(local_flavors_path / flavor_name):
+    with cleanup_images(local_flavors_path / flavor_name):
         export_and_scan_vulnerabilities(
             build_mode=build_test_config.build_mode,
             flavor=flavor_name,
