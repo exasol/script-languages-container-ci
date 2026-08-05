@@ -1,4 +1,3 @@
-import contextlib
 import dataclasses
 import json
 import platform
@@ -6,16 +5,17 @@ import shutil
 from enum import Enum
 from pathlib import Path
 from test.integration.tag_infos import (
+    BUILD_NAME,
     EXPECTED_LOCAL_TAG_INFO_HASHES,
     EXPECTED_LOCAL_TAG_INFO_RELEASE,
     EXPECTED_TAG_INFO_HASHES,
     EXPECTED_TAG_INFO_RELEASE,
     TagInfo,
 )
+from test.integration.utils import cleanup_images
 
 import docker
 import pytest
-from exasol.slc.api import clean_flavor_images
 from exasol_integration_test_docker_environment.testing.docker_registry import (
     LocalDockerRegistry,
     LocalDockerRegistryContextManager,
@@ -44,20 +44,16 @@ def _build_tag_name_ci(
         return f"{flavor_name}-{tag_info.build_step}_{arch}_{tag_info.tag_suffix}"
 
 
-def _build_tag_name_cd(
-    flavor_name: str, arch: str, build_name: str, tag_info: TagInfo
-) -> str:
-    return f"{flavor_name}-{tag_info.build_step}_{arch}_{build_name}"
+def _build_tag_name_cd(flavor_name: str, arch: str, tag_info: TagInfo) -> str:
+    return f"{flavor_name}-{tag_info.build_step}_{arch}_{tag_info.tag_suffix}"
 
 
 def _build_local_tag_name_ci(flavor_name: str, arch: str, tag_info: TagInfo) -> str:
     return f"exasol/script-language-container:{flavor_name}-{tag_info.build_step}_{arch}_{tag_info.tag_suffix}"
 
 
-def _build_local_tag_name_cd(
-    flavor_name: str, arch: str, expected_build_name: str, tag_info: TagInfo
-) -> str:
-    return f"exasol/script-language-container:{flavor_name}-{tag_info.build_step}_{arch}_{expected_build_name}"
+def _build_local_tag_name_cd(flavor_name: str, arch: str, tag_info: TagInfo) -> str:
+    return f"exasol/script-language-container:{flavor_name}-{tag_info.build_step}_{arch}_{tag_info.tag_suffix}"
 
 
 BUILD_REGISTRY_NAME = "test_export_and_scan_vulnerabilities_build"
@@ -141,9 +137,9 @@ def _expected_registry_tags(
                 for tag_info in EXPECTED_TAG_INFO_HASHES
             ]
         case RegistryTagSet.CD_RELEASE:
+            combined = EXPECTED_TAG_INFO_RELEASE + EXPECTED_TAG_INFO_HASHES
             return [
-                _build_tag_name_cd(flavor_name, arch, expected_build_name, tag_info)
-                for tag_info in EXPECTED_TAG_INFO_RELEASE
+                _build_tag_name_cd(flavor_name, arch, tag_info) for tag_info in combined
             ]
 
 
@@ -160,11 +156,10 @@ def _expected_local_images(
                 for tag_info in EXPECTED_LOCAL_TAG_INFO_HASHES
             ]
         case LocalImageSet.CD:
+            combined = EXPECTED_LOCAL_TAG_INFO_RELEASE + EXPECTED_LOCAL_TAG_INFO_HASHES
             return [
-                _build_local_tag_name_cd(
-                    flavor_name, arch, expected_build_name, tag_info
-                )
-                for tag_info in EXPECTED_LOCAL_TAG_INFO_RELEASE
+                _build_local_tag_name_cd(flavor_name, arch, tag_info)
+                for tag_info in combined
             ]
 
 
@@ -220,17 +215,6 @@ def _get_docker_images_for_flavor(flavor: str) -> set[str]:
         docker_client.close()
 
 
-@contextlib.contextmanager
-def _cleanup_images(flavor_path: Path):
-    clean_flavor_images(
-        flavor_path=(str(flavor_path),),
-    )
-    yield
-    clean_flavor_images(
-        flavor_path=(str(flavor_path),),
-    )
-
-
 def _tag_suffix_for_build_step(build_step: str) -> str:
     return next(
         tag_info.tag_suffix
@@ -262,8 +246,8 @@ BUILD_TEST_CONFIGS = [
     pytest.param(
         BuildTestConfigTemplate(
             build_mode=BuildMode.RELEASE,
-            branch_name="refs/tags/1.2.3",
-            expected_build_name="1.2.3",
+            branch_name=f"refs/tags/{BUILD_NAME}",
+            expected_build_name=BUILD_NAME,
             build_registry=RegistryTestConfigTemplate(
                 repository_target=RepositoryTarget.DUMMY_BUILD,
                 expected_name=None,
@@ -314,34 +298,6 @@ def flavor_name():
 @pytest.fixture
 def commit_sha():
     return "123"
-
-
-@pytest.fixture
-def exported_github_out_result(tmp_test_dir: str, flavor_name, arch):
-    release_hash = _tag_suffix_for_build_step("release")
-    test_hash = _tag_suffix_for_build_step("base_test_build_run")
-    return {
-        "slc_release": {
-            "path": str(
-                Path(tmp_test_dir)
-                / ".build_output_release"
-                / "cache"
-                / "exports"
-                / f"{flavor_name}-release-{arch}-{release_hash}.tar.gz"
-            ),
-            "goal": "release",
-        },
-        "slc_test": {
-            "path": str(
-                Path(tmp_test_dir)
-                / ".build_output_test"
-                / "cache"
-                / "exports"
-                / f"{flavor_name}-base_test_build_run-{arch}-{test_hash}.tar.gz"
-            ),
-            "goal": "base_test_build_run",
-        },
-    }
 
 
 @pytest.fixture
@@ -404,6 +360,28 @@ def build_test_config(
     )
 
 
+@pytest.fixture
+def expected_github_out_result(tmp_test_dir: str, flavor_name, arch, build_test_config):
+    suffix = (
+        f"_{BUILD_NAME}" if build_test_config.build_mode == BuildMode.RELEASE else ""
+    )
+    return {
+        "slc_release": {
+            "path": str(
+                Path("release_slc") / f"{flavor_name}_release_{arch}{suffix}.tar.gz"
+            ),
+            "goal": "release",
+        },
+        "slc_test": {
+            "path": str(
+                Path("test_slc")
+                / f"{flavor_name}_base_test_build_run_{arch}{suffix}.tar.gz"
+            ),
+            "goal": "base_test_build_run",
+        },
+    }
+
+
 def test_export_and_scan_vulnerabilities(
     flavors_path,
     tmp_test_dir: str,
@@ -412,7 +390,7 @@ def test_export_and_scan_vulnerabilities(
     commit_sha,
     local_build_registry,
     local_release_registry,
-    exported_github_out_result,
+    expected_github_out_result,
 ):
     github_access = GithubAccessMock()
 
@@ -431,7 +409,7 @@ def test_export_and_scan_vulnerabilities(
         )
     )
 
-    with _cleanup_images(local_flavors_path / flavor_name):
+    with cleanup_images(local_flavors_path / flavor_name):
         export_and_scan_vulnerabilities(
             build_mode=build_test_config.build_mode,
             flavor=flavor_name,
@@ -442,7 +420,7 @@ def test_export_and_scan_vulnerabilities(
             github_access=github_access,
         )
 
-        assert json.loads(github_access.result) == exported_github_out_result
+        assert json.loads(github_access.result) == expected_github_out_result
 
         _assert_registry_images(
             local_build_registry,

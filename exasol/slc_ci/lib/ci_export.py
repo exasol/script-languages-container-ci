@@ -22,6 +22,8 @@ class CIExport:
         goal: str,
         output_directory: str,
         build_name: str | None = None,
+        export_path: str | None = None,
+        use_symlink_for_export_path: bool = True,
     ) -> Path:
         """
         Export the flavor as tar.gz file.
@@ -37,6 +39,8 @@ class CIExport:
             release_goal=(goal,),
             output_directory=output_directory,
             build_name=build_name,
+            export_path=export_path,
+            use_symlink_for_export_path=use_symlink_for_export_path,
         )
         self._printer.print_exasol_docker_images()
         export_infos = list(export_result.export_infos.values())
@@ -48,4 +52,6 @@ class CIExport:
             raise RuntimeError(f"Unexpected number of export flavor infos")
 
         export_flavor_info = export_flavor_infos[0]
-        return Path(export_flavor_info.cache_file)
+        if not export_flavor_info.output_file:
+            raise RuntimeError("Output file not found")
+        return Path(export_flavor_info.output_file)

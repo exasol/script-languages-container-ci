@@ -20,18 +20,24 @@ def _export_slc(
     build_name: str | None = None,
 ) -> None:
     release_output = ".build_output_release"
+    release_path = "release_slc"
     slc_release = ci_export.export(
         flavor_path=flavor_path,
         goal="release",
         output_directory=release_output,
         build_name=build_name,
+        export_path=release_path,
+        use_symlink_for_export_path=True,
     )
     test_output = ".build_output_test"
+    test_path = "test_slc"
     slc_test = ci_export.export(
         flavor_path=flavor_path,
         goal="base_test_build_run",
         output_directory=test_output,
         build_name=build_name,
+        export_path=test_path,
+        use_symlink_for_export_path=True,
     )
     github_access.write_result(
         json.dumps(
