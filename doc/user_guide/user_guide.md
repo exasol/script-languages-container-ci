@@ -10,7 +10,7 @@ orchestrate your CI pipeline steps.
 2. Install the package:
 
    ```shell
-   pip install exaslc-ci
+   pip install exasol-script-languages-container-ci
    ```
 
 3. Ensure a valid GitHub token in your CI (`GITHUB_TOKEN`) if using GitHub outputs.
