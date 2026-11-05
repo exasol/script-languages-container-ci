@@ -45,11 +45,21 @@ def run_db_test_call(
     )
 
 
-TEST_DATA = [t.dict().values() for t in test_env.flavor_ci_config.test_config.test_sets]
+TEST_DATA = [
+    (
+        test_set.name,
+        test_set.files,
+        test_set.folders,
+        test_set.goal,
+        test_set.generic_language_tests,
+        test_set.accelerator,
+    )
+    for test_set in test_env.flavor_ci_config.test_config.test_sets
+]
 
 
 @pytest.mark.parametrize(
-    "name, files, folders, goal, generic_language_tests, test_runners, accelerator",
+    "name, files, folders, goal, generic_language_tests, accelerator",
     TEST_DATA,
 )
 def test_run_tests(
@@ -60,7 +70,6 @@ def test_run_tests(
     folders,
     goal,
     generic_language_tests,
-    test_runners,
     accelerator,
 ):
     ci_commands_mock: CIExecuteTest | CIPrepare | Mock = Mock()
