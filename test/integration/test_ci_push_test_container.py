@@ -33,7 +33,7 @@ def test(
             expected_images = {
                 "name": "test_ci_push_test_container",
                 "tags": [
-                    f"123_db-test-container_{arch}_RHAJNDFIQLI4HPWH6PJXBXJ3GPZAHO6T6G6Z5QDM3MKBNPN2AOGQ",
+                    f"123_db-test-container_{arch}_FSFRXDKEJXSUAHVO3XLAS2OXGDD3CRP52RW6GWVWBBSZS4CK6M6A",
                 ],
             }
             assert expected_images["name"] == registry.images["name"] and set(
