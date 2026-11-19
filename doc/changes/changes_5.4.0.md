@@ -2,7 +2,7 @@
 
 ## Summary
 
- - Dropped support for Python 3.10.
+ - #185: Dropped support for Python 3.10.
 
 ## Security Issues
 
